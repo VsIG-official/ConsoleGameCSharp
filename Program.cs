@@ -18,6 +18,10 @@ namespace Console_Game_CSharp
         static int[,] nextShape;
         static Random random = new Random();
 
+        /// <summary>
+        /// Main function, where all cool things happen
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
 		{
 			int[,] tetrisGrid = new int[12, 16];//height and width
@@ -28,6 +32,16 @@ namespace Console_Game_CSharp
 
             SetShape();
             currentShape = nextShape;
+            //for (int i = 0; i < 2; i++)
+            //{
+                Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 7, 2);
+            //}
+            System.Threading.Thread.Sleep(1000);
+            MoveBlockDown();
+            Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 7, 2);
+
+            //Console.WriteLine(tetrisGrid[11, 7]);
+            MakingMatrix(tetrisGrid);
 
             for (int i = 0; i < currentShape.GetLength(0); i++)
             {
@@ -39,6 +53,14 @@ namespace Console_Game_CSharp
             }
         }
 
+        public static void MoveBlockDown()
+        {
+
+        }
+        /// <summary>
+        /// start function for main matrix to change values in it
+        /// </summary>
+        /// <param name="matrix"></param>
         public static void MakingMatrix(int[,] matrix)
         {
             for (int i = 0; i < matrix.GetLength(0); i++)
