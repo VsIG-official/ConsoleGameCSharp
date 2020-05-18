@@ -24,33 +24,56 @@ namespace Console_Game_CSharp
         /// <param name="args"></param>
         static void Main(string[] args)
 		{
-			int[,] tetrisGrid = new int[12, 16];//height and width
+			//int[,] tetrisGrid = new int[12, 16];//height and width
             //[10,14] is for grid and [2,2] is for border
 
-            MakingMatrix(tetrisGrid);
-            printBoundary(tetrisGrid, 12, 16);
+            //MakingMatrix(tetrisGrid);
+
+
+            int rows = 12;//put here numbers of rows
+            int columns = 16;//put here numbers of columns
+            int[][] jagged_arr = new int[rows][];
+
+            for (int i = 0; i < rows; i++)
+            {
+                jagged_arr[i] = new int[columns];
+            }
+            jagged_arr[0][0] = 1;
+            for (int i = 0; i < jagged_arr.Length; i++)
+            {
+                for (int j = 0; j < jagged_arr[i].Length; j++)
+                {
+                    System.Console.Write(jagged_arr[i][j]);
+                }
+                System.Console.WriteLine();
+            }
+
+            printBoundary(jagged_arr, 12, 16);
 
             SetShape();
             currentShape = nextShape;
+
+            Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 7, 2);
+            //Console.WriteLine(jagged_arr);
             //for (int i = 0; i < 2; i++)
             //{
-                Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 7, 2);
+            //Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 7, 2);
             //}
-            System.Threading.Thread.Sleep(1000);
-            MoveBlockDown();
-            Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 7, 2);
+            //System.Threading.Thread.Sleep(1000);
+            //MoveBlockDown();
+            //Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 7, 2);
 
             //Console.WriteLine(tetrisGrid[11, 7]);
-            MakingMatrix(tetrisGrid);
+            //MakingMatrix(tetrisGrid);
 
-            for (int i = 0; i < currentShape.GetLength(0); i++)
-            {
-                for (int j = 0; j < currentShape.GetLength(1); j++)
-                {
-                    Console.Write(currentShape[i, j]);
-                }
-                Console.WriteLine();
-            }
+            //for (int i = 0; i < currentShape.GetLength(0); i++)
+            //{
+            //    for (int j = 0; j < currentShape.GetLength(1); j++)
+            //    {
+            //         Console.Write(currentShape[i, j]);
+            //    }
+            //    Console.WriteLine();
+            //}
         }
 
         public static void MoveBlockDown()
