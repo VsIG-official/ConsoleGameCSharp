@@ -32,14 +32,16 @@ namespace Console_Game_CSharp
 
             SetShape();
             currentShape = nextShape;
-            //for (int i = 0; i < 2; i++)
-            //{
                 Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 7, 2);
-            //}
             System.Threading.Thread.Sleep(1000);
             MoveBlockDown();
-            Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 7, 2);
+            // var result = Filter(tetrisGrid, u => u[0] == 3);
+            //Console.WriteLine(result);
 
+            Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 7, 2);
+            //var result = Filter(tetrisGrid, u => u[0] == 3);
+            //Console.WriteLine(result);
+            tetrisGrid.GetValue()
             //Console.WriteLine(tetrisGrid[11, 7]);
             MakingMatrix(tetrisGrid);
 
