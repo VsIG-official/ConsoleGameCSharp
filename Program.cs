@@ -28,21 +28,18 @@ namespace Console_Game_CSharp
             //[10,14] is for grid and [2,2] is for border
 
             MakingMatrix(tetrisGrid);
-            printBoundary(tetrisGrid, 12, 16);
 
             SetShape();
             currentShape = nextShape;
-                Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 7, 2);
+            Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 7, 1);//instead of 3 create variable,
+            //that will hold length of block
             System.Threading.Thread.Sleep(1000);
-            MoveBlockDown();
-            // var result = Filter(tetrisGrid, u => u[0] == 3);
-            //Console.WriteLine(result);
+            Console.WriteLine(tetrisGrid.Length);
+            SearchingForBlocks(tetrisGrid);
+            //MoveBlockDown();
 
             Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 7, 2);
-            //var result = Filter(tetrisGrid, u => u[0] == 3);
-            //Console.WriteLine(result);
-            tetrisGrid.GetValue()
-            //Console.WriteLine(tetrisGrid[11, 7]);
+
             MakingMatrix(tetrisGrid);
 
             for (int i = 0; i < currentShape.GetLength(0); i++)
@@ -52,6 +49,19 @@ namespace Console_Game_CSharp
                     Console.Write(currentShape[i, j]);
                 }
                 Console.WriteLine();
+            }
+            printBoundary(tetrisGrid, 12, 16);
+        }
+
+        public static void SearchingForBlocks(int[,] tetrisGrid)
+        {
+            foreach (int i in tetrisGrid)
+            {
+                if (i == 3)//you can make some stopper(count elements in block and,if this
+                    //function has found all of 'em-break)
+                {
+                    Console.WriteLine("YOU ARE AMAZING");
+                }
             }
         }
 
