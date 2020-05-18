@@ -122,7 +122,6 @@ namespace Console_Game_CSharp
                 //case 5: nextShape = new int[,] { { 3, 3, 4, 4 }, { 9, 8, 8, 7 } }; break;
                 //case 6: nextShape = new int[,] { { 3, 4, 4, 4 }, { 8, 7, 8, 9 } }; break;
             }
-
             //currentShape =
         }
     }
