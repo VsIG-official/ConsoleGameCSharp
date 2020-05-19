@@ -36,21 +36,24 @@ namespace Console_Game_CSharp
             currentShape = nextShape;
             Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 6, 3);
 
+            /*
             // Create a timer with a 1.5 second interval.
-            double interval = 1500.0;
+            double interval = 1000.0;
             aTimer = new System.Timers.Timer(interval);
 
             // Hook up the event handler for the Elapsed event.
             aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
 
             // Only raise the event the first time Interval elapses.
-            aTimer.AutoReset = false;
+            aTimer.AutoReset = true;
             aTimer.Enabled = true;
 
+            */
+
             // Ensure the event fires before the exit message appears.
-            System.Threading.Thread.Sleep((int)interval * 2);
-            Console.WriteLine("Press the Enter key to exit the program.");
-            Console.ReadLine();
+            //System.Threading.Thread.Sleep((int)interval * 4);
+            //Console.WriteLine("Press the Enter key to exit the program.");
+            //Console.ReadLine();
 
             SearchAndMoveBlocks(tetrisGrid);
             PrintingMatrix(tetrisGrid);
@@ -61,7 +64,6 @@ namespace Console_Game_CSharp
         {
             Console.WriteLine("Hello World!");
         }
-
 
         /// <summary>
         /// will find and move blocks down(and,maybe,left and right)
