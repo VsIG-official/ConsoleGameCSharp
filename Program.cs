@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
+//using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 
@@ -13,15 +13,13 @@ namespace Console_Game_CSharp
 {
 	class Program
 	{
-        private static System.Timers.Timer aTimer;
-        //int gameInfo = 10;
         const char Border = (char)178;
         static int[,] currentShape;
         static int[,] nextShape;
         static Random random = new Random();
         static List<int> tempIndexes = new List<int>();
-        // Create a timer with a 1.5 second interval.
-        static double interval = 1000.0;
+
+        private static Timer aTimer;
 
         /// <summary>
         /// Main function, where all cool things happen
@@ -38,25 +36,38 @@ namespace Console_Game_CSharp
             currentShape = nextShape;
             Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 6, 3);
 
-            SearchAndMoveBlocks(tetrisGrid);
-            PrintingMatrix(tetrisGrid);
-        }
-
-        public static void Timer()
-        {
+            // Create a timer with a 1.5 second interval.
+            double interval = 1500.0;
             aTimer = new System.Timers.Timer(interval);
+
             // Hook up the event handler for the Elapsed event.
-            aTimer.Elapsed += new ElapsedEventHandler(SearchAndMoveBlocks);
+            aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
 
             // Only raise the event the first time Interval elapses.
             aTimer.AutoReset = false;
             aTimer.Enabled = true;
+
+            // Ensure the event fires before the exit message appears.
+            System.Threading.Thread.Sleep((int)interval * 2);
+            Console.WriteLine("Press the Enter key to exit the program.");
+            Console.ReadLine();
+
+            SearchAndMoveBlocks(tetrisGrid);
+            PrintingMatrix(tetrisGrid);
         }
+
+        // Handle the Elapsed event.
+        private static void OnTimedEvent(object source, ElapsedEventArgs e)
+        {
+            Console.WriteLine("Hello World!");
+        }
+
+
         /// <summary>
         /// will find and move blocks down(and,maybe,left and right)
         /// </summary>
         /// <param name="tetrisGrid"></param>
-        public static void SearchAndMoveBlocks(int[,] tetrisGrid, ElapsedEventArgs e)
+        public static void SearchAndMoveBlocks(int[,] tetrisGrid)
         {
             tempIndexes.Clear();
             //searching
@@ -68,8 +79,6 @@ namespace Console_Game_CSharp
                     tempIndexes.Add(tetrisGrid[i,i]);
                     Console.WriteLine("YOU ARE AMAZING");
                     Console.WriteLine(tetrisGrid[i, i]);
-                    //int a = tempIndexes.IndexOf(3);//List.IndexOf(tempIndexes, 3);
-                    //Console.WriteLine(a);
                 }
             }
             //moving
@@ -101,6 +110,10 @@ namespace Console_Game_CSharp
             }
         }
 
+        /// <summary>
+        /// prints matrix
+        /// </summary>
+        /// <param name="matrix"></param>
         public static void PrintingMatrix(int[,] matrix)
         {
             for (int i = 0; i < matrix.GetLength(0); i++)
