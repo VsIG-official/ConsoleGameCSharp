@@ -32,8 +32,7 @@ namespace Console_Game_CSharp
 
             SetShape();
             currentShape = nextShape;
-            Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 6, 3);//instead of 3 create variable,
-            //that will hold length of block
+            Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 6, 3);
             //System.Threading.Thread.Sleep(1000);
             //Console.WriteLine(tetrisGrid.Length);
             SearchingForBlocks(tetrisGrid);
@@ -57,7 +56,10 @@ namespace Console_Game_CSharp
             */
         }
 
-
+        /// <summary>
+        /// will find all blocks to move them
+        /// </summary>
+        /// <param name="tetrisGrid"></param>
         public static void SearchingForBlocks(int[,] tetrisGrid)
         {
             tempIndexes.Clear();
@@ -89,6 +91,9 @@ namespace Console_Game_CSharp
             }
         }
 
+        /// <summary>
+        /// will move blocks down(and,maybe,left and right)
+        /// </summary>
         public static void MoveBlockDown()
         {
             foreach (int i in tempIndexes)
@@ -153,6 +158,9 @@ namespace Console_Game_CSharp
         }
         */
 
+        /// <summary>
+        /// setting one of shapes to generate
+        /// </summary>
         public static void SetShape()
         {
             switch (random.Next(3))
@@ -165,7 +173,6 @@ namespace Console_Game_CSharp
                     //case 5: nextShape = new int[,] { { 3, 3, 4, 4 }, { 9, 8, 8, 7 } }; break;
                     //case 6: nextShape = new int[,] { { 3, 4, 4, 4 }, { 8, 7, 8, 9 } }; break;
             }
-            //currentShape =
         }
     }
 }
