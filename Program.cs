@@ -61,15 +61,30 @@ namespace Console_Game_CSharp
         public static void SearchingForBlocks(int[,] tetrisGrid)
         {
             tempIndexes.Clear();
+            /*
+            for (int i = 0; i < tetrisGrid.Length-1; i++)
+            {
+                for (int j = 0; j < tetrisGrid.Length-1; j++)
+                {
+                    while (tetrisGrid[i, j] == 3)
+                    {
+                        Console.WriteLine(tetrisGrid[i, j]);
+                        break;
+                    }
+                }
+            }
+            */
+
             foreach (int i in tetrisGrid)
             {
                 if (i == 3)//you can make some stopper(count elements in block and,if this
-                    //function has found all of 'em-break)
+                    //function has found all of 'em-stop)
                 {
-                    tempIndexes.Add(i);
+                    tempIndexes.Add(tetrisGrid[i,i]);
                     Console.WriteLine("YOU ARE AMAZING");
-                    int a = tempIndexes.IndexOf(3);//List.IndexOf(tempIndexes, 3);
-                    Console.WriteLine(a);
+                    Console.WriteLine(tetrisGrid[i, i]);
+                    //int a = tempIndexes.IndexOf(3);//List.IndexOf(tempIndexes, 3);
+                    //Console.WriteLine(a);
                 }
             }
         }
@@ -114,6 +129,7 @@ namespace Console_Game_CSharp
                 Console.WriteLine();
             }
         }
+
         /*
         public static void printBoundary(int[,] a,int m,int n)
         {
@@ -139,15 +155,15 @@ namespace Console_Game_CSharp
 
         public static void SetShape()
         {
-            switch (random.Next(2))
+            switch (random.Next(3))
             {
-                case 0: nextShape = new int[,] { { 3,3 }, { 3,3 } }; break;
+                case 0: nextShape = new int[,] { { 3,3,1 }, { 3,3,1 } }; break;
                 case 1: nextShape = new int[,] { { 3,3,3 }, { 3, 3, 3 } }; break;
-                //case 2: nextShape = new int[,] { { 2, 3, 4, 4 }, { 8, 8, 8, 9 } }; break;
-                //case 3: nextShape = new int[,] { { 2, 3, 4, 4 }, { 8, 8, 8, 7 } }; break;
-                //case 4: nextShape = new int[,] { { 3, 3, 4, 4 }, { 7, 8, 8, 9 } }; break;
-                //case 5: nextShape = new int[,] { { 3, 3, 4, 4 }, { 9, 8, 8, 7 } }; break;
-                //case 6: nextShape = new int[,] { { 3, 4, 4, 4 }, { 8, 7, 8, 9 } }; break;
+                case 2: nextShape = new int[,] { { 1, 3, 1 }, { 3, 3, 3 } }; break;
+                    //case 3: nextShape = new int[,] { { 2, 3, 4, 4 }, { 8, 8, 8, 7 } }; break;
+                    //case 4: nextShape = new int[,] { { 3, 3, 4, 4 }, { 7, 8, 8, 9 } }; break;
+                    //case 5: nextShape = new int[,] { { 3, 3, 4, 4 }, { 9, 8, 8, 7 } }; break;
+                    //case 6: nextShape = new int[,] { { 3, 4, 4, 4 }, { 8, 7, 8, 9 } }; break;
             }
             //currentShape =
         }
