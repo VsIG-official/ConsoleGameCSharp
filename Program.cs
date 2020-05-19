@@ -31,15 +31,17 @@ namespace Console_Game_CSharp
 
             SetShape();
             currentShape = nextShape;
-            Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 7, 1);//instead of 3 create variable,
+            Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 7, 3);//instead of 3 create variable,
             //that will hold length of block
-            System.Threading.Thread.Sleep(1000);
-            Console.WriteLine(tetrisGrid.Length);
+            //System.Threading.Thread.Sleep(1000);
+            //Console.WriteLine(tetrisGrid.Length);
             SearchingForBlocks(tetrisGrid);
-            //MoveBlockDown();
+            MoveBlockDown();
+            PrintingMatrix(tetrisGrid);
 
-            Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 7, currentShape.Length/2);
+            // Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 7, currentShape.Length/2);
 
+            /*
             MakingMatrix(tetrisGrid);
 
             for (int i = 0; i < currentShape.GetLength(0); i++)
@@ -50,8 +52,10 @@ namespace Console_Game_CSharp
                 }
                 Console.WriteLine();
             }
-            printBoundary(tetrisGrid, 12, 16);
+            //printBoundary(tetrisGrid, 12, 16);
+            */
         }
+
 
         public static void SearchingForBlocks(int[,] tetrisGrid)
         {
@@ -80,21 +84,29 @@ namespace Console_Game_CSharp
                 for (int j = 0; j < matrix.GetLength(1); j++)
                 {
                     matrix[i, j] = 1;
-                    //0 is for walls (if block will hit it-nothing will happen)
                     //1 is for empty space
                     //2 is for bottom (if block will hit it-it stops)
                     //3 is for blocks
-                     if (i == 11)
+                    if (i == 11)
                     {
                         matrix[i, j] = 2;
                     }
+                }
+            }
+        }
+
+        public static void PrintingMatrix(int[,] matrix)
+        {
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
                     Console.Write(matrix[i, j]);// + " ");
                 }
                 Console.WriteLine();
             }
-            //return matrix;
         }
-
+        /*
         public static void printBoundary(int[,] a,int m,int n)
         {
             for (int i = 0; i < m; i++)
@@ -115,6 +127,7 @@ namespace Console_Game_CSharp
                 Console.WriteLine(" ");
             }
         }
+        */
 
         public static void SetShape()
         {
