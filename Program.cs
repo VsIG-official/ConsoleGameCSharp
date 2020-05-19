@@ -38,7 +38,7 @@ namespace Console_Game_CSharp
             SearchingForBlocks(tetrisGrid);
             //MoveBlockDown();
 
-            Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 7, 2);
+            Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 7, currentShape.Length/2);
 
             MakingMatrix(tetrisGrid);
 
