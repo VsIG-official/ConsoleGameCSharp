@@ -17,6 +17,7 @@ namespace Console_Game_CSharp
         static int[,] currentShape;
         static int[,] nextShape;
         static Random random = new Random();
+        static List<int> tempIndexes = new List<int>();
 
         /// <summary>
         /// Main function, where all cool things happen
@@ -31,7 +32,7 @@ namespace Console_Game_CSharp
 
             SetShape();
             currentShape = nextShape;
-            Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 7, 3);//instead of 3 create variable,
+            Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 6, 3);//instead of 3 create variable,
             //that will hold length of block
             //System.Threading.Thread.Sleep(1000);
             //Console.WriteLine(tetrisGrid.Length);
@@ -59,19 +60,26 @@ namespace Console_Game_CSharp
 
         public static void SearchingForBlocks(int[,] tetrisGrid)
         {
+            tempIndexes.Clear();
             foreach (int i in tetrisGrid)
             {
                 if (i == 3)//you can make some stopper(count elements in block and,if this
                     //function has found all of 'em-break)
                 {
+                    tempIndexes.Add(i);
                     Console.WriteLine("YOU ARE AMAZING");
+                    int a = tempIndexes.IndexOf(3);//List.IndexOf(tempIndexes, 3);
+                    Console.WriteLine(a);
                 }
             }
         }
 
         public static void MoveBlockDown()
         {
+            foreach (int i in tempIndexes)
+            {
 
+            }
         }
         /// <summary>
         /// start function for main matrix to change values in it
