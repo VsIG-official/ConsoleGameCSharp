@@ -79,18 +79,12 @@ namespace Console_Game_CSharp
             {
                 for (int j = 0; j < matrix.GetLength(1); j++)
                 {
-                    if (i >= 1 && i <= matrix.GetLength(0) - 2)
-                    {
-                        if (j >= 1 && j <= matrix.GetLength(1) - 2)
-                        {
-                            matrix[i, j] = 1;
-                            //0 is for walls (if block will hit it-nothing will happen)
-                            //1 is for empty space
-                            //2 is for bottom (if block will hit it-it stops)
-                            //3 is for blocks
-                        }
-                    }
-                    else if (i == 11)
+                    matrix[i, j] = 1;
+                    //0 is for walls (if block will hit it-nothing will happen)
+                    //1 is for empty space
+                    //2 is for bottom (if block will hit it-it stops)
+                    //3 is for blocks
+                     if (i == 11)
                     {
                         matrix[i, j] = 2;
                     }
