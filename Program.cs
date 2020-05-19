@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 
 /// <summary>
 /// My console game on csharp, in which you can play tetris
@@ -12,12 +13,15 @@ namespace Console_Game_CSharp
 {
 	class Program
 	{
-		//int gameInfo = 10;
-		const char Border = (char)178;
+        private static System.Timers.Timer aTimer;
+        //int gameInfo = 10;
+        const char Border = (char)178;
         static int[,] currentShape;
         static int[,] nextShape;
         static Random random = new Random();
         static List<int> tempIndexes = new List<int>();
+        // Create a timer with a 1.5 second interval.
+        static double interval = 1000.0;
 
         /// <summary>
         /// Main function, where all cool things happen
@@ -33,54 +37,33 @@ namespace Console_Game_CSharp
             SetShape();
             currentShape = nextShape;
             Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 6, 3);
-            //System.Threading.Thread.Sleep(1000);
-            //Console.WriteLine(tetrisGrid.Length);
-            SearchingForBlocks(tetrisGrid);
-            MoveBlockDown();
+
+            SearchAndMoveBlocks(tetrisGrid);
             PrintingMatrix(tetrisGrid);
-
-            // Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 7, currentShape.Length/2);
-
-            /*
-            MakingMatrix(tetrisGrid);
-
-            for (int i = 0; i < currentShape.GetLength(0); i++)
-            {
-                for (int j = 0; j < currentShape.GetLength(1); j++)
-                {
-                    Console.Write(currentShape[i, j]);
-                }
-                Console.WriteLine();
-            }
-            //printBoundary(tetrisGrid, 12, 16);
-            */
         }
 
+        public static void Timer()
+        {
+            aTimer = new System.Timers.Timer(interval);
+            // Hook up the event handler for the Elapsed event.
+            aTimer.Elapsed += new ElapsedEventHandler(SearchAndMoveBlocks);
+
+            // Only raise the event the first time Interval elapses.
+            aTimer.AutoReset = false;
+            aTimer.Enabled = true;
+        }
         /// <summary>
-        /// will find all blocks to move them
+        /// will find and move blocks down(and,maybe,left and right)
         /// </summary>
         /// <param name="tetrisGrid"></param>
-        public static void SearchingForBlocks(int[,] tetrisGrid)
+        public static void SearchAndMoveBlocks(int[,] tetrisGrid, ElapsedEventArgs e)
         {
             tempIndexes.Clear();
-            /*
-            for (int i = 0; i < tetrisGrid.Length-1; i++)
-            {
-                for (int j = 0; j < tetrisGrid.Length-1; j++)
-                {
-                    while (tetrisGrid[i, j] == 3)
-                    {
-                        Console.WriteLine(tetrisGrid[i, j]);
-                        break;
-                    }
-                }
-            }
-            */
-
+            //searching
             foreach (int i in tetrisGrid)
             {
                 if (i == 3)//you can make some stopper(count elements in block and,if this
-                    //function has found all of 'em-stop)
+                //function has found all of 'em-stop)
                 {
                     tempIndexes.Add(tetrisGrid[i,i]);
                     Console.WriteLine("YOU ARE AMAZING");
@@ -89,18 +72,13 @@ namespace Console_Game_CSharp
                     //Console.WriteLine(a);
                 }
             }
-        }
-
-        /// <summary>
-        /// will move blocks down(and,maybe,left and right)
-        /// </summary>
-        public static void MoveBlockDown()
-        {
+            //moving
             foreach (int i in tempIndexes)
             {
 
             }
         }
+
         /// <summary>
         /// start function for main matrix to change values in it
         /// </summary>
@@ -129,34 +107,11 @@ namespace Console_Game_CSharp
             {
                 for (int j = 0; j < matrix.GetLength(1); j++)
                 {
-                    Console.Write(matrix[i, j]);// + " ");
+                    Console.Write(matrix[i, j]);
                 }
                 Console.WriteLine();
             }
         }
-
-        /*
-        public static void printBoundary(int[,] a,int m,int n)
-        {
-            for (int i = 0; i < m; i++)
-            {
-                for (int j = 0; j < n; j++)
-                {
-                    if (i == 0)
-                        Console.Write(a[i, j] + " ");
-                    else if (i == m - 1)
-                        Console.Write(a[i, j] + " ");
-                    else if (j == 0)
-                        Console.Write(a[i, j] + " ");
-                    else if (j == n - 1)
-                        Console.Write(a[i, j] + " ");
-                    else
-                        Console.Write("  ");
-                }
-                Console.WriteLine(" ");
-            }
-        }
-        */
 
         /// <summary>
         /// setting one of shapes to generate
