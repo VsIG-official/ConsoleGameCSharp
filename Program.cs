@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Timers;
+
 /// <summary>
 /// My console game on csharp, in which you can play tetris
 /// </summary>
@@ -9,7 +10,7 @@ namespace Console_Game_CSharp
 {
 	class Program
 	{
-		private static int[,] tetrisGrid = new int[12, 16];//height and width
+		private static int[,] tetrisGrid = new int[12, 16];
 		private static System.Timers.Timer aTimer;
 
 		/// <summary>
@@ -19,7 +20,6 @@ namespace Console_Game_CSharp
 		static void Main(string[] args)
 		{
 			Tetris tetris = new Tetris();
-			//[10,14] is for grid and [2,2] is for border
 
 			tetris.MakingMatrix(tetrisGrid);
 
@@ -30,10 +30,11 @@ namespace Console_Game_CSharp
 			SetTimer();
 
 			new Thread(NewThread).Start();
-			//tetris.SearchAndMoveBlocks(tetrisGrid);
-
 		}
 
+		/// <summary>
+		/// infinite stream for working algorithm (moving blocks)
+		/// </summary>
 		private static void NewThread()
 		{
 			while(true)
@@ -41,6 +42,7 @@ namespace Console_Game_CSharp
 
 			}
 		}
+
 		/// <summary>
 		/// setting timer
 		/// </summary>
@@ -52,6 +54,11 @@ namespace Console_Game_CSharp
 			aTimer.Enabled = true;
 		}
 
+		/// <summary>
+		///function, which is called once per second to find and move blocks
+		/// </summary>
+		/// <param name="sourse"></param>
+		/// <param name="e"></param>
 		private static void UpDate(Object sourse, ElapsedEventArgs e)
 		{
 			for (int i = tetrisGrid.GetLength(0) - 2; i >= 0; i--)
@@ -76,13 +83,16 @@ namespace Console_Game_CSharp
 							default:
 								break;
 						}
-
 					}
 				}
 			}
 			Tetris.PrintingMatrix(tetrisGrid);
 		}
 	}
+
+	/// <summary>
+	///for tetris logic
+	/// </summary>
 	class Tetris
 	{
 		public const char Border = (char)178;
@@ -90,36 +100,6 @@ namespace Console_Game_CSharp
 		public int[,] nextShape;
 		public Random random = new Random();
 		public List<int> tempIndexes = new List<int>();
-
-		public Tetris()
-		{
-
-		}
-
-		/// <summary>
-		/// will find and move blocks down(and,maybe,left and right)
-		/// </summary>
-		/// <param name="tetrisGrid"></param>
-		public void SearchAndMoveBlocks(int[,] tetrisGrid)
-		{
-			tempIndexes.Clear();
-			//searching
-			foreach (int i in tetrisGrid)
-			{
-				if (i == 3)//you can make some stopper(count elements in block and,if this
-						   //function has found all of 'em-stop)
-				{
-					tempIndexes.Add(tetrisGrid[i, i]);
-					Console.WriteLine("YOU ARE AMAZING");
-					Console.WriteLine(tetrisGrid[i, i]);
-				}
-			}
-			//moving
-			foreach (int i in tempIndexes)
-			{
-
-			}
-		}
 
 		/// <summary>
 		/// start function for main matrix to change values in it
