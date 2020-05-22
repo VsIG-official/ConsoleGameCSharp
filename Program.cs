@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using System.Timers;
 
 /// <summary>
 /// My console game on csharp, in which you can play tetris
@@ -12,129 +10,150 @@ namespace Console_Game_CSharp
 {
 	class Program
 	{
-		//int gameInfo = 10;
-		const char Border = (char)178;
-        static int[,] currentShape;
-        static int[,] nextShape;
-        static Random random = new Random();
+		private static int[,] tetrisGrid = new int[12, 16];
+		private static System.Timers.Timer aTimer;
 
-        /// <summary>
-        /// Main function, where all cool things happen
-        /// </summary>
-        /// <param name="args"></param>
-        static void Main(string[] args)
+		/// <summary>
+		/// Main function, where all cool things happen
+		/// </summary>
+		/// <param name="args"></param>
+		static void Main(string[] args)
 		{
-			int[,] tetrisGrid = new int[12, 16];//height and width
-            //[10,14] is for grid and [2,2] is for border
+			Tetris tetris = new Tetris();
 
-            MakingMatrix(tetrisGrid);
+			tetris.MakingMatrix(tetrisGrid);
 
-            SetShape();
-            currentShape = nextShape;
-            Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 7, 1);//instead of 3 create variable,
-            //that will hold length of block
-            System.Threading.Thread.Sleep(1000);
-            Console.WriteLine(tetrisGrid.Length);
-            SearchingForBlocks(tetrisGrid);
-            //MoveBlockDown();
+			tetris.SetShape();
+			tetris.currentShape = tetris.nextShape;
+			Array.Copy(tetris.currentShape, tetris.currentShape.GetLowerBound(0), tetrisGrid, 6, 3);
 
-            Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 7, currentShape.Length/2);
+			SetTimer();
 
-            MakingMatrix(tetrisGrid);
+			new Thread(NewThread).Start();
+		}
 
-            for (int i = 0; i < currentShape.GetLength(0); i++)
-            {
-                for (int j = 0; j < currentShape.GetLength(1); j++)
-                {
-                    Console.Write(currentShape[i, j]);
-                }
-                Console.WriteLine();
-            }
-            printBoundary(tetrisGrid, 12, 16);
-        }
+		/// <summary>
+		/// infinite stream for working algorithm (moving blocks)
+		/// </summary>
+		private static void NewThread()
+		{
+			while(true)
+			{
 
-        public static void SearchingForBlocks(int[,] tetrisGrid)
-        {
-            foreach (int i in tetrisGrid)
-            {
-                if (i == 3)//you can make some stopper(count elements in block and,if this
-                    //function has found all of 'em-break)
-                {
-                    Console.WriteLine("YOU ARE AMAZING");
-                }
-            }
-        }
+			}
+		}
 
-        public static void MoveBlockDown()
-        {
+		/// <summary>
+		/// setting timer
+		/// </summary>
+		public static void SetTimer()
+		{
+			aTimer = new System.Timers.Timer(1000);
+			aTimer.Elapsed += UpDate;
+			aTimer.AutoReset = true;
+			aTimer.Enabled = true;
+		}
 
-        }
-        /// <summary>
-        /// start function for main matrix to change values in it
-        /// </summary>
-        /// <param name="matrix"></param>
-        public static void MakingMatrix(int[,] matrix)
-        {
-            for (int i = 0; i < matrix.GetLength(0); i++)
-            {
-                for (int j = 0; j < matrix.GetLength(1); j++)
-                {
-                    if (i >= 1 && i <= matrix.GetLength(0) - 2)
-                    {
-                        if (j >= 1 && j <= matrix.GetLength(1) - 2)
-                        {
-                            matrix[i, j] = 1;
-                            //0 is for walls (if block will hit it-nothing will happen)
-                            //1 is for empty space
-                            //2 is for bottom (if block will hit it-it stops)
-                            //3 is for blocks
-                        }
-                    }
-                    else if (i == 11)
-                    {
-                        matrix[i, j] = 2;
-                    }
-                    Console.Write(matrix[i, j]);// + " ");
-                }
-                Console.WriteLine();
-            }
-            //return matrix;
-        }
+		/// <summary>
+		///function, which is called once per second to find and move blocks
+		/// </summary>
+		/// <param name="sourse"></param>
+		/// <param name="e"></param>
+		private static void UpDate(Object sourse, ElapsedEventArgs e)
+		{
+			for (int i = tetrisGrid.GetLength(0) - 2; i >= 0; i--)
+			{
+				for (int j = 0; j < tetrisGrid.GetLength(1); j++)
+				{
+					if (tetrisGrid[i, j] == 3)
+					{
+						switch (tetrisGrid[i + 1, j])
+						{
+							case 1:
+								int t = tetrisGrid[i, j];
+								tetrisGrid[i, j] = tetrisGrid[i + 1, j];
+								tetrisGrid[i + 1, j] = t;
+								break;
+							case 2:
+								tetrisGrid[i, j] = 4;
+								break;
+							case 4:
+								tetrisGrid[i, j] = 4;
+								break;
+							default:
+								break;
+						}
+					}
+				}
+			}
+			Tetris.PrintingMatrix(tetrisGrid);
+		}
+	}
 
-        public static void printBoundary(int[,] a,int m,int n)
-        {
-            for (int i = 0; i < m; i++)
-            {
-                for (int j = 0; j < n; j++)
-                {
-                    if (i == 0)
-                        Console.Write(a[i, j] + " ");
-                    else if (i == m - 1)
-                        Console.Write(a[i, j] + " ");
-                    else if (j == 0)
-                        Console.Write(a[i, j] + " ");
-                    else if (j == n - 1)
-                        Console.Write(a[i, j] + " ");
-                    else
-                        Console.Write("  ");
-                }
-                Console.WriteLine(" ");
-            }
-        }
+	/// <summary>
+	///for tetris logic
+	/// </summary>
+	class Tetris
+	{
+		public const char Border = (char)178;
+		public int[,] currentShape;
+		public int[,] nextShape;
+		public Random random = new Random();
+		public List<int> tempIndexes = new List<int>();
 
-        public static void SetShape()
-        {
-            switch (random.Next(2))
-            {
-                case 0: nextShape = new int[,] { { 3,3 }, { 3,3 } }; break;
-                case 1: nextShape = new int[,] { { 3,3,3 }, { 3, 3, 3 } }; break;
-                //case 2: nextShape = new int[,] { { 2, 3, 4, 4 }, { 8, 8, 8, 9 } }; break;
-                //case 3: nextShape = new int[,] { { 2, 3, 4, 4 }, { 8, 8, 8, 7 } }; break;
-                //case 4: nextShape = new int[,] { { 3, 3, 4, 4 }, { 7, 8, 8, 9 } }; break;
-                //case 5: nextShape = new int[,] { { 3, 3, 4, 4 }, { 9, 8, 8, 7 } }; break;
-                //case 6: nextShape = new int[,] { { 3, 4, 4, 4 }, { 8, 7, 8, 9 } }; break;
-            }
-            //currentShape =
-        }
-    }
+		/// <summary>
+		/// start function for main matrix to change values in it
+		/// </summary>
+		/// <param name="matrix"></param>
+		public void MakingMatrix(int[,] matrix)
+		{
+			for (int i = 0; i < matrix.GetLength(0); i++)
+			{
+				for (int j = 0; j < matrix.GetLength(1); j++)
+				{
+					matrix[i, j] = 1;
+					//1 is for empty space
+					//2 is for bottom (if block will hit it-it stops)
+					//3 is for blocks
+					if (i == 11)
+					{
+						matrix[i, j] = 2;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// prints matrix
+		/// </summary>
+		/// <param name="matrix"></param>
+		public static void PrintingMatrix(int[,] matrix)
+		{
+			for (int i = 0; i < matrix.GetLength(0); i++)
+			{
+				for (int j = 0; j < matrix.GetLength(1); j++)
+				{
+					Console.Write(matrix[i, j]);
+				}
+				Console.WriteLine();
+			}
+		}
+
+		/// <summary>
+		/// setting one of shapes to generate
+		/// </summary>
+		public void SetShape()
+		{
+			switch (random.Next(3))
+			{
+				case 0: nextShape = new int[,] { { 3, 3, 1 }, { 3, 3, 1 } }; break;
+				case 1: nextShape = new int[,] { { 3, 3, 3 }, { 3, 3, 3 } }; break;
+				case 2: nextShape = new int[,] { { 1, 3, 1 }, { 3, 3, 3 } }; break;
+					//case 3: nextShape = new int[,] { { 2, 3, 4, 4 }, { 8, 8, 8, 7 } }; break;
+					//case 4: nextShape = new int[,] { { 3, 3, 4, 4 }, { 7, 8, 8, 9 } }; break;
+					//case 5: nextShape = new int[,] { { 3, 3, 4, 4 }, { 9, 8, 8, 7 } }; break;
+					//case 6: nextShape = new int[,] { { 3, 4, 4, 4 }, { 8, 7, 8, 9 } }; break;
+			}
+		}
+	}
 }
