@@ -50,7 +50,15 @@ namespace Console_Game_CSharp
 		{
 			while(true)
 			{
-
+				var key = Console.ReadKey();
+				if (key.Key == ConsoleKey.LeftArrow)
+				{
+					Console.WriteLine("Left");
+				}
+				else if (key.Key == ConsoleKey.RightArrow)
+				{
+					Console.WriteLine("Right");
+				}
 			}
 		}
 
@@ -106,7 +114,6 @@ namespace Console_Game_CSharp
 			Tetris.GenerateShape(tetrisGrid, currentShape, nextShape, countOfBlocks);
 
 			Tetris.PrintingMatrix(tetrisGrid);
-			Console.WriteLine("nccn");
 			countOfBlocks++;
 			Console.WriteLine(countOfBlocks);
 		}
@@ -117,7 +124,7 @@ namespace Console_Game_CSharp
 	/// </summary>
 	class Tetris
 	{
-		public const char Border = (char)178;
+		//public const char Border = (char)178;
 		public static Random random = new Random();
 
 		/// <summary>
@@ -167,22 +174,20 @@ namespace Console_Game_CSharp
 		public static void GenerateShape(int[,] tetrisGrid, int[,] currentShape, int[,] nextShape,
 			int countOfBlocks)
 		{
-				switch (random.Next(3))
-				{
-					case 0: currentShape = new int[,] { { 3, 1, 1 }, { 1, 3, 1 } }; break;
-					case 1: currentShape = new int[,] { { 3, 3, 3 }, { 1, 1, 3 } }; break;
-					case 2: currentShape = new int[,] { { 1, 3, 1 }, { 3, 1, 1 } }; break;
-					//case 3: nextShape = new int[,] { { 2, 3, 4, 4 }, { 8, 8, 8, 7 } }; break;
-					//case 4: nextShape = new int[,] { { 3, 3, 4, 4 }, { 7, 8, 8, 9 } }; break;
-					//case 5: nextShape = new int[,] { { 3, 3, 4, 4 }, { 9, 8, 8, 7 } }; break;
-					//case 6: nextShape = new int[,] { { 3, 4, 4, 4 }, { 8, 7, 8, 9 } }; break;
-				}
+			switch (random.Next(5))
+			{
+				case 0: currentShape = new int[,] { { 3, 1, 1 }, { 3, 1, 1 } }; break;
+				case 1: currentShape = new int[,] { { 3, 3, 1 }, { 3, 3, 1 } }; break;
+				case 2: currentShape = new int[,] { { 3, 3, 3 }, { 3, 3, 3 } }; break;
+				case 3: currentShape = new int[,] { { 3, 3, 3 }, { 1, 1, 3 } }; break;
+				case 4: currentShape = new int[,] { { 1, 1, 3 }, { 3, 3, 3 } }; break;
+			}
 
-				switch (countOfBlocks)
-				{
+			switch (countOfBlocks)
+			{
 				case 0: Array.Copy(currentShape, 0, tetrisGrid, 6, 3);break;
 				case 1: Array.Copy(currentShape, 3, tetrisGrid, 6, 3);break;
-				}
+			}
 		}
 	}
 }
