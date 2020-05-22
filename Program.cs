@@ -22,6 +22,7 @@ namespace Console_Game_CSharp
 		int score = 0;
 		private static int[,] currentShape;
 		private static int[,] nextShape;
+		static int countOfBlocks = 0;
 
 		/// <summary>
 		/// Main function, where all cool things happen
@@ -36,9 +37,6 @@ namespace Console_Game_CSharp
 			Tetris tetris = new Tetris();
 
 			tetris.MakingMatrix(tetrisGrid);
-
-
-
 
 			SetTimer();
 
@@ -74,8 +72,6 @@ namespace Console_Game_CSharp
 		/// <param name="e"></param>
 		private static void UpDate(Object sourse, ElapsedEventArgs e)
 		{
-			Tetris.GenerateShape(tetrisGrid, currentShape, nextShape);
-
 			//to make entire figure stop and transform to 4,you can copy entire array to tempArray and if
 			//case 2 or 4 is true than revert to tempArray, make it current and transform all 3 to 4
 			for (int i = tetrisGrid.GetLength(0) - 2; i >= 0; i--)
@@ -101,16 +97,16 @@ namespace Console_Game_CSharp
 								break;
 						}
 					}
-
-					if (true)
-					{
-
-					}
 				}
 			}
+
 			Console.Clear();
+			Tetris.GenerateShape(tetrisGrid, currentShape, nextShape, countOfBlocks);
 
 			Tetris.PrintingMatrix(tetrisGrid);
+			Console.WriteLine("nccn");
+			countOfBlocks++;
+			Console.WriteLine(countOfBlocks);
 		}
 	}
 
@@ -120,8 +116,6 @@ namespace Console_Game_CSharp
 	class Tetris
 	{
 		public const char Border = (char)178;
-		public int[,] currentShape;
-		public int[,] nextShape;
 		public static Random random = new Random();
 
 		/// <summary>
@@ -162,53 +156,33 @@ namespace Console_Game_CSharp
 			}
 		}
 
-		///// <summary>
-		///// setting one of shapes to generate
-		///// </summary>
-		//public void SetShape()
-		//{
-		//	switch (random.Next(3))
-		//	{
-		//		case 0: nextShape = new int[,] { { 3, 3, 1 }, { 3, 3, 1 } }; break;
-		//		case 1: nextShape = new int[,] { { 3, 3, 3 }, { 3, 3, 3 } }; break;
-		//		case 2: nextShape = new int[,] { { 1, 3, 1 }, { 3, 3, 3 } }; break;
-		//			//case 3: nextShape = new int[,] { { 2, 3, 4, 4 }, { 8, 8, 8, 7 } }; break;
-		//			//case 4: nextShape = new int[,] { { 3, 3, 4, 4 }, { 7, 8, 8, 9 } }; break;
-		//			//case 5: nextShape = new int[,] { { 3, 3, 4, 4 }, { 9, 8, 8, 7 } }; break;
-		//			//case 6: nextShape = new int[,] { { 3, 4, 4, 4 }, { 8, 7, 8, 9 } }; break;
-		//	}
-		//	currentShape = nextShape;
-		//}
-
-		public static void GenerateShape(int[,] tetrisGrid, int[,] currentShape, int[,] nextShape)
+		/// <summary>
+		/// Setting block and generating it in matrix
+		/// </summary>
+		/// <param name="tetrisGrid"></param>
+		/// <param name="currentShape"></param>
+		/// <param name="nextShape"></param>
+		public static void GenerateShape(int[,] tetrisGrid, int[,] currentShape, int[,] nextShape,
+			int countOfBlocks)
 		{
-			int countOfBlocks = 0;
-			switch (random.Next(3))
+			//if (countOfBlocks==0)
+			//{
+				switch (random.Next(3))
 				{
-				case 0: nextShape = new int[,] { { 3, 3, 1 }, { 3, 3, 1 } }; break;
-				case 1: nextShape = new int[,] { { 3, 3, 3 }, { 3, 3, 3 } }; break;
-				case 2: nextShape = new int[,] { { 1, 3, 1 }, { 3, 3, 3 } }; break;
-					//case 3: nextShape = new int[,] { { 2, 3, 4, 4 }, { 8, 8, 8, 7 } }; break;
-					//case 4: nextShape = new int[,] { { 3, 3, 4, 4 }, { 7, 8, 8, 9 } }; break;
-					//case 5: nextShape = new int[,] { { 3, 3, 4, 4 }, { 9, 8, 8, 7 } }; break;
-					//case 6: nextShape = new int[,] { { 3, 4, 4, 4 }, { 8, 7, 8, 9 } }; break;
+					case 0: currentShape = new int[,] { { 3, 3, 1 }, { 3, 3, 1 } }; break;
+					case 1: currentShape = new int[,] { { 3, 3, 3 }, { 3, 3, 3 } }; break;
+					case 2: currentShape = new int[,] { { 1, 3, 1 }, { 3, 3, 3 } }; break;
+						//case 3: nextShape = new int[,] { { 2, 3, 4, 4 }, { 8, 8, 8, 7 } }; break;
+						//case 4: nextShape = new int[,] { { 3, 3, 4, 4 }, { 7, 8, 8, 9 } }; break;
+						//case 5: nextShape = new int[,] { { 3, 3, 4, 4 }, { 9, 8, 8, 7 } }; break;
+						//case 6: nextShape = new int[,] { { 3, 4, 4, 4 }, { 8, 7, 8, 9 } }; break;
 				}
-			currentShape = nextShape;
+			//}
 
-			//while
-			while (countOfBlocks <= 1)
+			if (countOfBlocks<=1)
 			{
 				Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 6, 3);
-				countOfBlocks++;
 			}
-			//if (countOfBlocks<=1)
-			//{
-			//	Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 6, 3);
-			//}
-			//Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 6, 3);
-			//wait 1 second
-			//Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 6, 3);
-			//countOfBlocks++;
 		}
 	}
 }
