@@ -89,9 +89,11 @@ namespace Console_Game_CSharp
 								break;
 							case 2:
 								tetrisGrid[i, j] = 4;
+								countOfBlocks = 0;
 								break;
 							case 4:
 								tetrisGrid[i, j] = 4;
+								countOfBlocks = 0;
 								break;
 							default:
 								break;
@@ -165,19 +167,16 @@ namespace Console_Game_CSharp
 		public static void GenerateShape(int[,] tetrisGrid, int[,] currentShape, int[,] nextShape,
 			int countOfBlocks)
 		{
-			//if (countOfBlocks==0)
-			//{
 				switch (random.Next(3))
 				{
-					case 0: currentShape = new int[,] { { 3, 3, 1 }, { 3, 3, 1 } }; break;
-					case 1: currentShape = new int[,] { { 3, 3, 3 }, { 3, 3, 3 } }; break;
-					case 2: currentShape = new int[,] { { 1, 3, 1 }, { 3, 3, 3 } }; break;
-						//case 3: nextShape = new int[,] { { 2, 3, 4, 4 }, { 8, 8, 8, 7 } }; break;
-						//case 4: nextShape = new int[,] { { 3, 3, 4, 4 }, { 7, 8, 8, 9 } }; break;
-						//case 5: nextShape = new int[,] { { 3, 3, 4, 4 }, { 9, 8, 8, 7 } }; break;
-						//case 6: nextShape = new int[,] { { 3, 4, 4, 4 }, { 8, 7, 8, 9 } }; break;
+					case 0: currentShape = new int[,] { { 3, 1, 1 }, { 1, 1, 1 } }; break;
+					case 1: currentShape = new int[,] { { 3, 3, 3 }, { 1, 1, 1 } }; break;
+					case 2: currentShape = new int[,] { { 1, 3, 1 }, { 1, 1, 1 } }; break;
+					//case 3: nextShape = new int[,] { { 2, 3, 4, 4 }, { 8, 8, 8, 7 } }; break;
+					//case 4: nextShape = new int[,] { { 3, 3, 4, 4 }, { 7, 8, 8, 9 } }; break;
+					//case 5: nextShape = new int[,] { { 3, 3, 4, 4 }, { 9, 8, 8, 7 } }; break;
+					//case 6: nextShape = new int[,] { { 3, 4, 4, 4 }, { 8, 7, 8, 9 } }; break;
 				}
-			//}
 
 			if (countOfBlocks<=1)
 			{
