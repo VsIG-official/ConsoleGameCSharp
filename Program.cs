@@ -18,7 +18,8 @@ namespace Console_Game_CSharp
 		const int TetrisHeight = 16;
 		const int GameWidth = TetrisWidth +
 		InfoPanelWidth + 3;
-		const int GameHeight = TetrisHeight + 2;
+		//const int GameHeight = TetrisHeight + 2;
+		int score = 0;
 
 		/// <summary>
 		/// Main function, where all cool things happen
@@ -95,8 +96,14 @@ namespace Console_Game_CSharp
 								break;
 						}
 					}
+
+					if (true)
+					{
+
+					}
 				}
 			}
+			Console.Clear();
 			Tetris.PrintingMatrix(tetrisGrid);
 		}
 	}
