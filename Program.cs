@@ -13,12 +13,23 @@ namespace Console_Game_CSharp
 		private static int[,] tetrisGrid = new int[12, 16];
 		private static System.Timers.Timer aTimer;
 
+		const int InfoPanelWidth = 10;
+		const int TetrisWidth = 12;
+		const int TetrisHeight = 16;
+		const int GameWidth = TetrisWidth +
+		InfoPanelWidth + 3;
+		const int GameHeight = TetrisHeight + 2;
+
 		/// <summary>
 		/// Main function, where all cool things happen
 		/// </summary>
 		/// <param name="args"></param>
 		static void Main(string[] args)
 		{
+			Console.CursorVisible = false;
+			Console.Title = "Tetris";
+			Console.WindowWidth = GameWidth;
+
 			Tetris tetris = new Tetris();
 
 			tetris.MakingMatrix(tetrisGrid);
