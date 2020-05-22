@@ -169,19 +169,20 @@ namespace Console_Game_CSharp
 		{
 				switch (random.Next(3))
 				{
-					case 0: currentShape = new int[,] { { 3, 1, 1 }, { 1, 1, 1 } }; break;
-					case 1: currentShape = new int[,] { { 3, 3, 3 }, { 1, 1, 1 } }; break;
-					case 2: currentShape = new int[,] { { 1, 3, 1 }, { 1, 1, 1 } }; break;
+					case 0: currentShape = new int[,] { { 3, 1, 1 }, { 1, 3, 1 } }; break;
+					case 1: currentShape = new int[,] { { 3, 3, 3 }, { 1, 1, 3 } }; break;
+					case 2: currentShape = new int[,] { { 1, 3, 1 }, { 3, 1, 1 } }; break;
 					//case 3: nextShape = new int[,] { { 2, 3, 4, 4 }, { 8, 8, 8, 7 } }; break;
 					//case 4: nextShape = new int[,] { { 3, 3, 4, 4 }, { 7, 8, 8, 9 } }; break;
 					//case 5: nextShape = new int[,] { { 3, 3, 4, 4 }, { 9, 8, 8, 7 } }; break;
 					//case 6: nextShape = new int[,] { { 3, 4, 4, 4 }, { 8, 7, 8, 9 } }; break;
 				}
 
-			if (countOfBlocks<=1)
-			{
-				Array.Copy(currentShape, currentShape.GetLowerBound(0), tetrisGrid, 6, 3);
-			}
+				switch (countOfBlocks)
+				{
+				case 0: Array.Copy(currentShape, 0, tetrisGrid, 6, 3);break;
+				case 1: Array.Copy(currentShape, 3, tetrisGrid, 6, 3);break;
+				}
 		}
 	}
 }
