@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Timers;
 
@@ -19,10 +18,11 @@ namespace Console_Game_CSharp
 		const int GameWidth = TetrisWidth +
 		InfoPanelWidth + 3;
 		//const int GameHeight = TetrisHeight + 2;
-		int score = 0;
+		int score;
 		private static int[,] currentShape;
 		private static int[,] nextShape;
-		static int countOfBlocks = 0;
+		static int countOfBlocks;
+		static int movingRight;
 
 		/// <summary>
 		/// Main function, where all cool things happen
@@ -59,17 +59,15 @@ namespace Console_Game_CSharp
 				//{
 				//	Console.WriteLine("Right");
 				//}
-
 				ConsoleKeyInfo key = Console.ReadKey();
 				if (key.Key == ConsoleKey.LeftArrow)
 				{
-					Console.WriteLine("Left");
+					movingRight = 1;
 				}
 				else if (key.Key == ConsoleKey.RightArrow)
 				{
-					Console.WriteLine("Right");
+					movingRight = 2;
 				}
-
 				//if (Console.ReadKey().Key == ConsoleKey.LeftArrow)
 				//{
 				//	Console.WriteLine("Left");
@@ -131,9 +129,11 @@ namespace Console_Game_CSharp
 
 			Console.Clear();
 			Tetris.GenerateShape(tetrisGrid, currentShape, nextShape, countOfBlocks);
+			Tetris.MovingBlocks(movingRight);
 
 			Tetris.PrintingMatrix(tetrisGrid);
 			countOfBlocks++;
+			movingRight = 0;
 			Console.WriteLine(countOfBlocks);
 		}
 	}
@@ -195,17 +195,54 @@ namespace Console_Game_CSharp
 		{
 			switch (random.Next(5))
 			{
-				case 0: currentShape = new int[,] { { 3, 1, 1 }, { 3, 1, 1 } }; break;
-				case 1: currentShape = new int[,] { { 3, 3, 1 }, { 3, 3, 1 } }; break;
-				case 2: currentShape = new int[,] { { 3, 3, 3 }, { 3, 3, 3 } }; break;
-				case 3: currentShape = new int[,] { { 3, 3, 3 }, { 1, 1, 3 } }; break;
-				case 4: currentShape = new int[,] { { 1, 1, 3 }, { 3, 3, 3 } }; break;
+				case 0:
+					currentShape = new int[,] { { 3, 1, 1 }, { 3, 1, 1 } };
+					break;
+				case 1:
+					currentShape = new int[,] { { 3, 3, 1 }, { 3, 3, 1 } };
+					break;
+				case 2:
+					currentShape = new int[,] { { 3, 3, 3 }, { 3, 3, 3 } };
+					break;
+				case 3:
+					currentShape = new int[,] { { 3, 3, 3 }, { 1, 1, 3 } };
+					break;
+				case 4:
+					currentShape = new int[,] { { 1, 1, 3 }, { 3, 3, 3 } };
+					break;
+				default:
+					break;
 			}
 
 			switch (countOfBlocks)
 			{
-				case 0: Array.Copy(currentShape, 0, tetrisGrid, 6, 3);break;
-				case 1: Array.Copy(currentShape, 3, tetrisGrid, 6, 3);break;
+				case 0:
+					Array.Copy(currentShape, 0, tetrisGrid, 6, 3);
+					break;
+				case 1:
+					Array.Copy(currentShape, 3, tetrisGrid, 6, 3);
+					break;
+				default:
+					break;
+			}
+		}
+
+		public static void MovingBlocks(int movingRight)
+		{
+			switch (movingRight)
+			{
+				case 0:
+					Console.WriteLine();
+					Console.WriteLine(movingRight+"zero");
+					break;
+				case 1:
+					Console.WriteLine("Left");
+					break;
+				case 2:
+					Console.WriteLine("Right");
+					break;
+				default:
+					break;
 			}
 		}
 	}
