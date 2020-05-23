@@ -50,7 +50,17 @@ namespace Console_Game_CSharp
 		{
 			while(true)
 			{
-				var key = Console.ReadKey();
+				//var key = Console.ReadKey();
+				//if (key.Key == ConsoleKey.LeftArrow)
+				//{
+				//	Console.WriteLine("Left");
+				//}
+				//else if (key.Key == ConsoleKey.RightArrow)
+				//{
+				//	Console.WriteLine("Right");
+				//}
+
+				ConsoleKeyInfo key = Console.ReadKey();
 				if (key.Key == ConsoleKey.LeftArrow)
 				{
 					Console.WriteLine("Left");
@@ -59,6 +69,15 @@ namespace Console_Game_CSharp
 				{
 					Console.WriteLine("Right");
 				}
+
+				//if (Console.ReadKey().Key == ConsoleKey.LeftArrow)
+				//{
+				//	Console.WriteLine("Left");
+				//}
+				//else if (Console.ReadKey().Key == ConsoleKey.RightArrow)
+				//{
+				//	Console.WriteLine("Right");
+				//}
 			}
 		}
 
