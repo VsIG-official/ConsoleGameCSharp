@@ -59,6 +59,7 @@ namespace Console_Game_CSharp
 				//{
 				//	Console.WriteLine("Right");
 				//}
+
 				ConsoleKeyInfo key = Console.ReadKey();
 				if (key.Key == ConsoleKey.LeftArrow)
 				{
@@ -68,6 +69,7 @@ namespace Console_Game_CSharp
 				{
 					movingRight = 2;
 				}
+
 				//if (Console.ReadKey().Key == ConsoleKey.LeftArrow)
 				//{
 				//	Console.WriteLine("Left");
@@ -123,13 +125,25 @@ namespace Console_Game_CSharp
 							default:
 								break;
 						}
+
+						switch (movingRight)
+						{
+							case 1://move left
+								Console.WriteLine("Left");
+								break;
+							case 2://move right
+								Console.WriteLine("Right");
+								break;
+							default:
+								break;
+						}
 					}
 				}
 			}
 
 			Console.Clear();
 			Tetris.GenerateShape(tetrisGrid, currentShape, nextShape, countOfBlocks);
-			Tetris.MovingBlocks(movingRight);
+			//Tetris.MovingBlocks(movingRight);
 
 			Tetris.PrintingMatrix(tetrisGrid);
 			countOfBlocks++;
@@ -232,14 +246,13 @@ namespace Console_Game_CSharp
 			switch (movingRight)
 			{
 				case 0:
-					Console.WriteLine();
-					Console.WriteLine(movingRight+"zero");
+					//do nothing
 					break;
 				case 1:
-					Console.WriteLine("Left");
+					//move left
 					break;
 				case 2:
-					Console.WriteLine("Right");
+					//move right
 					break;
 				default:
 					break;
