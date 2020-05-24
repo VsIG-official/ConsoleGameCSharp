@@ -99,6 +99,7 @@ namespace Console_Game_CSharp
 		/// <param name="e"></param>
 		private static void UpDate(Object sourse, ElapsedEventArgs e)
 		{
+			//Console.WriteLine(tetrisGrid.GetLength(0)/*hight*/ + "+" + tetrisGrid.GetLength(1)/*width*/);
 			//to make entire figure stop and transform to 4,you can copy entire array to tempArray and if
 			//case 2 or 4 is true than revert to tempArray, make it current and transform all 3 to 4
 			for (int i = tetrisGrid.GetLength(0) - 2; i >= 0; i--)
@@ -123,25 +124,73 @@ namespace Console_Game_CSharp
 								countOfBlocks = 0;
 								break;
 							default:
+								Console.WriteLine("Or nothing there or just default");
 								break;
 						}
 
 						switch (movingRight)
 						{
 							case 1://move left
+								switch (tetrisGrid[i, j-1])
+								{
+									case 1:
+										int tl = tetrisGrid[i, j];
+										tetrisGrid[i, j] = tetrisGrid[i, j - 1];
+										tetrisGrid[i, j - 1] = tl;
+										Console.WriteLine("Nothing 1 Left");
+										break;
+									case 2:
+										Console.WriteLine("Nothing 2");
+										break;
+									case 4:
+										Console.WriteLine("Nothing 4");
+										break;
+									default:
+										Console.WriteLine("Or nothing there or just default");
+										break;
+								}
 								Console.WriteLine("Left");
 								break;
+
 							case 2://move right
+								switch (tetrisGrid[i, j + 1])
+								{
+									case 1:
+										int tr = tetrisGrid[i, j];
+										tetrisGrid[i, j] = tetrisGrid[i, j + 1];
+										tetrisGrid[i, j + 1] = tr;
+										Console.WriteLine("Nothing 1 right");
+										break;
+									case 2:
+										Console.WriteLine("Nothing 2");
+										break;
+									case 4:
+										Console.WriteLine("Nothing 4");
+										break;
+									default:
+										break;
+								}
 								Console.WriteLine("Right");
 								break;
 							default:
+								Console.WriteLine("Zero");
 								break;
 						}
 					}
 				}
 			}
 
-			Console.Clear();
+			//for (int i = tetrisGrid.GetLength(0) - 2; i >= 0; i--)
+			//{
+			//	for (int j = 0; j < tetrisGrid.GetLength(1); j++)
+			//	{
+			//		if (tetrisGrid[i, j] == 3)
+			//		{
+			//		}
+			//	}
+			//}
+
+						Console.Clear();
 			Tetris.GenerateShape(tetrisGrid, currentShape, nextShape, countOfBlocks);
 			//Tetris.MovingBlocks(movingRight);
 
