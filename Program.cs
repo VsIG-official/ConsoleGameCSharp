@@ -124,10 +124,10 @@ namespace Console_Game_CSharp
 								countOfBlocks = 0;
 								break;
 							default:
-								Console.WriteLine("Or nothing there or just default");
 								break;
 						}
 
+						/*
 						switch (movingRight)
 						{
 							case 1://move left
@@ -176,23 +176,53 @@ namespace Console_Game_CSharp
 								Console.WriteLine("Zero");
 								break;
 						}
+						*/
 					}
 				}
 			}
+			switch (movingRight)
+			{
+				case 1://from right to left
+					for (int i = tetrisGrid.GetLength(0) - 1; i > 0; i--)
+					{
+						for (int j = 1; j < tetrisGrid.GetLength(1); j++)
+						{
+							if (tetrisGrid[i, j] == 3)
+							{
+								switch (tetrisGrid[i, j - 1])
+								{
+									case 1:
+										int tl = tetrisGrid[i, j];
+										tetrisGrid[i, j] = tetrisGrid[i, j - 1];
+										tetrisGrid[i, j - 1] = tl;
+										Console.WriteLine("Nothing 1 Left");
+										break;
+									case 2:
+										Console.WriteLine("Nothing 2");
+										break;
+									case 4:
+										Console.WriteLine("Nothing 4");
+										break;
+									default:
+										Console.WriteLine("Or nothing there or just default");
+										break;
+								}
+								Console.WriteLine("Left");
+								break;
+							}
+						}
+					}
+					break;
+				case 2:
+					Console.WriteLine("RightCase");
+					break;
+				default:
+					break;
+			}
 
-			//for (int i = tetrisGrid.GetLength(0) - 2; i >= 0; i--)
-			//{
-			//	for (int j = 0; j < tetrisGrid.GetLength(1); j++)
-			//	{
-			//		if (tetrisGrid[i, j] == 3)
-			//		{
-			//		}
-			//	}
-			//}
 
-						Console.Clear();
+			Console.Clear();
 			Tetris.GenerateShape(tetrisGrid, currentShape, nextShape, countOfBlocks);
-			//Tetris.MovingBlocks(movingRight);
 
 			Tetris.PrintingMatrix(tetrisGrid);
 			countOfBlocks++;
@@ -223,6 +253,7 @@ namespace Console_Game_CSharp
 					//1 is for empty space
 					//2 is for bottom (if block will hit it-it stops)
 					//3 is for blocks
+					//4 is for delivered block
 					if (i == 11)
 					{
 						matrix[i, j] = 2;
