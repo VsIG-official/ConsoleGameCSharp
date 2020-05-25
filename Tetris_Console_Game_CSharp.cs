@@ -7,7 +7,7 @@ using System.Timers;
 /// </summary>
 namespace Console_Game_CSharp
 {
-	class Program
+	class Tetris_Console_Game_CSharp
 	{
 		#region Variables
 		private static int[,] tetrisGrid = new int[12, 16];
@@ -36,7 +36,7 @@ namespace Console_Game_CSharp
 			Console.Title = "Tetris";
 			Console.WindowWidth = GameWidth;
 
-			Tetris tetris = new Tetris();
+			Game_Tetris tetris = new Game_Tetris();
 			tetris.MakingMatrix(tetrisGrid);
 			SetTimer();
 			new Thread(NewThread).Start();
@@ -127,57 +127,6 @@ namespace Console_Game_CSharp
 							default:
 								break;
 						}
-
-						/*
-						switch (movingRight)
-						{
-							case 1://move left
-								switch (tetrisGrid[i, j-1])
-								{
-									case 1:
-										int tl = tetrisGrid[i, j];
-										tetrisGrid[i, j] = tetrisGrid[i, j - 1];
-										tetrisGrid[i, j - 1] = tl;
-										Console.WriteLine("Nothing 1 Left");
-										break;
-									case 2:
-										Console.WriteLine("Nothing 2");
-										break;
-									case 4:
-										Console.WriteLine("Nothing 4");
-										break;
-									default:
-										Console.WriteLine("Or nothing there or just default");
-										break;
-								}
-								Console.WriteLine("Left");
-								break;
-
-							case 2://move right
-								switch (tetrisGrid[i, j + 1])
-								{
-									case 1:
-										int tr = tetrisGrid[i, j];
-										tetrisGrid[i, j] = tetrisGrid[i, j + 1];
-										tetrisGrid[i, j + 1] = tr;
-										Console.WriteLine("Nothing 1 right");
-										break;
-									case 2:
-										Console.WriteLine("Nothing 2");
-										break;
-									case 4:
-										Console.WriteLine("Nothing 4");
-										break;
-									default:
-										break;
-								}
-								Console.WriteLine("Right");
-								break;
-							default:
-								Console.WriteLine("Zero");
-								break;
-						}
-						*/
 					}
 				}
 			}
@@ -186,7 +135,7 @@ namespace Console_Game_CSharp
 			switch (movingRight)
 			{
 				case 0:
-					Console.WriteLine("000");
+					//Console.WriteLine("000");
 					break;
 				case 1://from right to left
 					for (int i = tetrisGrid.GetLength(0) - 2; i >= 0; i--)
@@ -203,19 +152,19 @@ namespace Console_Game_CSharp
 										int tl = tetrisGrid[i, j];
 										tetrisGrid[i, j] = tetrisGrid[i, j - 1];
 										tetrisGrid[i, j - 1] = tl;
-										Console.WriteLine("Nothing 1 Left");
+										//Console.WriteLine("Nothing 1 Left");
 										break;
 									case 2:
-										Console.WriteLine("Nothing 2");
+										//Console.WriteLine("Nothing 2");
 										break;
 									case 4:
-										Console.WriteLine("Nothing 4");
+										//Console.WriteLine("Nothing 4");
 										break;
 									default:
-										Console.WriteLine("Or nothing there or just default");
+										//Console.WriteLine("Or nothing there or just default");
 										break;
 								}
-								Console.WriteLine("Left");
+								//Console.WriteLine("Left");
 								break;
 							}
 						}
@@ -234,19 +183,19 @@ namespace Console_Game_CSharp
 										int tl = tetrisGrid[i, j];
 										tetrisGrid[i, j] = tetrisGrid[i, j + 1];
 										tetrisGrid[i, j + 1] = tl;
-										Console.WriteLine("Nothing 1 Right");
+										//Console.WriteLine("Nothing 1 Right");
 										break;
 									case 2:
-										Console.WriteLine("Nothing 2");
+										//Console.WriteLine("Nothing 2");
 										break;
 									case 4:
-										Console.WriteLine("Nothing 4");
+										//Console.WriteLine("Nothing 4");
 										break;
 									default:
-										Console.WriteLine("Or nothing there or just default");
+										//Console.WriteLine("Or nothing there or just default");
 										break;
 								}
-								Console.WriteLine("Right");
+								//Console.WriteLine("Right");
 								break;
 							}
 						}
@@ -257,9 +206,9 @@ namespace Console_Game_CSharp
 			}
 
 			Console.Clear();
-			Tetris.GenerateShape(tetrisGrid, currentShape, nextShape, countOfBlocks);
+			Game_Tetris.GenerateShape(tetrisGrid, currentShape, nextShape, countOfBlocks);
 
-			Tetris.PrintingMatrix(tetrisGrid);
+			Game_Tetris.PrintingMatrix(tetrisGrid);
 			countOfBlocks++;
 			movingRight = 0;
 		}
@@ -268,7 +217,7 @@ namespace Console_Game_CSharp
 	/// <summary>
 	///for tetris logic
 	/// </summary>
-	class Tetris
+	class Game_Tetris
 	{
 		//public const char Border = (char)178;
 		public static Random random = new Random();
