@@ -9,6 +9,7 @@ namespace Console_Game_CSharp
 {
 	class Program
 	{
+		#region Variables
 		private static int[,] tetrisGrid = new int[12, 16];
 		private static System.Timers.Timer aTimer;
 
@@ -23,6 +24,7 @@ namespace Console_Game_CSharp
 		private static int[,] nextShape;
 		static int countOfBlocks;
 		static int movingRight;
+		#endregion Variables
 
 		/// <summary>
 		/// Main function, where all cool things happen
@@ -35,11 +37,8 @@ namespace Console_Game_CSharp
 			Console.WindowWidth = GameWidth;
 
 			Tetris tetris = new Tetris();
-
 			tetris.MakingMatrix(tetrisGrid);
-
 			SetTimer();
-
 			new Thread(NewThread).Start();
 		}
 
@@ -99,50 +98,11 @@ namespace Console_Game_CSharp
 		/// <param name="e"></param>
 		private static void UpDate(Object sourse, ElapsedEventArgs e)
 		{
-			//Console.WriteLine(tetrisGrid.GetLength(0)/*hight*/ + "+" + tetrisGrid.GetLength(1)/*width*/);
+			//Console.WriteLine(tetrisGrid.GetLength(0)/*height*/ + "+" + tetrisGrid.GetLength(1)/*width*/);
 			//to make entire figure stop and transform to 4,you can copy entire array to tempArray and if
 			//case 2 or 4 is true than revert to tempArray, make it current and transform all 3 to 4
 
-			switch (movingRight)
-			{
-				case 1://from right to left
-					for (int i = tetrisGrid.GetLength(0) - 1; i >= 0; i--)
-					{
-						for (int j = 1; j < tetrisGrid.GetLength(1); j++)
-						{
-							if (tetrisGrid[i, j] == 3)
-							{
-								switch (tetrisGrid[i, j - 1])
-								{
-									case 1:
-										int tl = tetrisGrid[i, j];
-										tetrisGrid[i, j] = tetrisGrid[i, j - 1];
-										tetrisGrid[i, j - 1] = tl;
-										Console.WriteLine("Nothing 1 Left");
-										break;
-									case 2:
-										Console.WriteLine("Nothing 2");
-										break;
-									case 4:
-										Console.WriteLine("Nothing 4");
-										break;
-									default:
-										Console.WriteLine("Or nothing there or just default");
-										break;
-								}
-								Console.WriteLine("Left");
-								break;
-							}
-						}
-					}
-					break;
-				case 2:
-					Console.WriteLine("RightCase");
-					break;
-				default:
-					break;
-			}
-
+			//moving 3 down
 			for (int i = tetrisGrid.GetLength(0) - 2; i >= 0; i--)
 			{
 				for (int j = 0; j < tetrisGrid.GetLength(1); j++)
@@ -222,13 +182,86 @@ namespace Console_Game_CSharp
 				}
 			}
 
+			//moving 3 left and right
+			switch (movingRight)
+			{
+				case 0:
+					Console.WriteLine("000");
+					break;
+				case 1://from right to left
+					for (int i = tetrisGrid.GetLength(0) - 2; i >= 0; i--)
+						//i=10;i should do 11 times;
+					{
+						for (int j = 0; j < tetrisGrid.GetLength(1); j++)
+							//j=1;j should do 15 times;
+						{
+							if (tetrisGrid[i, j] == 3)
+							{
+								switch (tetrisGrid[i, j - 1])
+								{
+									case 1:
+										int tl = tetrisGrid[i, j];
+										tetrisGrid[i, j] = tetrisGrid[i, j - 1];
+										tetrisGrid[i, j - 1] = tl;
+										Console.WriteLine("Nothing 1 Left");
+										break;
+									case 2:
+										Console.WriteLine("Nothing 2");
+										break;
+									case 4:
+										Console.WriteLine("Nothing 4");
+										break;
+									default:
+										Console.WriteLine("Or nothing there or just default");
+										break;
+								}
+								Console.WriteLine("Left");
+								break;
+							}
+						}
+					}
+					break;
+				case 2:
+					for (int i = 1; i <= tetrisGrid.GetLength(0) - 2; i++)
+					{
+						for (int j = tetrisGrid.GetLength(1); j >= 1; j--)
+						{
+							if (tetrisGrid[i, j] == 3)
+							{
+								switch (tetrisGrid[i, j + 1])
+								{
+									case 1:
+										int tl = tetrisGrid[i, j];
+										tetrisGrid[i, j] = tetrisGrid[i, j + 1];
+										tetrisGrid[i, j + 1] = tl;
+										Console.WriteLine("Nothing 1 Right");
+										break;
+									case 2:
+										Console.WriteLine("Nothing 2");
+										break;
+									case 4:
+										Console.WriteLine("Nothing 4");
+										break;
+									default:
+										Console.WriteLine("Or nothing there or just default");
+										break;
+								}
+								Console.WriteLine("Right");
+								break;
+							}
+						}
+					}
+					break;
+				default:
+					break;
+			}
+
 			Console.Clear();
 			Tetris.GenerateShape(tetrisGrid, currentShape, nextShape, countOfBlocks);
 
 			Tetris.PrintingMatrix(tetrisGrid);
 			countOfBlocks++;
 			movingRight = 0;
-			Console.WriteLine(countOfBlocks);
 		}
 	}
 
@@ -316,24 +349,6 @@ namespace Console_Game_CSharp
 					break;
 				case 1:
 					Array.Copy(currentShape, 3, tetrisGrid, 6, 3);
-					break;
-				default:
-					break;
-			}
-		}
-
-		public static void MovingBlocks(int movingRight)
-		{
-			switch (movingRight)
-			{
-				case 0:
-					//do nothing
-					break;
-				case 1:
-					//move left
-					break;
-				case 2:
-					//move right
 					break;
 				default:
 					break;
