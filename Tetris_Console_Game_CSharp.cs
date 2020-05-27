@@ -113,7 +113,8 @@ namespace Console_Game_CSharp
 			}
 
 			Console.Clear();
-			Game_Tetris.GenerateShape(tetrisGrid, currentShape, nextShape, countOfBlocks);
+			Helper helper = new Helper();
+			helper.GenerateShape(tetrisGrid,ref currentShape, nextShape, countOfBlocks);
 
 			Game_Tetris.PrintingMatrix(tetrisGrid);
 			countOfBlocks++;
@@ -204,7 +205,7 @@ namespace Console_Game_CSharp
 	class Game_Tetris
 	{
 		//public const char Border = (char)178;
-		public static Random random = new Random();
+
 
 		/// <summary>
 		/// start function for main matrix to change values in it
@@ -251,84 +252,92 @@ namespace Console_Game_CSharp
 		/// <param name="tetrisGrid"></param>
 		/// <param name="currentShape"></param>
 		/// <param name="nextShape"></param>
-		public static void GenerateShape(int[,] tetrisGrid, int[,] currentShape, int[,] nextShape,
-			int countOfBlocks)
-		{
-			switch (random.Next(5))
-			{
-				case 0:
-					currentShape = new int[,] { { 3, 1, 1 }, { 3, 1, 1 } };
-					break;
-				case 1:
-					currentShape = new int[,] { { 3, 3, 1 }, { 3, 3, 1 } };
-					break;
-				case 2:
-					currentShape = new int[,] { { 3, 3, 3 }, { 3, 3, 3 } };
-					break;
-				case 3:
-					currentShape = new int[,] { { 3, 3, 3 }, { 1, 1, 3 } };
-					break;
-				case 4:
-					currentShape = new int[,] { { 1, 1, 3 }, { 3, 3, 3 } };
-					break;
-				default:
-					break;
-			}
 
-			switch (countOfBlocks)
-			{
-				case 0:
-					Array.Copy(currentShape, 0, tetrisGrid, 6, 3);
-					break;
-				case 1:
-					Array.Copy(currentShape, 3, tetrisGrid, 6, 3);
-					break;
-				default:
-					break;
-			}
-		}
 	}
+}
 
-	enum Side
+enum Side
+{
+	left,
+	rigth,
+	down,
+	up,
+}
+class Helper
+{
+	public Random random = new Random();
+
+	public bool ChekBorder(int[,] matrix, int border, int current, Side side)
 	{
-		left,
-		rigth,
-		down,
-		up,
-	}
-	class Helper
-	{
-		public bool ChekBorder(int[,] matrix, int border, int current, Side side)
+		for (int i = 0; i < matrix.GetLength(0); i++)
 		{
-			for (int i = 0; i < matrix.GetLength(0); i++)
+			for (int j = 0; j < matrix.GetLength(1); j++)
 			{
-				for (int j = 0; j < matrix.GetLength(1); j++)
+				if (matrix[i, j] == current)
 				{
-					if (matrix[i, j] == current)
+					//TODO
+					switch (side)
 					{
-						//TODO
-						switch (side)
-						{
-							case Side.left:
-								if (j == 0)
-									return true;
-								if (matrix[i, j - 1] == border)
-									return true;
-								break;
-							case Side.rigth:
-								break;
-							case Side.down:
-								break;
-							case Side.up:
-								break;
-							default:
-								break;
-						}
-
+						case Side.left:
+							if (j == 0)
+								return true;
+							if (matrix[i, j - 1] == border)
+								return true;
+							break;
+						case Side.rigth:
+							break;
+						case Side.down:
+							break;
+						case Side.up:
+							break;
+						default:
+							break;
 					}
+
 				}
 			}
-			return false;
 		}
+		return false;
+	}
+
+	public void GenerateShape(int[,] tetrisGrid,ref int[,] currentShape, int[,] nextShape,
+	int countOfBlocks)
+	{
+		switch (countOfBlocks)
+		{
+			case 0:
+				currentShape = CreateShape(currentShape);
+				Array.Copy(currentShape, 0, tetrisGrid, 6, 3);
+				break;
+			case 1:
+				Array.Copy(currentShape, 3, tetrisGrid, 6, 3);
+				break;
+			default:
+				break;
+		}
+	}
+	private int[,] CreateShape(int[,] currentShape)
+	{
+		switch (random.Next(3))
+		{
+			case 0:
+				currentShape = new int[,] { { 3, 1, 1 }, { 3, 1, 1 } };
+				break;
+			case 1:
+				currentShape = new int[,] { { 3, 3, 1 }, { 3, 3, 1 } };
+				break;
+			case 2:
+				currentShape = new int[,] { { 3, 3, 3 }, { 3, 3, 3 } };
+				break;
+			//case 3:
+			//	currentShape = new int[,] { { 3, 3, 3 }, { 1, 1, 3 } };
+			//	break;
+			//case 4:
+			//	currentShape = new int[,] { { 1, 1, 3 }, { 3, 3, 3 } };
+			//	break;
+			default:
+				break;
+		}
+		return currentShape;
 	}
 }
