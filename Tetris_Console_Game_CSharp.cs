@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Threading;
 using System.Timers;
 
@@ -23,7 +24,6 @@ namespace Console_Game_CSharp
 		private static int[,] currentShape;
 		private static int[,] nextShape;
 		static int countOfBlocks;
-		static int movingRight;
 		#endregion Variables
 
 		/// <summary>
@@ -47,36 +47,17 @@ namespace Console_Game_CSharp
 		/// </summary>
 		private static void NewThread()
 		{
-			while(true)
+			while (true)
 			{
-				//var key = Console.ReadKey();
-				//if (key.Key == ConsoleKey.LeftArrow)
-				//{
-				//	Console.WriteLine("Left");
-				//}
-				//else if (key.Key == ConsoleKey.RightArrow)
-				//{
-				//	Console.WriteLine("Right");
-				//}
-
 				ConsoleKeyInfo key = Console.ReadKey();
 				if (key.Key == ConsoleKey.LeftArrow)
 				{
-					movingRight = 1;
+					UpDateBorder(1);
 				}
 				else if (key.Key == ConsoleKey.RightArrow)
 				{
-					movingRight = 2;
+					UpDateBorder(2);
 				}
-
-				//if (Console.ReadKey().Key == ConsoleKey.LeftArrow)
-				//{
-				//	Console.WriteLine("Left");
-				//}
-				//else if (Console.ReadKey().Key == ConsoleKey.RightArrow)
-				//{
-				//	Console.WriteLine("Right");
-				//}
 			}
 		}
 
@@ -86,7 +67,7 @@ namespace Console_Game_CSharp
 		public static void SetTimer()
 		{
 			aTimer = new System.Timers.Timer(1000);
-			aTimer.Elapsed += UpDate;
+			aTimer.Elapsed += UpDateDown;
 			aTimer.AutoReset = true;
 			aTimer.Enabled = true;
 		}
@@ -96,7 +77,7 @@ namespace Console_Game_CSharp
 		/// </summary>
 		/// <param name="sourse"></param>
 		/// <param name="e"></param>
-		private static void UpDate(Object sourse, ElapsedEventArgs e)
+		private static void UpDateDown(Object sourse, ElapsedEventArgs e)
 		{
 			//Console.WriteLine(tetrisGrid.GetLength(0)/*height*/ + "+" + tetrisGrid.GetLength(1)/*width*/);
 			//to make entire figure stop and transform to 4,you can copy entire array to tempArray and if
@@ -131,41 +112,50 @@ namespace Console_Game_CSharp
 				}
 			}
 
+			Console.Clear();
+			Game_Tetris.GenerateShape(tetrisGrid, currentShape, nextShape, countOfBlocks);
+
+			Game_Tetris.PrintingMatrix(tetrisGrid);
+			countOfBlocks++;
+		}
+		private static void UpDateBorder(int movingRight)
+		{
+			//Console.WriteLine(tetrisGrid.GetLength(0)/*height*/ + "+" + tetrisGrid.GetLength(1)/*width*/);
+			//to make entire figure stop and transform to 4,you can copy entire array to tempArray and if
+			//case 2 or 4 is true than revert to tempArray, make it current and transform all 3 to 4
+
+			//moving 3 down
+
+			Helper helper = new Helper();
 			//moving 3 left and right
 			switch (movingRight)
 			{
 				case 0:
-					//Console.WriteLine("000");
 					break;
-				case 1://from right to left
-					for (int i = tetrisGrid.GetLength(0) - 2; i >= 0; i--)
-						//i=10;i should do 11 times;
+				case 1:
+					if (!helper.ChekBorder(tetrisGrid, 4, 3, Side.left))
 					{
-						for (int j = 0; j < tetrisGrid.GetLength(1); j++)
-							//j=1;j should do 15 times;
+						for (int i = 0; i < tetrisGrid.GetLength(0); i++)
 						{
-							if (tetrisGrid[i, j] == 3)
+							for (int j = 1; j < tetrisGrid.GetLength(1); j++)
 							{
-								switch (tetrisGrid[i, j - 1])
+								if (tetrisGrid[i, j] == 3)
 								{
-									case 1:
-										int tl = tetrisGrid[i, j];
-										tetrisGrid[i, j] = tetrisGrid[i, j - 1];
-										tetrisGrid[i, j - 1] = tl;
-										//Console.WriteLine("Nothing 1 Left");
-										break;
-									case 2:
-										//Console.WriteLine("Nothing 2");
-										break;
-									case 4:
-										//Console.WriteLine("Nothing 4");
-										break;
-									default:
-										//Console.WriteLine("Or nothing there or just default");
-										break;
+									switch (tetrisGrid[i, j - 1])
+									{
+										case 1:
+											int tl = tetrisGrid[i, j];
+											tetrisGrid[i, j] = tetrisGrid[i, j - 1];
+											tetrisGrid[i, j - 1] = tl;
+											break;
+										case 2:
+											break;
+										case 4:
+											break;
+										default:
+											break;
+									}
 								}
-								//Console.WriteLine("Left");
-								break;
 							}
 						}
 					}
@@ -183,19 +173,14 @@ namespace Console_Game_CSharp
 										int tl = tetrisGrid[i, j];
 										tetrisGrid[i, j] = tetrisGrid[i, j + 1];
 										tetrisGrid[i, j + 1] = tl;
-										//Console.WriteLine("Nothing 1 Right");
 										break;
 									case 2:
-										//Console.WriteLine("Nothing 2");
 										break;
 									case 4:
-										//Console.WriteLine("Nothing 4");
 										break;
 									default:
-										//Console.WriteLine("Or nothing there or just default");
 										break;
 								}
-								//Console.WriteLine("Right");
 								break;
 							}
 						}
@@ -206,12 +191,11 @@ namespace Console_Game_CSharp
 			}
 
 			Console.Clear();
-			Game_Tetris.GenerateShape(tetrisGrid, currentShape, nextShape, countOfBlocks);
-
 			Game_Tetris.PrintingMatrix(tetrisGrid);
 			countOfBlocks++;
 			movingRight = 0;
 		}
+
 	}
 
 	/// <summary>
@@ -302,6 +286,49 @@ namespace Console_Game_CSharp
 				default:
 					break;
 			}
+		}
+	}
+
+	enum Side
+	{
+		left,
+		rigth,
+		down,
+		up,
+	}
+	class Helper
+	{
+		public bool ChekBorder(int[,] matrix, int border, int current, Side side)
+		{
+			for (int i = 0; i < matrix.GetLength(0); i++)
+			{
+				for (int j = 0; j < matrix.GetLength(1); j++)
+				{
+					if (matrix[i, j] == current)
+					{
+						//TODO
+						switch (side)
+						{
+							case Side.left:
+								if (j == 0)
+									return true;
+								if (matrix[i, j - 1] == border)
+									return true;
+								break;
+							case Side.rigth:
+								break;
+							case Side.down:
+								break;
+							case Side.up:
+								break;
+							default:
+								break;
+						}
+
+					}
+				}
+			}
+			return false;
 		}
 	}
 }
