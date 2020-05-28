@@ -383,7 +383,7 @@ internal class Helper
 
 	private int[,] CreateShape(int[,] currentShape)
 	{
-		switch (random.Next(3))
+		switch (random.Next(7))
 		{
 			case 0:
 				currentShape = new int[,] { { 3, 1, 1 }, { 3, 1, 1 } };
@@ -396,12 +396,18 @@ internal class Helper
 			case 2:
 				currentShape = new int[,] { { 3, 3, 3 }, { 3, 3, 3 } };
 				break;
-			//case 3:
-			//	currentShape = new int[,] { { 3, 3, 3 }, { 1, 1, 3 } };
-			//	break;
-			//case 4:
-			//	currentShape = new int[,] { { 1, 1, 3 }, { 3, 3, 3 } };
-			//	break;
+			case 3:
+				currentShape = new int[,] { { 3, 3, 3 }, { 1, 1, 3 } };
+				break;
+			case 4:
+				currentShape = new int[,] { { 1, 1, 3 }, { 3, 3, 3 } };
+				break;
+			case 5:
+				currentShape = new int[,] { { 3, 1, 3 }, { 3, 3, 3 } };
+				break;
+			case 6:
+				currentShape = new int[,] { { 3, 3, 3 }, { 3, 1, 3 } };
+				break;
 			default:
 				break;
 		}
