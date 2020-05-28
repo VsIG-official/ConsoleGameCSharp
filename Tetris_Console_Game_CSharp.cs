@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.Threading;
 using System.Timers;
 
@@ -8,33 +7,39 @@ using System.Timers;
 /// </summary>
 namespace Console_Game_CSharp
 {
-	class Tetris_Console_Game_CSharp
+	internal class Tetris_Console_Game_CSharp
 	{
 		#region Variables
+
 		private static int[,] tetrisGrid = new int[12, 16];
 		private static System.Timers.Timer aTimer;
 
-		const int InfoPanelWidth = 10;
-		const int TetrisWidth = 12;
-		const int TetrisHeight = 16;
-		const int GameWidth = TetrisWidth +
+		private const int InfoPanelWidth = 10;
+		private const int TetrisWidth = 12;
+		private const int TetrisHeight = 16;
+
+		private const int GameWidth = TetrisWidth +
 		InfoPanelWidth + 3;
+
 		//const int GameHeight = TetrisHeight + 2;
-		int score;
+		private int score;
+
 		private static int[,] currentShape;
 		private static int[,] nextShape;
-		static int countOfBlocks;
+		private static int countOfBlocks;
+
 		#endregion Variables
 
 		/// <summary>
 		/// Main function, where all cool things happen
 		/// </summary>
 		/// <param name="args"></param>
-		static void Main(string[] args)
+		private static void Main(string[] args)
 		{
 			Console.CursorVisible = false;
 			Console.Title = "Tetris";
 			Console.WindowWidth = GameWidth;
+			Console.WindowHeight = TetrisHeight;
 
 			Game_Tetris tetris = new Game_Tetris();
 			tetris.MakingMatrix(tetrisGrid);
@@ -97,14 +102,17 @@ namespace Console_Game_CSharp
 								tetrisGrid[i, j] = tetrisGrid[i + 1, j];
 								tetrisGrid[i + 1, j] = t;
 								break;
+
 							case 2:
 								tetrisGrid[i, j] = 4;
 								countOfBlocks = 0;
 								break;
+
 							case 4:
 								tetrisGrid[i, j] = 4;
 								countOfBlocks = 0;
 								break;
+
 							default:
 								break;
 						}
@@ -114,11 +122,12 @@ namespace Console_Game_CSharp
 
 			Console.Clear();
 			Helper helper = new Helper();
-			helper.GenerateShape(tetrisGrid,ref currentShape, nextShape, countOfBlocks);
+			helper.GenerateShape(tetrisGrid, ref currentShape, nextShape, countOfBlocks);
 
 			Game_Tetris.PrintingMatrix(tetrisGrid);
 			countOfBlocks++;
 		}
+
 		private static void UpDateBorder(int movingRight)
 		{
 			//Console.WriteLine(tetrisGrid.GetLength(0)/*height*/ + "+" + tetrisGrid.GetLength(1)/*width*/);
@@ -133,6 +142,7 @@ namespace Console_Game_CSharp
 			{
 				case 0:
 					break;
+
 				case 1:
 					if (!helper.ChekBorder(tetrisGrid, 4, 3, Side.left))
 					{
@@ -149,10 +159,13 @@ namespace Console_Game_CSharp
 											tetrisGrid[i, j] = tetrisGrid[i, j - 1];
 											tetrisGrid[i, j - 1] = tl;
 											break;
+
 										case 2:
 											break;
+
 										case 4:
 											break;
+
 										default:
 											break;
 									}
@@ -161,51 +174,56 @@ namespace Console_Game_CSharp
 						}
 					}
 					break;
+
 				case 2:
-					for (int i = 1; i <= tetrisGrid.GetLength(0) - 2; i++)
+					if (!helper.ChekBorder(tetrisGrid, 4, 3, Side.rigth))
 					{
-						for (int j = tetrisGrid.GetLength(1); j >= 1; j--)
+						for (int i = 0; i < tetrisGrid.GetLength(0); i++)
 						{
-							if (tetrisGrid[i, j] == 3)
+							for (int j = 1; j < tetrisGrid.GetLength(1); j++)
 							{
-								switch (tetrisGrid[i, j + 1])
+								if (tetrisGrid[i, j] == 3)
 								{
-									case 1:
-										int tl = tetrisGrid[i, j];
-										tetrisGrid[i, j] = tetrisGrid[i, j + 1];
-										tetrisGrid[i, j + 1] = tl;
-										break;
-									case 2:
-										break;
-									case 4:
-										break;
-									default:
-										break;
+									switch (tetrisGrid[i, j + 1])
+									{
+										case 1:
+											int tl = tetrisGrid[i, j];
+											tetrisGrid[i, j] = tetrisGrid[i, j + 1];
+											tetrisGrid[i, j + 1] = tl;
+											break;
+
+										case 2:
+											break;
+
+										case 4:
+											break;
+
+										default:
+											break;
+									}
 								}
-								break;
 							}
 						}
 					}
 					break;
+
 				default:
 					break;
 			}
 
 			Console.Clear();
-			Game_Tetris.PrintingMatrix(tetrisGrid);
 			countOfBlocks++;
 			movingRight = 0;
+			Game_Tetris.PrintingMatrix(tetrisGrid);
 		}
-
 	}
 
 	/// <summary>
 	///for tetris logic
 	/// </summary>
-	class Game_Tetris
+	internal class Game_Tetris
 	{
 		//public const char Border = (char)178;
-
 
 		/// <summary>
 		/// start function for main matrix to change values in it
@@ -245,25 +263,18 @@ namespace Console_Game_CSharp
 				Console.WriteLine();
 			}
 		}
-
-		/// <summary>
-		/// Setting block and generating it in matrix
-		/// </summary>
-		/// <param name="tetrisGrid"></param>
-		/// <param name="currentShape"></param>
-		/// <param name="nextShape"></param>
-
 	}
 }
 
-enum Side
+internal enum Side
 {
 	left,
 	rigth,
 	down,
 	up,
 }
-class Helper
+
+internal class Helper
 {
 	public Random random = new Random();
 
@@ -284,23 +295,30 @@ class Helper
 							if (matrix[i, j - 1] == border)
 								return true;
 							break;
+
 						case Side.rigth:
+							if (j == 0)
+								return true;
+							if (matrix[i, j + 1] == border)
+								return true;
 							break;
+
 						case Side.down:
 							break;
+
 						case Side.up:
 							break;
+
 						default:
 							break;
 					}
-
 				}
 			}
 		}
 		return false;
 	}
 
-	public void GenerateShape(int[,] tetrisGrid,ref int[,] currentShape, int[,] nextShape,
+	public void GenerateShape(int[,] tetrisGrid, ref int[,] currentShape, int[,] nextShape,
 	int countOfBlocks)
 	{
 		switch (countOfBlocks)
@@ -309,13 +327,16 @@ class Helper
 				currentShape = CreateShape(currentShape);
 				Array.Copy(currentShape, 0, tetrisGrid, 6, 3);
 				break;
+
 			case 1:
 				Array.Copy(currentShape, 3, tetrisGrid, 6, 3);
 				break;
+
 			default:
 				break;
 		}
 	}
+
 	private int[,] CreateShape(int[,] currentShape)
 	{
 		switch (random.Next(3))
@@ -323,9 +344,11 @@ class Helper
 			case 0:
 				currentShape = new int[,] { { 3, 1, 1 }, { 3, 1, 1 } };
 				break;
+
 			case 1:
 				currentShape = new int[,] { { 3, 3, 1 }, { 3, 3, 1 } };
 				break;
+
 			case 2:
 				currentShape = new int[,] { { 3, 3, 3 }, { 3, 3, 3 } };
 				break;
