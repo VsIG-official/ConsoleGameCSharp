@@ -7,6 +7,9 @@ using System.Timers;
 /// </summary>
 namespace Console_Game_CSharp
 {
+	/// <summary>
+	/// main class
+	/// </summary>
 	internal class Tetris_Console_Game_CSharp
 	{
 		#region Variables
@@ -132,6 +135,10 @@ namespace Console_Game_CSharp
 			countOfBlocks++;
 		}
 
+		/// <summary>
+		/// for moving shapes
+		/// </summary>
+		/// <param name="movingRight"></param>
 		private static void UpDateBorder(int movingRight)
 		{
 			//Console.WriteLine(tetrisGrid.GetLength(0)/*height*/ + "+" + tetrisGrid.GetLength(1)/*width*/);
@@ -179,6 +186,7 @@ namespace Console_Game_CSharp
 					}
 					break;
 
+					//not working good
 				case 2:
 					if (!helper.CheckBorder(tetrisGrid, 4, 3, Side.rigth))
 					{
@@ -310,10 +318,21 @@ internal enum Side
 	up,
 }
 
+/// <summary>
+/// helps with shapes
+/// </summary>
 internal class Helper
 {
 	public Random random = new Random();
 
+	/// <summary>
+	/// checks external numbers to correctly place shapes
+	/// </summary>
+	/// <param name="matrix"></param>
+	/// <param name="border"></param>
+	/// <param name="current"></param>
+	/// <param name="side"></param>
+	/// <returns></returns>
 	public bool CheckBorder(int[,] matrix, int border, int current, Side side)
 	{
 		for (int i = 0; i < matrix.GetLength(0); i++)
@@ -362,6 +381,13 @@ internal class Helper
 		return false;
 	}
 
+	/// <summary>
+	///spawns shape
+	/// </summary>
+	/// <param name="tetrisGrid"></param>
+	/// <param name="currentShape"></param>
+	/// <param name="nextShape"></param>
+	/// <param name="countOfBlocks"></param>
 	public void GenerateShape(int[,] tetrisGrid, ref int[,] currentShape, int[,] nextShape,
 	int countOfBlocks)
 	{
@@ -381,6 +407,11 @@ internal class Helper
 		}
 	}
 
+	/// <summary>
+	/// selects a random shape to place
+	/// </summary>
+	/// <param name="currentShape"></param>
+	/// <returns></returns>
 	private int[,] CreateShape(int[,] currentShape)
 	{
 		switch (random.Next(7))
