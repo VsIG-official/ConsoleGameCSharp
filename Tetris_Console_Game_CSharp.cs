@@ -63,6 +63,10 @@ namespace Console_Game_CSharp
 				{
 					UpDateBorder(2);
 				}
+				else if (key.Key == ConsoleKey.DownArrow)
+				{
+					UpDateBorder(3);
+				}
 			}
 		}
 
@@ -144,7 +148,7 @@ namespace Console_Game_CSharp
 					break;
 
 				case 1:
-					if (!helper.ChekBorder(tetrisGrid, 4, 3, Side.left))
+					if (!helper.CheckBorder(tetrisGrid, 4, 3, Side.left))
 					{
 						for (int i = 0; i < tetrisGrid.GetLength(0); i++)
 						{
@@ -176,11 +180,11 @@ namespace Console_Game_CSharp
 					break;
 
 				case 2:
-					if (!helper.ChekBorder(tetrisGrid, 4, 3, Side.rigth))
+					if (!helper.CheckBorder(tetrisGrid, 4, 3, Side.rigth))
 					{
 						for (int i = 0; i < tetrisGrid.GetLength(0); i++)
 						{
-							for (int j = 1; j < tetrisGrid.GetLength(1); j++)
+							for (int j = 0; j < tetrisGrid.GetLength(1); j++)
 							{
 								if (tetrisGrid[i, j] == 3)
 								{
@@ -190,6 +194,38 @@ namespace Console_Game_CSharp
 											int tl = tetrisGrid[i, j];
 											tetrisGrid[i, j] = tetrisGrid[i, j + 1];
 											tetrisGrid[i, j + 1] = tl;
+											break;
+
+										case 2:
+											break;
+
+										case 4:
+											break;
+
+										default:
+											break;
+									}
+								}
+							}
+						}
+					}
+					break;
+
+				case 3:
+					if (!helper.CheckBorder(tetrisGrid, 4, 3, Side.left))
+					{
+						for (int i = 0; i < tetrisGrid.GetLength(0); i++)
+						{
+							for (int j = 1; j < tetrisGrid.GetLength(1); j++)
+							{
+								if (tetrisGrid[i, j] == 3)
+								{
+									switch (tetrisGrid[i+1, j])
+									{
+										case 1:
+											int tl = tetrisGrid[i, j];
+											tetrisGrid[i, j] = tetrisGrid[i+1, j];
+											tetrisGrid[i+1, j] = tl;
 											break;
 
 										case 2:
@@ -278,7 +314,7 @@ internal class Helper
 {
 	public Random random = new Random();
 
-	public bool ChekBorder(int[,] matrix, int border, int current, Side side)
+	public bool CheckBorder(int[,] matrix, int border, int current, Side side)
 	{
 		for (int i = 0; i < matrix.GetLength(0); i++)
 		{
@@ -304,9 +340,17 @@ internal class Helper
 							break;
 
 						case Side.down:
+							if (j == 0)
+								return true;
+							if (matrix[i + 1, j] == border)
+								return true;
 							break;
 
 						case Side.up:
+							if (j == 0)
+								return true;
+							if (matrix[i - 1, j] == border)
+								return true;
 							break;
 
 						default:
