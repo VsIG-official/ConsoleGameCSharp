@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Threading;
 using System.Timers;
 
@@ -45,7 +46,7 @@ namespace Console_Game_CSharp
 			Console.WindowHeight = TetrisHeight;
 
 			Game_Tetris tetris = new Game_Tetris();
-			tetris.MakingMatrix(tetrisGrid);
+			tetris.SetMatrix(tetrisGrid);
 			SetTimer();
 			new Thread(NewThread).Start();
 		}
@@ -129,7 +130,7 @@ namespace Console_Game_CSharp
 
 			Console.Clear();
 			Helper helper = new Helper();
-			helper.GenerateShape(tetrisGrid, ref currentShape, nextShape, countOfBlocks);
+			helper.SetShape(tetrisGrid, ref currentShape, nextShape, countOfBlocks);
 
 			Game_Tetris.PrintingMatrix(tetrisGrid);
 			countOfBlocks++;
@@ -192,7 +193,7 @@ namespace Console_Game_CSharp
 					{
 						for (int i = 0; i < tetrisGrid.GetLength(0); i++)
 						{
-							for (int j = 0; j < tetrisGrid.GetLength(1); j++)
+							for (int j = tetrisGrid.GetLength(1); j > 0; j--)
 							{
 								if (tetrisGrid[i, j] == 3)
 								{
@@ -219,8 +220,9 @@ namespace Console_Game_CSharp
 					}
 					break;
 
+					//not working
 				case 3:
-					if (!helper.CheckBorder(tetrisGrid, 4, 3, Side.left))
+					if (!helper.CheckBorder(tetrisGrid, 4, 3, Side.down))
 					{
 						for (int i = 0; i < tetrisGrid.GetLength(0); i++)
 						{
@@ -267,26 +269,26 @@ namespace Console_Game_CSharp
 	/// </summary>
 	internal class Game_Tetris
 	{
-		//public const char Border = (char)178;
+		public const char Border = (char)178;
 
 		/// <summary>
 		/// start function for main matrix to change values in it
 		/// </summary>
 		/// <param name="matrix"></param>
-		public void MakingMatrix(int[,] matrix)
+		public void SetMatrix(int[,] tetrisGrid)
 		{
-			for (int i = 0; i < matrix.GetLength(0); i++)
+			for (int i = 0; i < tetrisGrid.GetLength(0); i++)
 			{
-				for (int j = 0; j < matrix.GetLength(1); j++)
+				for (int j = 0; j < tetrisGrid.GetLength(1); j++)
 				{
-					matrix[i, j] = 1;
+					tetrisGrid[i, j] = 1;
 					//1 is for empty space
 					//2 is for bottom (if block will hit it-it stops)
 					//3 is for blocks
 					//4 is for delivered block
 					if (i == 11)
 					{
-						matrix[i, j] = 2;
+						tetrisGrid[i, j] = 2;
 					}
 				}
 			}
@@ -296,13 +298,13 @@ namespace Console_Game_CSharp
 		/// prints matrix
 		/// </summary>
 		/// <param name="matrix"></param>
-		public static void PrintingMatrix(int[,] matrix)
+		public static void PrintingMatrix(int[,] tetrisGrid)
 		{
-			for (int i = 0; i < matrix.GetLength(0); i++)
+			for (int i = 0; i < tetrisGrid.GetLength(0); i++)
 			{
-				for (int j = 0; j < matrix.GetLength(1); j++)
+				for (int j = 0; j < tetrisGrid.GetLength(1); j++)
 				{
-					Console.Write(matrix[i, j]);
+					Console.Write(tetrisGrid[i, j]);
 				}
 				Console.WriteLine();
 			}
@@ -333,13 +335,13 @@ internal class Helper
 	/// <param name="current"></param>
 	/// <param name="side"></param>
 	/// <returns></returns>
-	public bool CheckBorder(int[,] matrix, int border, int current, Side side)
+	public bool CheckBorder(int[,] tetrisGrid, int border, int current, Side side)
 	{
-		for (int i = 0; i < matrix.GetLength(0); i++)
+		for (int i = 0; i < tetrisGrid.GetLength(0); i++)
 		{
-			for (int j = 0; j < matrix.GetLength(1); j++)
+			for (int j = 0; j < tetrisGrid.GetLength(1); j++)
 			{
-				if (matrix[i, j] == current)
+				if (tetrisGrid[i, j] == current)
 				{
 					//TODO
 					switch (side)
@@ -347,28 +349,28 @@ internal class Helper
 						case Side.left:
 							if (j == 0)
 								return true;
-							if (matrix[i, j - 1] == border)
+							if (tetrisGrid[i, j - 1] == border)
 								return true;
 							break;
 
 						case Side.rigth:
 							if (j == 0)
 								return true;
-							if (matrix[i, j + 1] == border)
+							if (tetrisGrid[i, j + 1] == border)
 								return true;
 							break;
 
 						case Side.down:
 							if (j == 0)
 								return true;
-							if (matrix[i + 1, j] == border)
+							if (tetrisGrid[i + 1, j] == border)
 								return true;
 							break;
 
 						case Side.up:
 							if (j == 0)
 								return true;
-							if (matrix[i - 1, j] == border)
+							if (tetrisGrid[i - 1, j] == border)
 								return true;
 							break;
 
@@ -381,6 +383,16 @@ internal class Helper
 		return false;
 	}
 
+	public void FindFullLines(int[,] tetrisGrid)
+	{
+		for (int i = 0; i < tetrisGrid.GetLength(0); i++)
+		{
+			for (int j = 0; j < tetrisGrid.GetLength(1); j++)
+			{
+			}
+		}
+	}
+
 	/// <summary>
 	///spawns shape
 	/// </summary>
@@ -388,7 +400,7 @@ internal class Helper
 	/// <param name="currentShape"></param>
 	/// <param name="nextShape"></param>
 	/// <param name="countOfBlocks"></param>
-	public void GenerateShape(int[,] tetrisGrid, ref int[,] currentShape, int[,] nextShape,
+	public void SetShape(int[,] tetrisGrid, ref int[,] currentShape, int[,] nextShape,
 	int countOfBlocks)
 	{
 		switch (countOfBlocks)
