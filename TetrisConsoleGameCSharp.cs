@@ -13,7 +13,7 @@ namespace Console_Game_CSharp
 	/// main class
 	/// </summary>
 	//MAYBE NEED TO CHANGE THIS NAME TOO
-	internal class TetrisConsoleGameCSharp
+	internal static class TetrisConsoleGameCSharp
 	{
 		#region Variables
 
@@ -88,7 +88,6 @@ namespace Console_Game_CSharp
 			//moving 3 down
 			for (int i = tetrisGrid.Length - 1; i >= 0; i--)
 			{
-				bool p = true;
 				List<Point> a = new List<Point>();
 				for (int j = 0; j < tetrisGrid[i].Length; j++)
 				{
@@ -224,7 +223,6 @@ namespace Console_Game_CSharp
 						}
 						break;
 
-					//not working
 					case ConsoleKey.DownArrow:
 						if (!helper.CheckBorder(tetrisGrid, '4', '3', Side.down))
 						{
