@@ -146,7 +146,6 @@ namespace Console_Game_CSharp
 		/// <param name="movingRight"></param>
 		private static void MovingShapesAway(ConsoleKey consoleKey)
 		{
-			//Console.WriteLine(tetrisGrid.Length/*height*/ + "+" + len/*width*/);
 			//to make entire figure stop and transform to 4,you can copy entire array to tempArray and if
 			//case 2 or 4 is true than revert to tempArray, make it current and transform all 3 to 4
 
