@@ -15,21 +15,15 @@ namespace Console_Game_CSharp
 	{
 		#region Variables
 
-		private static int[,] tetrisGrid = new int[12, 16];
+		private const int matrixWidth = 12;
+		private const int matrixHeight = 16;
+		private static int[][] tetrisGrid = new int[matrixWidth][];
 		private static System.Timers.Timer aTimer;
 
-		private const int InfoPanelWidth = 10;
-		private const int TetrisWidth = 12;
-		private const int TetrisHeight = 16;
-
-		private const int GameWidth = TetrisWidth +
-		InfoPanelWidth + 3;
-
-		//const int GameHeight = TetrisHeight + 2;
-		private int score;
-
+		private const int gameWidth = matrixWidth + 3;
+		private static Helper helper = new Helper();
+		private static int Score = 0;
 		private static int[,] currentShape;
-		private static int[,] nextShape;
 		private static int countOfBlocks;
 
 		#endregion Variables
@@ -42,10 +36,10 @@ namespace Console_Game_CSharp
 		{
 			Console.CursorVisible = false;
 			Console.Title = "Tetris";
-			Console.WindowWidth = GameWidth;
-			Console.WindowHeight = TetrisHeight;
+			Console.WindowWidth = gameWidth + 2;
+			Console.WindowHeight = matrixHeight;
 
-			Game_Tetris tetris = new Game_Tetris();
+			GameTetris tetris = new GameTetris();
 			tetris.SetMatrix(tetrisGrid);
 			SetTimer();
 			new Thread(NewThread).Start();
@@ -67,10 +61,6 @@ namespace Console_Game_CSharp
 				{
 					UpDateBorder(2);
 				}
-				else if (key.Key == ConsoleKey.DownArrow)
-				{
-					UpDateBorder(3);
-				}
 			}
 		}
 
@@ -80,7 +70,7 @@ namespace Console_Game_CSharp
 		public static void SetTimer()
 		{
 			aTimer = new System.Timers.Timer(1000);
-			aTimer.Elapsed += UpDateDown;
+			aTimer.Elapsed += MovingShapesDown
 			aTimer.AutoReset = true;
 			aTimer.Enabled = true;
 		}
@@ -90,7 +80,7 @@ namespace Console_Game_CSharp
 		/// </summary>
 		/// <param name="sourse"></param>
 		/// <param name="e"></param>
-		private static void UpDateDown(Object sourse, ElapsedEventArgs e)
+		private static void MovingShapesDown(Object sourse, ElapsedEventArgs e)
 		{
 			//Console.WriteLine(tetrisGrid.GetLength(0)/*height*/ + "+" + tetrisGrid.GetLength(1)/*width*/);
 			//to make entire figure stop and transform to 4,you can copy entire array to tempArray and if
@@ -128,11 +118,10 @@ namespace Console_Game_CSharp
 				}
 			}
 
-			Console.Clear();
 			Helper helper = new Helper();
 			helper.SetShape(tetrisGrid, ref currentShape, nextShape, countOfBlocks);
 
-			Game_Tetris.PrintingMatrix(tetrisGrid);
+			GameTetris.PrintingMatrix(tetrisGrid);
 			countOfBlocks++;
 		}
 
@@ -140,7 +129,7 @@ namespace Console_Game_CSharp
 		/// for moving shapes
 		/// </summary>
 		/// <param name="movingRight"></param>
-		private static void UpDateBorder(int movingRight)
+		private static void MovingShapesAway(int movingRight)
 		{
 			//Console.WriteLine(tetrisGrid.GetLength(0)/*height*/ + "+" + tetrisGrid.GetLength(1)/*width*/);
 			//to make entire figure stop and transform to 4,you can copy entire array to tempArray and if
@@ -187,7 +176,7 @@ namespace Console_Game_CSharp
 					}
 					break;
 
-					//not working good
+				//not working good
 				case 2:
 					if (!helper.CheckBorder(tetrisGrid, 4, 3, Side.rigth))
 					{
@@ -220,7 +209,7 @@ namespace Console_Game_CSharp
 					}
 					break;
 
-					//not working
+				//not working
 				case 3:
 					if (!helper.CheckBorder(tetrisGrid, 4, 3, Side.down))
 					{
@@ -230,12 +219,12 @@ namespace Console_Game_CSharp
 							{
 								if (tetrisGrid[i, j] == 3)
 								{
-									switch (tetrisGrid[i+1, j])
+									switch (tetrisGrid[i + 1, j])
 									{
 										case 1:
 											int tl = tetrisGrid[i, j];
-											tetrisGrid[i, j] = tetrisGrid[i+1, j];
-											tetrisGrid[i+1, j] = tl;
+											tetrisGrid[i, j] = tetrisGrid[i + 1, j];
+											tetrisGrid[i + 1, j] = tl;
 											break;
 
 										case 2:
