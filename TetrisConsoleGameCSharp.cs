@@ -46,7 +46,7 @@ namespace Console_Game_CSharp
 			Console.WindowHeight = matrixHeight;
 
 			GameTetris tetris = new GameTetris();
-			tetris.SetMatrix(ref tetrisGrid, matrixHeight);
+			tetris.SetMatrix(ref tetrisGrid, matrixHeight, matrixWidth);
 			SetTimer();
 			new Thread(NewThread).Start();
 		}
@@ -81,15 +81,13 @@ namespace Console_Game_CSharp
 		/// <param name="e"></param>
 		private static void MovingShapesDown(Object sourse, ElapsedEventArgs e)
 		{
-			//Console.WriteLine(tetrisGrid.Length/*height*/ + "+" + len/*width*/);
-			//to make entire figure stop and transform to 4,you can copy entire array to tempArray and if
-			//case 2 or 4 is true than revert to tempArray, make it current and transform all 3 to 4
-
 			//moving 3 down
-			for (int i = tetrisGrid.Length - 1; i >= 0; i--)
+			for (int i = matrixWidth - 1; i >= 0; i--)
 			{
+				//Console.WriteLine(tetrisGrid.Length);
 				List<Point> listOfElements = new List<Point>();
-				for (int j = 0; j < tetrisGrid[i].Length; j++)
+				//for (int j = 0; j < tetrisGrid.Lenght; j++)
+				for (int j = 0; j < matrixHeight; j++)
 				{
 					if (tetrisGrid[i][j] == '3')
 					{
@@ -104,7 +102,7 @@ namespace Console_Game_CSharp
 
 							case '2':
 							case '4':
-								helper.ThreeTo4(ref tetrisGrid, matrixHeight);
+								helper.ThreeTo4(ref tetrisGrid, matrixHeight, matrixWidth);
 								countOfBlocks = 0;
 								for (int z = 0; z < listOfElements.Count; z++)
 								{
@@ -122,10 +120,10 @@ namespace Console_Game_CSharp
 				}
 			}
 
-			for (int i = 0; i < tetrisGrid.Length; i++)
+			for (int i = 0; i < matrixWidth; i++)
 			{
 				int counterForLines = 0;
-				for (int j = 0; j < tetrisGrid[i].Length; j++)
+				for (int j = 0; j < matrixHeight; j++)
 				{
 					if (tetrisGrid[i][j] == '4')
 					{
@@ -139,7 +137,7 @@ namespace Console_Game_CSharp
 				}
 			}
 			helper.SetShape(ref tetrisGrid, ref currentShape, countOfBlocks);
-			GameTetris.PrintingMatrix(tetrisGrid, score);
+			GameTetris.PrintingMatrix(tetrisGrid, score, matrixWidth);
 			countOfBlocks++;
 		}
 
@@ -159,16 +157,14 @@ namespace Console_Game_CSharp
 			{
 				switch (button)
 				{
-					case 0:
-						break;
-
 					case ConsoleKey.LeftArrow:
-						if (!helper.CheckBorder(tetrisGrid, '4', '3', Side.left, matrixHeight))
+						if (!helper.CheckBorder(tetrisGrid, '4', '3', Side.left, matrixHeight, matrixWidth))
 						{
-							for (int i = 0; i < tetrisGrid.Length; i++)
+							for (int i = 0; i < matrixWidth; i++)
 							{
-								for (int j = 1; j < tetrisGrid[i].Length; j++)
+								for (int j = 1; j < matrixHeight; j++)
 								{
+									Console.WriteLine(tetrisGrid[i].Length);
 									if (tetrisGrid[i][j] == '3')
 									{
 										switch (tetrisGrid[i][j - 1])
@@ -189,11 +185,11 @@ namespace Console_Game_CSharp
 						break;
 
 					case ConsoleKey.RightArrow:
-						if (!helper.CheckBorder(tetrisGrid, '4', '3', Side.rigth, matrixHeight))
+						if (!helper.CheckBorder(tetrisGrid, '4', '3', Side.rigth, matrixHeight, matrixWidth))
 						{
-							for (int i = 0; i < tetrisGrid.Length; i++)
+							for (int i = 0; i < matrixWidth; i++)
 							{
-								int len = tetrisGrid[i].Length;
+								int len = matrixHeight;
 								for (int j = len - 1; j > 0; j--)
 								{
 									if (tetrisGrid[i][j] == '3')
@@ -216,11 +212,11 @@ namespace Console_Game_CSharp
 						break;
 
 					case ConsoleKey.DownArrow:
-						if (!helper.CheckBorder(tetrisGrid, '4', '3', Side.down, matrixHeight))
+						if (!helper.CheckBorder(tetrisGrid, '4', '3', Side.down, matrixHeight, matrixWidth))
 						{
-							for (int i = tetrisGrid.Length - 1; i > 0; i--)
+							for (int i = matrixWidth - 1; i > 0; i--)
 							{
-								int len = tetrisGrid[i].Length;
+								int len = matrixHeight;
 								for (int j = 0; j < len; j++)
 								{
 									if (tetrisGrid[i][j] == '3')
@@ -246,7 +242,7 @@ namespace Console_Game_CSharp
 						break;
 				}
 			}
-			GameTetris.PrintingMatrix(tetrisGrid, score);
+			GameTetris.PrintingMatrix(tetrisGrid, score, matrixWidth);
 		}
 	}
 
@@ -262,9 +258,9 @@ namespace Console_Game_CSharp
 		/// start function for main matrix to change values in it
 		/// </summary>
 		/// <param name="matrix"></param>
-		public void SetMatrix(ref char[][] tetrisGrid, int matrixHeight)
+		public void SetMatrix(ref char[][] tetrisGrid, int matrixHeight, int matrixWidth)
 		{
-			for (int i = 0; i < tetrisGrid.Length; i++)
+			for (int i = 0; i < matrixWidth; i++)
 			{
 				//int len = tetrisGrid[i].Length;
 				for (int j = 0; j < matrixHeight; j++)
@@ -286,12 +282,12 @@ namespace Console_Game_CSharp
 		/// prints matrix
 		/// </summary>
 		/// <param name="matrix"></param>
-		public static void PrintingMatrix(char[][] tetrisGrid, int score)
+		public static void PrintingMatrix(char[][] tetrisGrid, int score,int matrixWidth)
 		{
 			lock (locker)
 			{
 				Console.Clear();
-				for (int i = 0; i < tetrisGrid.Length; i++)
+				for (int i = 0; i < matrixWidth; i++)
 				{
 					Console.WriteLine(tetrisGrid[i]);
 				}
@@ -327,9 +323,9 @@ internal class Helper
 	/// <param name="side"></param>
 	/// <returns></returns>
 	public bool CheckBorder(char[][] tetrisGrid, char border,
-		char currentElementOfMatrix, Side side, int matrixHeight)
+		char currentElementOfMatrix, Side side, int matrixHeight, int matrixWidth)
 	{
-		for (int i = 0; i < tetrisGrid.Length; i++)
+		for (int i = 0; i < matrixWidth; i++)
 		{
 			//int len = tetrisGrid[i].Length;
 			for (int j = 0; j < matrixHeight; j++)
@@ -353,7 +349,7 @@ internal class Helper
 							break;
 
 						case Side.down:
-							if (i == tetrisGrid.Length)
+							if (i == matrixWidth)
 								return true;
 							if (tetrisGrid[i][j] == border)
 								return true;
@@ -378,9 +374,9 @@ internal class Helper
 		}
 	}
 
-	public void ThreeTo4(ref char[][] tetrisGrid, int matrixHeight)
+	public void ThreeTo4(ref char[][] tetrisGrid, int matrixHeight, int matrixWidth)
 	{
-		for (int i = 0; i < tetrisGrid.Length; i++)
+		for (int i = 0; i < matrixWidth; i++)
 		{
 			//int len = tetrisGrid[i].Length;
 			for (int j = 0; j < matrixHeight; j++)
@@ -389,9 +385,9 @@ internal class Helper
 		}
 	}
 
-	public void FindFullLines(int[][] tetrisGrid, int matrixHeight)
+	public void FindFullLines(int[][] tetrisGrid, int matrixHeight, int matrixWidth)
 	{
-		for (int i = 0; i < tetrisGrid.Length; i++)
+		for (int i = 0; i < matrixWidth; i++)
 		{
 			//int len = tetrisGrid[i].Length;
 			for (int j = 0; j < matrixHeight; j++)
