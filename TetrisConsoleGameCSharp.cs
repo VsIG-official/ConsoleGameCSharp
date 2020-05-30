@@ -24,7 +24,7 @@ namespace Console_Game_CSharp
 
 		private const int gameWidth = matrixWidth + 3;
 		private static Helper helper = new Helper();
-		private static int Score = 0;
+		private static int score;
 		private static char[,] currentShape;
 		private static int countOfBlocks;
 
@@ -88,7 +88,7 @@ namespace Console_Game_CSharp
 			//moving 3 down
 			for (int i = tetrisGrid.Length - 1; i >= 0; i--)
 			{
-				List<Point> a = new List<Point>();
+				List<Point> listOfShape = new List<Point>();
 				for (int j = 0; j < tetrisGrid[i].Length; j++)
 				{
 					if (tetrisGrid[i][j] == '3')
@@ -99,18 +99,18 @@ namespace Console_Game_CSharp
 								char t = tetrisGrid[i][j];
 								tetrisGrid[i][j] = tetrisGrid[i + 1][j];
 								tetrisGrid[i + 1][j] = t;
-								a.Add(new Point(i, j));
+								listOfShape.Add(new Point(i, j));
 								break;
 
 							case '2':
 							case '4':
 								helper.ThreeTo4(ref tetrisGrid);
 								countOfBlocks = 0;
-								for (int z = 0; z < a.Count; z++)
+								for (int z = 0; z < listOfShape.Count; z++)
 								{
-									t = tetrisGrid[a[z].X][a[z].Y];
-									tetrisGrid[a[z].X][a[z].Y] = tetrisGrid[a[z].X + 1][a[z].Y];
-									tetrisGrid[a[z].X + 1][a[z].Y] = t;
+									t = tetrisGrid[listOfShape[z].X][listOfShape[z].Y];
+									tetrisGrid[listOfShape[z].X][listOfShape[z].Y] = tetrisGrid[listOfShape[z].X + 1][listOfShape[z].Y];
+									tetrisGrid[listOfShape[z].X + 1][listOfShape[z].Y] = t;
 								}
 								break;
 
@@ -131,11 +131,11 @@ namespace Console_Game_CSharp
 				if (k == matrixHeight)
 				{
 					helper.DeleteLine(tetrisGrid, i);
-					Score++;
+					score++;
 				}
 			}
 			helper.SetShape(ref tetrisGrid, ref currentShape, countOfBlocks);
-			GameTetris.PrintingMatrix(tetrisGrid, Score);
+			GameTetris.PrintingMatrix(tetrisGrid, score);
 			countOfBlocks++;
 		}
 
@@ -260,7 +260,7 @@ namespace Console_Game_CSharp
 						break;
 				}
 			}
-			GameTetris.PrintingMatrix(tetrisGrid, Score);
+			GameTetris.PrintingMatrix(tetrisGrid, score);
 		}
 	}
 
@@ -370,13 +370,6 @@ internal class Helper
 							if (i == tetrisGrid.Length)
 								return true;
 							if (tetrisGrid[i][j] == border)
-								return true;
-							break;
-
-						case Side.up:
-							if (j == 0)
-								return true;
-							if (tetrisGrid[i - 1][j] == border)
 								return true;
 							break;
 
