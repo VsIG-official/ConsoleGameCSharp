@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Threading;
@@ -28,6 +27,7 @@ namespace Console_Game_CSharp
 		private static int Score = 0;
 		private static char[,] currentShape;
 		private static int countOfBlocks;
+
 		#endregion Variables
 
 		/// <summary>
@@ -274,7 +274,6 @@ namespace Console_Game_CSharp
 		public const char Border = (char)178;
 		private static Object locker = new object();
 
-
 		/// <summary>
 		/// start function for main matrix to change values in it
 		/// </summary>
@@ -392,10 +391,8 @@ internal class Helper
 		return false;
 	}
 
-
 	public void DeleteLine(char[][] tetrisGrid, int line)
 	{
-
 		for (int i = line; i > 0; i--)
 		{
 			int len = tetrisGrid[i].Length;
@@ -403,9 +400,9 @@ internal class Helper
 				tetrisGrid[i][j] = tetrisGrid[i - 1][j];
 		}
 	}
+
 	public void ThreeTo4(ref char[][] tetrisGrid)
 	{
-
 		for (int i = 0; i < tetrisGrid.Length; i++)
 		{
 			int len = tetrisGrid[i].Length;
@@ -473,18 +470,23 @@ internal class Helper
 			case 2:
 				currentShape = new char[,] { { '3', '3', '3' }, { '3', '3', '3' } };
 				break;
+
 			case 3:
 				currentShape = new char[,] { { '3', '3', '3' }, { '1', '1', '3' } };
 				break;
+
 			case 4:
 				currentShape = new char[,] { { '1', '1', '3' }, { '3', '3', '3' } };
 				break;
+
 			case 5:
 				currentShape = new char[,] { { '3', '1', '3' }, { '3', '3', '3' } };
 				break;
+
 			case 6:
 				currentShape = new char[,] { { '3', '3', '3' }, { '3', '1', '3' } };
 				break;
+
 			default:
 				break;
 		}
