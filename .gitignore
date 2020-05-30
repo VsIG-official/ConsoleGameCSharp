@@ -514,4 +514,10 @@ bin
 .vs
 *.vscode
 
+.history/TetrisConsoleGameCSharp/UnitTest1_20200530185546.cs
+.history/TetrisConsoleGameCSharp/UnitTest1_20200530185922.cs
+.history/TetrisConsoleGameCSharp/UnitTest1_20200530185929.cs
+TetrisConsoleGameCSharp/Properties/AssemblyInfo.cs
+TetrisConsoleGameCSharp/packages.config
+
 # End of https://www.gitignore.io/api/csharp,visualstudio
