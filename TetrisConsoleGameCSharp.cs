@@ -22,10 +22,11 @@ namespace Console_Game_CSharp
 		private const int whereToSpawn = 6;
 		private const int widthOfShapes = 3;
 		private const int bonusWidthOfTheScreen = 6;
-		private const char freeSpace = '1';
-		private const char boundary = '2';
-		private const char shapes = '3';
-		private const char placedShapes = '4';
+		private const char freeSpace = ' ';
+		private const char boundary = '─';
+		private const char shapes = '█';
+		private const char placedShapes = '#';
+		public const char Border = (char)178;
 		private static char[][] tetrisGrid = new char[matrixWidth][];
 		private static System.Timers.Timer aTimer;
 
@@ -251,7 +252,6 @@ namespace Console_Game_CSharp
 	/// </summary>
 	internal class GameTetris
 	{
-		public const char Border = (char)178;
 		private static Object locker = new object();
 
 		/// <summary>
@@ -266,11 +266,7 @@ namespace Console_Game_CSharp
 				for (int j = 0; j < matrixHeight; j++)
 				{
 					tetrisGrid[i][j] = freeSpace;
-					//1 is for empty space
-					//2 is for bottom (if block will hit it-it stops)
-					//3 is for blocks
-					//4 is for delivered block
-					if (i == 11)
+					if (i == matrixWidth-1)
 					{
 						tetrisGrid[i][j] = boundary;
 					}
@@ -394,9 +390,9 @@ internal class Helper
 		{
 			//int len = tetrisGrid[i].Length;
 			for (int j = 0; j < matrixHeight; j++)
-				if (tetrisGrid[i][j] == '3')
+				if (tetrisGrid[i][j] == shapes)
 				{
-					tetrisGrid[i][j] = '4';
+					tetrisGrid[i][j] = placedShapes;
 				}
 		}
 	}
@@ -415,12 +411,12 @@ internal class Helper
 			case 0:
 				currentShape = CreateShape(currentShape,shapes,freeSpace);
 				for (int i = whereToSpawn; i < whereToSpawn + widthOfShapes; i++)
-					tetrisGrid[0][i] = currentShape[0, i - 6];
+					tetrisGrid[0][i] = currentShape[0, i - whereToSpawn];
 				break;
 
 			case 1:
 				for (int i = whereToSpawn; i < whereToSpawn + widthOfShapes; i++)
-					tetrisGrid[0][i] = currentShape[1, i - 6];
+					tetrisGrid[0][i] = currentShape[1, i - whereToSpawn];
 				break;
 
 			default:
