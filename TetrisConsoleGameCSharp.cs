@@ -19,10 +19,17 @@ namespace Console_Game_CSharp
 
 		private const int matrixWidth = 12;
 		private const int matrixHeight = 16;
+		private const int whereToSpawn = 6;
+		private const int widthOfShapes = 3;
+		private const int bonusWidthOfTheScreen = 6;
+		private const char freeSpace = '1';
+		private const char boundary = '2';
+		private const char shapes = '3';
+		private const char placedShapes = '4';
 		private static char[][] tetrisGrid = new char[matrixWidth][];
 		private static System.Timers.Timer aTimer;
 
-		private const int gameWidth = matrixWidth + 3;
+		private const int gameWidth = matrixWidth + bonusWidthOfTheScreen;
 		private static Helper helper = new Helper();
 		private static int score;
 		private static char[,] currentShape;
@@ -42,11 +49,11 @@ namespace Console_Game_CSharp
 			}
 			Console.CursorVisible = false;
 			Console.Title = "Tetris";
-			Console.WindowWidth = gameWidth + 2;
+			Console.WindowWidth = gameWidth;
 			Console.WindowHeight = matrixHeight;
 
 			GameTetris tetris = new GameTetris();
-			tetris.SetMatrix(ref tetrisGrid, matrixHeight, matrixWidth);
+			tetris.SetMatrix(ref tetrisGrid, matrixHeight, matrixWidth,freeSpace, boundary);
 			SetTimer();
 			new Thread(NewThread).Start();
 		}
@@ -89,20 +96,20 @@ namespace Console_Game_CSharp
 				//for (int j = 0; j < tetrisGrid.Lenght; j++)
 				for (int j = 0; j < matrixHeight; j++)
 				{
-					if (tetrisGrid[i][j] == '3')
+					if (tetrisGrid[i][j] == shapes)
 					{
 						switch (tetrisGrid[i + 1][j])
 						{
-							case '1':
+							case freeSpace:
 								char tempMatrix = tetrisGrid[i][j];
 								tetrisGrid[i][j] = tetrisGrid[i + 1][j];
 								tetrisGrid[i + 1][j] = tempMatrix;
 								listOfElements.Add(new Point(i, j));
 								break;
 
-							case '2':
-							case '4':
-								helper.Convert3To4(ref tetrisGrid, matrixHeight, matrixWidth);
+							case boundary:
+							case placedShapes:
+								helper.Convert3To4(ref tetrisGrid, matrixHeight, matrixWidth, shapes, placedShapes);
 								countOfBlocks = 0;
 								for (int z = 0; z < listOfElements.Count; z++)
 								{
@@ -125,7 +132,7 @@ namespace Console_Game_CSharp
 				int counterForLines = 0;
 				for (int j = 0; j < matrixHeight; j++)
 				{
-					if (tetrisGrid[i][j] == '4')
+					if (tetrisGrid[i][j] == placedShapes)
 					{
 						counterForLines++;
 					}
@@ -136,7 +143,7 @@ namespace Console_Game_CSharp
 					score++;
 				}
 			}
-			helper.SetShape(ref tetrisGrid, ref currentShape, countOfBlocks);
+			helper.SetShape(ref tetrisGrid, ref currentShape, countOfBlocks, whereToSpawn, widthOfShapes, shapes,freeSpace);
 			GameTetris.PrintingMatrix(tetrisGrid, score, matrixWidth);
 			countOfBlocks++;
 		}
@@ -147,29 +154,23 @@ namespace Console_Game_CSharp
 		/// <param name="movingRight"></param>
 		private static void MovingShapesAway(ConsoleKey button, int matrixHeight)
 		{
-			//to make entire figure stop and transform to 4,you can copy entire array to tempArray and if
-			//case 2 or 4 is true than revert to tempArray, make it current and transform all 3 to 4
-
-			//moving 3 down
-
-			//moving 3 left and right
 			if (countOfBlocks > 2)
 			{
 				switch (button)
 				{
 					case ConsoleKey.LeftArrow:
-						if (!helper.CheckBorder(tetrisGrid, '4', '3', Side.left, matrixHeight, matrixWidth))
+						if (!helper.CheckBorder(tetrisGrid, placedShapes, shapes, Side.left, matrixHeight, matrixWidth))
 						{
 							for (int i = 0; i < matrixWidth; i++)
 							{
 								for (int j = 1; j < matrixHeight; j++)
 								{
-									Console.WriteLine(tetrisGrid[i].Length);
 									if (tetrisGrid[i][j] == '3' && tetrisGrid[i][j - 1] == 1)
 									{
 										char tempMatrix = tetrisGrid[i][j];
 										tetrisGrid[i][j] = tetrisGrid[i][j - 1];
 										tetrisGrid[i][j - 1] = tempMatrix;
+										Console.WriteLine("working");
 									}
 								}
 							}
@@ -177,14 +178,14 @@ namespace Console_Game_CSharp
 						break;
 
 					case ConsoleKey.RightArrow:
-						if (!helper.CheckBorder(tetrisGrid, '4', '3', Side.rigth, matrixHeight, matrixWidth))
+						if (!helper.CheckBorder(tetrisGrid, placedShapes, shapes, Side.rigth, matrixHeight, matrixWidth))
 						{
 							for (int i = 0; i < matrixWidth; i++)
 							{
 								//int len = matrixHeight;
 								for (int j = matrixHeight - 1; j > 0; j--)
 								{
-									if (tetrisGrid[i][j] == '3' && tetrisGrid[i][j + 1] == 1)
+									if (tetrisGrid[i][j] == shapes && tetrisGrid[i][j + 1] == 1)
 									{
 										char tempMatrix = tetrisGrid[i][j];
 										tetrisGrid[i][j] = tetrisGrid[i][j + 1];
@@ -196,14 +197,14 @@ namespace Console_Game_CSharp
 						break;
 
 					case ConsoleKey.DownArrow:
-						if (!helper.CheckBorder(tetrisGrid, '4', '3', Side.down, matrixHeight, matrixWidth))
+						if (!helper.CheckBorder(tetrisGrid, placedShapes, shapes, Side.down, matrixHeight, matrixWidth))
 						{
 							for (int i = matrixWidth - 1; i > 0; i--)
 							{
 								//int len = matrixHeight;
 								for (int j = 0; j < matrixHeight; j++)
 								{
-									if (tetrisGrid[i][j] == '3' && tetrisGrid[i + 1][j] == 1)
+									if (tetrisGrid[i][j] == shapes && tetrisGrid[i + 1][j] == 1)
 									{
 										char tempMatrix = tetrisGrid[i][j];
 										tetrisGrid[i][j] = tetrisGrid[i + 1][j];
@@ -234,21 +235,21 @@ namespace Console_Game_CSharp
 		/// start function for main matrix to change values in it
 		/// </summary>
 		/// <param name="matrix"></param>
-		public void SetMatrix(ref char[][] tetrisGrid, int matrixHeight, int matrixWidth)
+		public void SetMatrix(ref char[][] tetrisGrid, int matrixHeight, int matrixWidth,char freeSpace,char boundary)
 		{
 			for (int i = 0; i < matrixWidth; i++)
 			{
 				//int len = tetrisGrid[i].Length;
 				for (int j = 0; j < matrixHeight; j++)
 				{
-					tetrisGrid[i][j] = '1';
+					tetrisGrid[i][j] = freeSpace;
 					//1 is for empty space
 					//2 is for bottom (if block will hit it-it stops)
 					//3 is for blocks
 					//4 is for delivered block
 					if (i == 11)
 					{
-						tetrisGrid[i][j] = '2';
+						tetrisGrid[i][j] = boundary;
 					}
 				}
 			}
@@ -299,14 +300,14 @@ internal class Helper
 	/// <param name="side"></param>
 	/// <returns></returns>
 	public bool CheckBorder(char[][] tetrisGrid, char border,
-		char currentElementOfMatrix, Side side, int matrixHeight, int matrixWidth)
+		char shapes, Side side, int matrixHeight, int matrixWidth)
 	{
 		for (int i = 0; i < matrixWidth; i++)
 		{
 			//int len = tetrisGrid[i].Length;
 			for (int j = 0; j < matrixHeight; j++)
 			{
-				if (tetrisGrid[i][j] == currentElementOfMatrix)
+				if (tetrisGrid[i][j] == shapes)
 				{
 					switch (side)
 					{
@@ -315,7 +316,7 @@ internal class Helper
 							{
 								return true;
 							}
-							if (tetrisGrid[i][j - 1] == border)
+							if (tetrisGrid[i][j - 1] == '2')
 							{
 								return true;
 							}
@@ -364,7 +365,7 @@ internal class Helper
 		}
 	}
 
-	public void Convert3To4(ref char[][] tetrisGrid, int matrixHeight, int matrixWidth)
+	public void Convert3To4(ref char[][] tetrisGrid, int matrixHeight, int matrixWidth,char shapes,char placedShapes)
 	{
 		for (int i = 0; i < matrixWidth; i++)
 		{
@@ -384,18 +385,18 @@ internal class Helper
 	/// <param name="currentShape"></param>
 	/// <param name="countOfBlocks"></param>
 	public void SetShape(ref char[][] tetrisGrid, ref char[,] currentShape,
-	int countOfBlocks)
+	int countOfBlocks,int whereToSpawn,int widthOfShapes,char shapes,char freeSpace)
 	{
 		switch (countOfBlocks)
 		{
 			case 0:
-				currentShape = CreateShape(currentShape);
-				for (int i = 6; i < 9; i++)
+				currentShape = CreateShape(currentShape,shapes,freeSpace);
+				for (int i = whereToSpawn; i < whereToSpawn + widthOfShapes; i++)
 					tetrisGrid[0][i] = currentShape[0, i - 6];
 				break;
 
 			case 1:
-				for (int i = 6; i < 9; i++)
+				for (int i = whereToSpawn; i < whereToSpawn + widthOfShapes; i++)
 					tetrisGrid[0][i] = currentShape[1, i - 6];
 				break;
 
@@ -409,36 +410,36 @@ internal class Helper
 	/// </summary>
 	/// <param name="currentShape"></param>
 	/// <returns></returns>
-	private char[,] CreateShape(char[,] currentShape)
+	private char[,] CreateShape(char[,] currentShape,char shapes,char freeSpace)
 	{
 		switch (random.Next(7))
 		{
 			case 0:
-				currentShape = new char[,] { { '3', '1', '1' }, { '3', '1', '1' } };
+				currentShape = new char[,] { { shapes, freeSpace, freeSpace }, { shapes, freeSpace, freeSpace } };
 				break;
 
 			case 1:
-				currentShape = new char[,] { { '3', '3', '1' }, { '3', '3', '1' } };
+				currentShape = new char[,] { { shapes, shapes, freeSpace }, { shapes, shapes, freeSpace } };
 				break;
 
 			case 2:
-				currentShape = new char[,] { { '3', '3', '3' }, { '3', '3', '3' } };
+				currentShape = new char[,] { { shapes, shapes, shapes }, { shapes, shapes, shapes } };
 				break;
 
 			case 3:
-				currentShape = new char[,] { { '3', '3', '3' }, { '1', '1', '3' } };
+				currentShape = new char[,] { { shapes, shapes, shapes }, { freeSpace, freeSpace, shapes } };
 				break;
 
 			case 4:
-				currentShape = new char[,] { { '1', '1', '3' }, { '3', '3', '3' } };
+				currentShape = new char[,] { { freeSpace, freeSpace, shapes }, { shapes, shapes, shapes } };
 				break;
 
 			case 5:
-				currentShape = new char[,] { { '3', '1', '3' }, { '3', '3', '3' } };
+				currentShape = new char[,] { { shapes, freeSpace, shapes }, { shapes, shapes, shapes } };
 				break;
 
 			case 6:
-				currentShape = new char[,] { { '3', '3', '3' }, { '3', '1', '3' } };
+				currentShape = new char[,] { { shapes, shapes, shapes }, { shapes, freeSpace, shapes } };
 				break;
 
 			default:
