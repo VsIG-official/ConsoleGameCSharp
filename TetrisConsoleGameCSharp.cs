@@ -165,12 +165,19 @@ namespace Console_Game_CSharp
 							{
 								for (int j = 1; j < matrixHeight; j++)
 								{
-									if (tetrisGrid[i][j] == '3' && tetrisGrid[i][j - 1] == 1)
+									if (tetrisGrid[i][j] == shapes)
 									{
-										char tempMatrix = tetrisGrid[i][j];
-										tetrisGrid[i][j] = tetrisGrid[i][j - 1];
-										tetrisGrid[i][j - 1] = tempMatrix;
-										Console.WriteLine("working");
+										switch (tetrisGrid[i][j - 1])
+										{
+											case freeSpace:
+												char tempMatrix = tetrisGrid[i][j];
+												tetrisGrid[i][j] = tetrisGrid[i][j - 1];
+												tetrisGrid[i][j - 1] = tempMatrix;
+												break;
+
+											default:
+												break;
+										}
 									}
 								}
 							}
@@ -185,11 +192,19 @@ namespace Console_Game_CSharp
 								//int len = matrixHeight;
 								for (int j = matrixHeight - 1; j > 0; j--)
 								{
-									if (tetrisGrid[i][j] == shapes && tetrisGrid[i][j + 1] == 1)
+									if (tetrisGrid[i][j] == shapes)
 									{
-										char tempMatrix = tetrisGrid[i][j];
-										tetrisGrid[i][j] = tetrisGrid[i][j + 1];
-										tetrisGrid[i][j + 1] = tempMatrix;
+										switch (tetrisGrid[i][j + 1])
+										{
+											case freeSpace:
+												char tempMatrix = tetrisGrid[i][j];
+												tetrisGrid[i][j] = tetrisGrid[i][j + 1];
+												tetrisGrid[i][j + 1] = tempMatrix;
+												break;
+
+											default:
+												break;
+										}
 									}
 								}
 							}
@@ -204,11 +219,19 @@ namespace Console_Game_CSharp
 								//int len = matrixHeight;
 								for (int j = 0; j < matrixHeight; j++)
 								{
-									if (tetrisGrid[i][j] == shapes && tetrisGrid[i + 1][j] == 1)
+									if (tetrisGrid[i][j] == shapes)
 									{
-										char tempMatrix = tetrisGrid[i][j];
-										tetrisGrid[i][j] = tetrisGrid[i + 1][j];
-										tetrisGrid[i + 1][j] = tempMatrix;
+										switch (tetrisGrid[i + 1][j])
+										{
+											case freeSpace:
+												char tempMatrix = tetrisGrid[i][j];
+												tetrisGrid[i][j] = tetrisGrid[i + 1][j];
+												tetrisGrid[i + 1][j] = tempMatrix;
+												break;
+
+											default:
+												break;
+										}
 									}
 								}
 							}
