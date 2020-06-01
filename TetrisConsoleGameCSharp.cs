@@ -54,7 +54,7 @@ namespace Console_Game_CSharp
 			Console.WindowHeight = matrixHeight;
 
 			GameTetris tetris = new GameTetris();
-			tetris.SetMatrix(ref tetrisGrid, matrixHeight, matrixWidth,freeSpace, boundary);
+			tetris.SetMatrix(ref tetrisGrid, matrixHeight, matrixWidth, freeSpace, boundary);
 			SetTimer();
 			new Thread(NewThread).Start();
 		}
@@ -144,7 +144,7 @@ namespace Console_Game_CSharp
 					score++;
 				}
 			}
-			helper.SetShape(ref tetrisGrid, ref currentShape, countOfBlocks, whereToSpawn, widthOfShapes, shapes,freeSpace);
+			helper.SetShape(ref tetrisGrid, ref currentShape, countOfBlocks, whereToSpawn, widthOfShapes, shapes, freeSpace);
 			GameTetris.PrintingMatrix(tetrisGrid, score, matrixWidth);
 			countOfBlocks++;
 		}
@@ -258,7 +258,7 @@ namespace Console_Game_CSharp
 		/// start function for main matrix to change values in it
 		/// </summary>
 		/// <param name="matrix"></param>
-		public void SetMatrix(ref char[][] tetrisGrid, int matrixHeight, int matrixWidth,char freeSpace,char boundary)
+		public void SetMatrix(ref char[][] tetrisGrid, int matrixHeight, int matrixWidth, char freeSpace, char boundary)
 		{
 			for (int i = 0; i < matrixWidth; i++)
 			{
@@ -266,7 +266,7 @@ namespace Console_Game_CSharp
 				for (int j = 0; j < matrixHeight; j++)
 				{
 					tetrisGrid[i][j] = freeSpace;
-					if (i == matrixWidth-1)
+					if (i == matrixWidth - 1)
 					{
 						tetrisGrid[i][j] = boundary;
 					}
@@ -274,11 +274,8 @@ namespace Console_Game_CSharp
 			}
 		}
 
-		/// <summary>
-		/// prints matrix
-		/// </summary>
-		/// <param name="matrix"></param>
-		public static void PrintingMatrix(char[][] tetrisGrid, int score,int matrixWidth)
+
+		public static void PrintingMatrix(char[][] tetrisGrid, int score, int matrixWidth)
 		{
 			lock (locker)
 			{
@@ -302,21 +299,21 @@ internal enum Side
 }
 
 /// <summary>
-/// helps with shapes
+///Helps with matrix
 /// </summary>
-
-//NEED TO CHANGE NAME FOR HELPER
 internal class Helper
 {
 	public Random random = new Random();
 
 	/// <summary>
-	/// checks external numbers to correctly place shapes
+	/// Checks the border.
 	/// </summary>
-	/// <param name="matrix"></param>
-	/// <param name="border"></param>
-	/// <param name="currentElementOfMatrix"></param>
-	/// <param name="side"></param>
+	/// <param name="tetrisGrid">The tetris grid.</param>
+	/// <param name="border">The border.</param>
+	/// <param name="shapes">The shapes.</param>
+	/// <param name="side">The side.</param>
+	/// <param name="matrixHeight">Height of the matrix.</param>
+	/// <param name="matrixWidth">Width of the matrix.</param>
 	/// <returns></returns>
 	public bool CheckBorder(char[][] tetrisGrid, char border,
 		char shapes, Side side, int matrixHeight, int matrixWidth)
@@ -372,6 +369,12 @@ internal class Helper
 		return false;
 	}
 
+	/// <summary>
+	/// Deletes the line.
+	/// </summary>
+	/// <param name="tetrisGrid">The tetris grid.</param>
+	/// <param name="line">The line.</param>
+	/// <param name="matrixHeight">Height of the matrix.</param>
 	public void DeleteLine(char[][] tetrisGrid, int line, int matrixHeight)
 	{
 		for (int i = line; i > 0; i--)
@@ -384,7 +387,15 @@ internal class Helper
 		}
 	}
 
-	public void Convert3To4(ref char[][] tetrisGrid, int matrixHeight, int matrixWidth,char shapes,char placedShapes)
+	/// <summary>
+	/// Convert 3 to 4.
+	/// </summary>
+	/// <param name="tetrisGrid">The tetris grid.</param>
+	/// <param name="matrixHeight">Height of the matrix.</param>
+	/// <param name="matrixWidth">Width of the matrix.</param>
+	/// <param name="shapes">The shapes.</param>
+	/// <param name="placedShapes">The placed shapes.</param>
+	public void Convert3To4(ref char[][] tetrisGrid, int matrixHeight, int matrixWidth, char shapes, char placedShapes)
 	{
 		for (int i = 0; i < matrixWidth; i++)
 		{
@@ -398,18 +409,22 @@ internal class Helper
 	}
 
 	/// <summary>
-	///spawns shape
+	/// Sets the shape.
 	/// </summary>
-	/// <param name="tetrisGrid"></param>
-	/// <param name="currentShape"></param>
-	/// <param name="countOfBlocks"></param>
+	/// <param name="tetrisGrid">The tetris grid.</param>
+	/// <param name="currentShape">The current shape.</param>
+	/// <param name="countOfBlocks">The count of blocks.</param>
+	/// <param name="whereToSpawn">The where to spawn.</param>
+	/// <param name="widthOfShapes">The width of shapes.</param>
+	/// <param name="shapes">The shapes.</param>
+	/// <param name="freeSpace">The free space.</param>
 	public void SetShape(ref char[][] tetrisGrid, ref char[,] currentShape,
-	int countOfBlocks,int whereToSpawn,int widthOfShapes,char shapes,char freeSpace)
+	int countOfBlocks, int whereToSpawn, int widthOfShapes, char shapes, char freeSpace)
 	{
 		switch (countOfBlocks)
 		{
 			case 0:
-				currentShape = CreateShape(currentShape,shapes,freeSpace);
+				currentShape = CreateShape(currentShape, shapes, freeSpace);
 				for (int i = whereToSpawn; i < whereToSpawn + widthOfShapes; i++)
 					tetrisGrid[0][i] = currentShape[0, i - whereToSpawn];
 				break;
@@ -425,11 +440,13 @@ internal class Helper
 	}
 
 	/// <summary>
-	/// selects a random shape to place
+	/// Creates the shape.
 	/// </summary>
-	/// <param name="currentShape"></param>
+	/// <param name="currentShape">The current shape.</param>
+	/// <param name="shapes">The shapes.</param>
+	/// <param name="freeSpace">The free space.</param>
 	/// <returns></returns>
-	private char[,] CreateShape(char[,] currentShape,char shapes,char freeSpace)
+	private char[,] CreateShape(char[,] currentShape, char shapes, char freeSpace)
 	{
 		switch (random.Next(7))
 		{
