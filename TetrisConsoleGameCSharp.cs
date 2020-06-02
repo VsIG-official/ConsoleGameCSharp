@@ -26,9 +26,9 @@ namespace Console_Game_CSharp
 		private const char boundary = '─';
 		private const char shapes = '█';
 		private const char placedShapes = '#';
-		public const char Border = (char)178;
 		private static char[][] tetrisGrid = new char[matrixWidth][];
 		private static System.Timers.Timer aTimer;
+		private static Thread thread = new Thread(new ThreadStart(NewThread));
 
 		private const int gameWidth = matrixWidth + bonusWidthOfTheScreen;
 		private static Helper helper = new Helper();
@@ -56,11 +56,11 @@ namespace Console_Game_CSharp
 			GameTetris tetris = new GameTetris();
 			tetris.SetMatrix(ref tetrisGrid, matrixHeight, matrixWidth, freeSpace, boundary);
 			SetTimer();
-			new Thread(NewThread).Start();
+			thread.Start();
 		}
 
 		/// <summary>
-		/// infinite stream for working algorithm (moving blocks)
+		/// infinite stream for algorithm (moving blocks)
 		/// </summary>
 		private static void NewThread()
 		{
@@ -83,7 +83,7 @@ namespace Console_Game_CSharp
 		}
 
 		/// <summary>
-		///function, which is called once per second to find and move blocks
+		/// function, which is called once per second to find and move blocks
 		/// </summary>
 		/// <param name="sourse"></param>
 		/// <param name="e"></param>
@@ -144,15 +144,32 @@ namespace Console_Game_CSharp
 					score++;
 				}
 			}
-			helper.SetShape(ref tetrisGrid, ref currentShape, countOfBlocks, whereToSpawn, widthOfShapes, shapes, freeSpace);
-			GameTetris.PrintingMatrix(tetrisGrid, score, matrixWidth);
-			countOfBlocks++;
+			bool over = true;
+			for (int i = 0; i < matrixHeight; i++)
+			{
+				if (tetrisGrid[2][i] == placedShapes)
+				{
+					Console.Clear();
+					Console.WriteLine("Game over! you loss!");
+					Console.WriteLine(score);
+					aTimer.Stop();
+					thread.Abort();
+					over = false;
+				}
+			}
+			if (over)
+			{
+				helper.SetShape(ref tetrisGrid, ref currentShape, countOfBlocks, whereToSpawn, widthOfShapes, shapes, freeSpace);
+				GameTetris.PrintingMatrix(tetrisGrid, score, matrixWidth);
+				countOfBlocks++;
+			}
 		}
 
 		/// <summary>
 		/// for moving shapes
 		/// </summary>
-		/// <param name="movingRight"></param>
+		/// <param name="button"></param>
+		/// <param name="matrixHeight"></param>
 		private static void MovingShapesAway(ConsoleKey button, int matrixHeight)
 		{
 			if (countOfBlocks > 2)
@@ -191,7 +208,7 @@ namespace Console_Game_CSharp
 							for (int i = 0; i < matrixWidth; i++)
 							{
 								//int len = matrixHeight;
-								for (int j = matrixHeight - 1; j > 0; j--)
+								for (int j = matrixHeight - 1; j >= 0; j--)
 								{
 									if (tetrisGrid[i][j] == shapes)
 									{
@@ -215,6 +232,7 @@ namespace Console_Game_CSharp
 					case ConsoleKey.DownArrow:
 						if (!helper.CheckBorder(tetrisGrid, placedShapes, shapes, Side.down, matrixHeight, matrixWidth))
 						{
+							List<Point> listOfElements = new List<Point>();
 							for (int i = matrixWidth - 1; i > 0; i--)
 							{
 								//int len = matrixHeight;
@@ -228,8 +246,21 @@ namespace Console_Game_CSharp
 												char tempMatrix = tetrisGrid[i][j];
 												tetrisGrid[i][j] = tetrisGrid[i + 1][j];
 												tetrisGrid[i + 1][j] = tempMatrix;
+												listOfElements.Add(new Point(i, j));
 												break;
 
+											case boundary:
+											case placedShapes:
+												helper.Convert3To4(ref tetrisGrid, matrixHeight, matrixWidth, shapes, placedShapes);
+												countOfBlocks = 0;
+												for (int z = 0; z < listOfElements.Count; z++)
+												{
+													tempMatrix = tetrisGrid[listOfElements[z].X][listOfElements[z].Y];
+													tetrisGrid[listOfElements[z].X][listOfElements[z].Y] =
+														tetrisGrid[listOfElements[z].X + 1][listOfElements[z].Y];
+													tetrisGrid[listOfElements[z].X + 1][listOfElements[z].Y] = tempMatrix;
+												}
+												break;
 											default:
 												break;
 										}
@@ -255,9 +286,13 @@ namespace Console_Game_CSharp
 		private static Object locker = new object();
 
 		/// <summary>
-		/// start function for main matrix to change values in it
+		///start function for main matrix to change values in it
 		/// </summary>
-		/// <param name="matrix"></param>
+		/// <param name="tetrisGrid"></param>
+		/// <param name="matrixHeight"></param>
+		/// <param name="matrixWidth"></param>
+		/// <param name="freeSpace"></param>
+		/// <param name="boundary"></param>
 		public void SetMatrix(ref char[][] tetrisGrid, int matrixHeight, int matrixWidth, char freeSpace, char boundary)
 		{
 			for (int i = 0; i < matrixWidth; i++)
