@@ -20,6 +20,7 @@ namespace Console_Game_CSharp
 		private const int matrixWidth = 15;
 		private const int matrixHeight = 21;
 		private const int whereToSpawn = 6;
+		private const int heightOfShapes = 3;//use this if Your blocks don't have same width and height
 		private const int widthOfShapes = 3;
 		private const int bonusWidthOfTheScreen = 6;
 		private const char freeSpace = ' ';
@@ -72,7 +73,7 @@ namespace Console_Game_CSharp
 		}
 
 		/// <summary>
-		/// setting timer
+		/// Sets the timer.
 		/// </summary>
 		public static void SetTimer()
 		{
@@ -83,18 +84,16 @@ namespace Console_Game_CSharp
 		}
 
 		/// <summary>
-		/// function, which is called once per second to find and move blocks
+		/// Move the shapes down and checks for game over
 		/// </summary>
-		/// <param name="sourse"></param>
-		/// <param name="e"></param>
+		/// <param name="sourse">The sourse.</param>
+		/// <param name="e">The <see cref="ElapsedEventArgs"/> instance containing the event data.</param>
 		private static void MovingShapesDown(Object sourse, ElapsedEventArgs e)
 		{
 			//moving 3 down
 			for (int i = matrixWidth - 1; i >= 0; i--)
 			{
-				//Console.WriteLine(tetrisGrid.Length);
 				List<Point> listOfElements = new List<Point>();
-				//for (int j = 0; j < tetrisGrid.Lenght; j++)
 				for (int j = 0; j < matrixHeight; j++)
 				{
 					if (tetrisGrid[i][j] == shapes)
@@ -144,7 +143,7 @@ namespace Console_Game_CSharp
 					score++;
 				}
 			}
-			bool over = true;
+			bool gameOver = true;
 			for (int i = 0; i < matrixHeight; i++)
 			{
 				if (tetrisGrid[2][i] == placedShapes)
@@ -154,10 +153,10 @@ namespace Console_Game_CSharp
 					Console.WriteLine(score);
 					aTimer.Stop();
 					thread.Abort();
-					over = false;
+					gameOver = false;
 				}
 			}
-			if (over)
+			if (gameOver)
 			{
 				helper.SetShape(ref tetrisGrid, ref currentShape, countOfBlocks, whereToSpawn, widthOfShapes, shapes, freeSpace);
 				GameTetris.PrintingMatrix(tetrisGrid, score, matrixWidth);
@@ -166,13 +165,13 @@ namespace Console_Game_CSharp
 		}
 
 		/// <summary>
-		/// for moving shapes
+		/// Movings the shapes away.
 		/// </summary>
-		/// <param name="button"></param>
-		/// <param name="matrixHeight"></param>
+		/// <param name="button">The button.</param>
+		/// <param name="matrixHeight">Height of the matrix.</param>
 		private static void MovingShapesAway(ConsoleKey button, int matrixHeight)
 		{
-			if (countOfBlocks > 3)
+			if (countOfBlocks > heightOfShapes)
 			{
 				switch (button)
 				{
@@ -275,12 +274,13 @@ namespace Console_Game_CSharp
 						{
 							for (int j = 0; j < matrixHeight; j++)
 							{
-								if (tetrisGrid[i][j] == shapes)
-									if (j < indj)
-										indj = j;
+								if (tetrisGrid[i][j] == shapes && j < indj)
+								{
+									indj = j;
+								}
 							}
 						}
-						char[,] arr = new char[3, 3];
+						char[,] borderOfShape = new char[heightOfShapes, widthOfShapes];
 						for (int i = 0; i < matrixWidth; i++)
 						{
 							for (int j = 0; j < matrixHeight; j++)
@@ -288,20 +288,20 @@ namespace Console_Game_CSharp
 								if (tetrisGrid[i][j] == shapes)
 								{
 									j = indj;
-									for (int w = i; w < i + 3; w++)
+									for (int w = i; w < i + heightOfShapes; w++)
 									{
-										for (int q = j; q < j + 3; q++)
+										for (int q = j; q < j + widthOfShapes; q++)
 										{
-											arr[w - i, q - j] = tetrisGrid[w][q];
+											borderOfShape[w - i, q - j] = tetrisGrid[w][q];
 										}
 									}
 
-									arr = helper.Rotate(arr, 3);
-									for (int w = i; w < i + 3; w++)
+									borderOfShape = helper.Rotate(borderOfShape, widthOfShapes);
+									for (int w = i; w < i + heightOfShapes; w++)
 									{
-										for (int q = j; q < j + 3; q++)
+										for (int q = j; q < j + widthOfShapes; q++)
 										{
-											tetrisGrid[w][q] = arr[w - i, q - j];
+											tetrisGrid[w][q] = borderOfShape[w - i, q - j];
 										}
 									}
 									i = matrixWidth;
@@ -337,7 +337,6 @@ namespace Console_Game_CSharp
 		{
 			for (int i = 0; i < matrixWidth; i++)
 			{
-				//int len = tetrisGrid[i].Length;
 				for (int j = 0; j < matrixHeight; j++)
 				{
 					tetrisGrid[i][j] = freeSpace;
@@ -349,7 +348,12 @@ namespace Console_Game_CSharp
 			}
 		}
 
-
+		/// <summary>
+		/// Printings the matrix.
+		/// </summary>
+		/// <param name="tetrisGrid">The tetris grid.</param>
+		/// <param name="score">The score.</param>
+		/// <param name="matrixWidth">Width of the matrix.</param>
 		public static void PrintingMatrix(char[][] tetrisGrid, int score, int matrixWidth)
 		{
 			lock (locker)
@@ -362,17 +366,21 @@ namespace Console_Game_CSharp
 				Console.WriteLine("Score: " + score);
 			}
 		}
+
+		/// <summary>
+		/// Printings the matrix.
+		/// </summary>
+		/// <param name="tetrisGrid">The tetris grid.</param>
 		public static void PrintingMatrix(char[,] tetrisGrid)
 		{
+			Console.WriteLine(tetrisGrid.GetLength(0) + " " + tetrisGrid.GetLength(1));
 			lock (locker)
 			{
 				Console.WriteLine();
-				//Console.Clear();
 				for (int i = 0; i < tetrisGrid.GetLength(0); i++)
 				{
 					for (int j = 0; j < tetrisGrid.GetLength(1); j++)
 					{
-
 						Console.Write(tetrisGrid[i, j]);
 					}
 					Console.WriteLine();
@@ -411,7 +419,6 @@ namespace Console_Game_CSharp
 		{
 			for (int i = 0; i < matrixWidth; i++)
 			{
-				//int len = tetrisGrid[i].Length;
 				for (int j = 0; j < matrixHeight; j++)
 				{
 					if (tetrisGrid[i][j] == shapes)
@@ -460,18 +467,23 @@ namespace Console_Game_CSharp
 			return false;
 		}
 
+		/// <summary>
+		/// Rotates the specified matrix.
+		/// </summary>
+		/// <param name="matrix">The matrix.</param>
+		/// <param name="side">The side.</param>
+		/// <returns></returns>
 		public char[,] Rotate(char[,] matrix, int side)
 		{
-
-			char[,] arr = new char[side, side];
+			char[,] forRotation = new char[side, side];
 			for (int i = 0; i < side; i++)
 			{
 				for (int j = 0; j < side; j++)
 				{
-					arr[j, i] = matrix[side - i - 1, j];
+					forRotation[j, i] = matrix[side - i - 1, j];
 				}
 			}
-			return arr;
+			return forRotation;
 		}
 		/// <summary>
 		/// Deletes the line.
@@ -483,7 +495,6 @@ namespace Console_Game_CSharp
 		{
 			for (int i = line; i > 0; i--)
 			{
-				//int len = tetrisGrid[i].Length;
 				for (int j = 0; j < matrixHeight; j++)
 				{
 					tetrisGrid[i][j] = tetrisGrid[i - 1][j];
@@ -503,12 +514,13 @@ namespace Console_Game_CSharp
 		{
 			for (int i = 0; i < matrixWidth; i++)
 			{
-				//int len = tetrisGrid[i].Length;
 				for (int j = 0; j < matrixHeight; j++)
+				{
 					if (tetrisGrid[i][j] == shapes)
 					{
 						tetrisGrid[i][j] = placedShapes;
 					}
+				}
 			}
 		}
 
@@ -530,17 +542,17 @@ namespace Console_Game_CSharp
 				case 0:
 					currentShape = CreateShape(currentShape, shapes, freeSpace);
 					for (int i = whereToSpawn; i < whereToSpawn + widthOfShapes; i++)
-						tetrisGrid[0][i] = currentShape[0, i - whereToSpawn];
+						tetrisGrid[0][i] = currentShape[countOfBlocks, i - whereToSpawn];
 					break;
 
 				case 1:
 					for (int i = whereToSpawn; i < whereToSpawn + widthOfShapes; i++)
-						tetrisGrid[0][i] = currentShape[1, i - whereToSpawn];
+						tetrisGrid[0][i] = currentShape[countOfBlocks, i - whereToSpawn];
 					break;
 
 				case 2:
 					for (int i = whereToSpawn; i < whereToSpawn + widthOfShapes; i++)
-						tetrisGrid[0][i] = currentShape[2, i - whereToSpawn];
+						tetrisGrid[0][i] = currentShape[countOfBlocks, i - whereToSpawn];
 					break;
 
 				default:
