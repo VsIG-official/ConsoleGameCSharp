@@ -17,8 +17,8 @@ namespace Console_Game_CSharp
 	{
 		#region Variables
 
-		private const int matrixWidth = 12;
-		private const int matrixHeight = 16;
+		private const int matrixWidth = 15;
+		private const int matrixHeight = 21;
 		private const int whereToSpawn = 6;
 		private const int widthOfShapes = 3;
 		private const int bonusWidthOfTheScreen = 6;
@@ -172,7 +172,7 @@ namespace Console_Game_CSharp
 		/// <param name="matrixHeight"></param>
 		private static void MovingShapesAway(ConsoleKey button, int matrixHeight)
 		{
-			if (countOfBlocks > 2)
+			if (countOfBlocks > 3)
 			{
 				switch (button)
 				{
@@ -538,6 +538,11 @@ namespace Console_Game_CSharp
 						tetrisGrid[0][i] = currentShape[1, i - whereToSpawn];
 					break;
 
+				case 2:
+					for (int i = whereToSpawn; i < whereToSpawn + widthOfShapes; i++)
+						tetrisGrid[0][i] = currentShape[2, i - whereToSpawn];
+					break;
+
 				default:
 					break;
 			}
@@ -555,31 +560,31 @@ namespace Console_Game_CSharp
 			switch (random.Next(7))
 			{
 				case 0:
-					currentShape = new char[,] { { shapes, freeSpace, freeSpace }, { shapes, freeSpace, freeSpace } };
+					currentShape = new char[,] { { shapes, freeSpace, freeSpace }, { shapes, freeSpace, freeSpace }, { shapes, freeSpace, freeSpace } };
 					break;
 
 				case 1:
-					currentShape = new char[,] { { shapes, shapes, freeSpace }, { shapes, shapes, freeSpace } };
+					currentShape = new char[,] { { shapes, shapes, freeSpace }, { shapes, shapes, freeSpace }, { shapes, shapes, freeSpace } };
 					break;
 
 				case 2:
-					currentShape = new char[,] { { shapes, shapes, shapes }, { shapes, shapes, shapes } };
+					currentShape = new char[,] { { shapes, shapes, shapes }, { shapes, shapes, shapes }, { shapes, shapes, shapes } };
 					break;
 
 				case 3:
-					currentShape = new char[,] { { shapes, shapes, shapes }, { freeSpace, freeSpace, shapes } };
+					currentShape = new char[,] { { shapes, shapes, shapes }, { freeSpace, freeSpace, shapes }, { freeSpace, freeSpace, shapes } };
 					break;
 
 				case 4:
-					currentShape = new char[,] { { freeSpace, freeSpace, shapes }, { shapes, shapes, shapes } };
+					currentShape = new char[,] { { freeSpace, freeSpace, shapes }, { shapes, shapes, shapes }, { freeSpace, freeSpace, shapes } };
 					break;
 
 				case 5:
-					currentShape = new char[,] { { shapes, freeSpace, shapes }, { shapes, shapes, shapes } };
+					currentShape = new char[,] { { shapes, freeSpace, shapes }, { shapes, shapes, shapes }, { shapes, freeSpace, shapes } };
 					break;
 
 				case 6:
-					currentShape = new char[,] { { shapes, shapes, shapes }, { shapes, freeSpace, shapes } };
+					currentShape = new char[,] { { shapes, shapes, shapes }, { shapes, freeSpace, shapes }, { shapes, freeSpace, shapes } };
 					break;
 
 				default:
