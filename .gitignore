@@ -521,3 +521,6 @@ TetrisConsoleGameCSharp/Properties/AssemblyInfo.cs
 TetrisConsoleGameCSharp/packages.config
 
 # End of https://www.gitignore.io/api/csharp,visualstudio
+TetrisConsoleGameCSharpTests/Properties/AssemblyInfo.cs
+ConsoleGameOnCSharp/packages.config
+TetrisConsoleGameCSharpTests/packages.config
