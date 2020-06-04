@@ -1,12 +1,8 @@
 # Tetris
 
-<a href="https://github.com/VsIG-official/README-Template/blob/master/LogoFinalWhite.png"><img src="https://github.com/VsIG-official/README-Template/blob/master/LogoFinalWhite.png" title="VsIG" alt="VsIG"></a>
-
-***INSERT GRAPHIC HERE (include hyperlink in image)***
+<a href="https://github.com/VsIG-official/ConsoleGameCSharp/blob/Another-One/Images/1.png"><img src="https://github.com/VsIG-official/ConsoleGameCSharp/blob/Another-One/Images/1.png" title="VsIG" alt="VsIG"></a>
 
 ## Table of Contents (Optional)
-
-> If your `README` has a lot of info, section headers might be nice.
 
 - [Description](#description)
 - [Badges](#badges)
@@ -20,43 +16,11 @@
 
 ### Description
 
-> Subtitle or Short Description Goes Here
-
-> ideally one sentence
-
-> include terms/tags that can be searched
+> Well, I decided to make a tetris because I love tetris! In this project I use C# and Visual Studio. Hope You will enjoy!
 
 ## Badges
 
-- build status
-- issues (waffle.io maybe)
-- devDependencies
-- npm package
-- coverage
-- slack
-- downloads
-- gitter chat
-- license
-- etc.
-
-[![Build Status](http://img.shields.io/travis/badges/badgerbadgerbadger.svg?style=flat-square)](https://travis-ci.org/badges/badgerbadgerbadger) [![Dependency Status](http://img.shields.io/gemnasium/badges/badgerbadgerbadger.svg?style=flat-square)](https://gemnasium.com/badges/badgerbadgerbadger) [![Coverage Status](http://img.shields.io/coveralls/badges/badgerbadgerbadger.svg?style=flat-square)](https://coveralls.io/r/badges/badgerbadgerbadger) [![Code Climate](http://img.shields.io/codeclimate/github/badges/badgerbadgerbadger.svg?style=flat-square)](https://codeclimate.com/github/badges/badgerbadgerbadger) [![Github Issues](http://githubbadges.herokuapp.com/badges/badgerbadgerbadger/issues.svg?style=flat-square)](https://github.com/badges/badgerbadgerbadger/issues) [![Pending Pull-Requests](http://githubbadges.herokuapp.com/badges/badgerbadgerbadger/pulls.svg?style=flat-square)](https://github.com/badges/badgerbadgerbadger/pulls) [![Gem Version](http://img.shields.io/gem/v/badgerbadgerbadger.svg?style=flat-square)](https://rubygems.org/gems/badgerbadgerbadger) [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org) [![Badges](http://img.shields.io/:badges-9/9-ff6799.svg?style=flat-square)](https://github.com/badges/badgerbadgerbadger)
-
-- To easily create badges go to <a href="https://shields.io/category/license" target="_blank">`shields.io`</a>.
-
-- For more on these wonderful ~~badgers~~ badges, refer to <a href="http://badges.github.io/badgerbadgerbadger/" target="_blank">`badgerbadgerbadger`</a>.
-
-***INSERT ANOTHER GRAPHIC HERE***
-
-[![INSERT YOUR GRAPHIC HERE](http://i.imgur.com/dt8AUb6.png)]()
-
-- Most people will glance at your `README`, *maybe* star it, and leave
-- Ergo, people should understand instantly what your project is about based on your repo
-
-> Tips
-
-- HAVE WHITE SPACE
-- MAKE IT PRETTY
-- GIFS ARE REALLY COOL
+[![Build Status](http://img.shields.io/travis/badges/badgerbadgerbadger.svg?style=flat-square)](https://travis-ci.org/badges/badgerbadgerbadger) 
 
 > GIF Tools
 
