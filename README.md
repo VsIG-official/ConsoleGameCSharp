@@ -14,7 +14,9 @@
 
 > Hi, My dear Friend! In this repo You'll see console tetris game!
 > Why tetris? Well, I decided to make a tetris because I love tetris!
-> In this project I use C# and Visual Studio. Hope You will enjoy!
+> And there will be other figures in it.
+> In this project I use C# and Visual Studio. 
+> Hope You will enjoy!
 
 ## Badges
 
@@ -60,7 +62,7 @@ public void MoveRight(ref char[][] tetrisGrid, char shapes, char freeSpace)
 
 ### Step 1
 
-- 🍴 Fork this repo!
+- **Fork this repo!** 🍴
 
 ### Step 2
 
