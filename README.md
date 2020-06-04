@@ -2,7 +2,7 @@
 
 <a href="https://github.com/VsIG-official/ConsoleGameCSharp/blob/Another-One/Images/1.png"><img src="https://github.com/VsIG-official/ConsoleGameCSharp/blob/Another-One/Images/1.png" title="VsIG" alt="VsIG"></a>
 
-## Table of Contents (Optional)
+## Table of Contents
 
 - [Description](#description)
 - [Badges](#badges)
@@ -21,7 +21,7 @@ I use codacy to check My code quality, but also ignore some issues like "Use spa
 
 > [![Code Quality](http://img.shields.io/travis/badges/badgerbadgerbadger.svg?style=flat-square)](https://travis-ci.org/badges/badgerbadgerbadger) 
 > ![Language](https://img.shields.io/badge/Language-C%23-blueviolet) 
-> [![Theme](https://img.shields.io/badge/Game-Tetris-red](https://en.wikipedia.org/wiki/Tetris)]
+> [[![Theme](https://img.shields.io/badge/Game-Tetris-red](https://en.wikipedia.org/wiki/Tetris)]
 
 ---
 
