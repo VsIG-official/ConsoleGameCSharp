@@ -71,5 +71,5 @@ public void MoveRight(ref char[][] tetrisGrid, char shapes, char freeSpace)
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
 
 - **[MIT license](http://opensource.org/licenses/mit-license.php)**
-- My telegram https://t.me/VsIG_official
+- My telegram >https://t.me/VsIG_official<
 - Copyright 2020 © <a href="https://github.com/VsIG-official" target="_blank">VsIG</a>.
