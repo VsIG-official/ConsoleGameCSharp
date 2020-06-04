@@ -6,6 +6,7 @@
 
 - [Description](#description)
 - [Badges](#badges)
+- [Requirements](#requirements)
 - [Example](#example)
 - [Contributing](#contributing)
 - [License](#license)
@@ -26,6 +27,13 @@ I use codacy to check My code quality, but also ignore some issues like "Use spa
 > [![Language](https://img.shields.io/badge/Language-C%23-blueviolet)](https://en.wikipedia.org/wiki/C_Sharp_(programming_language))
 > [![Theme](https://img.shields.io/badge/Game-Tetris-red)](https://en.wikipedia.org/wiki/Tetris)
 > [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
+
+---
+
+## Requirements
+
+Target Framework:
+.NET Framework 4.7.2
 
 ---
 
