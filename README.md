@@ -43,7 +43,7 @@ public void MoveRight(ref char[][] tetrisGrid, char shapes, char freeSpace)
 		}
 ```
 
-<a href="https://github.com/VsIG-official/ConsoleGameCSharp/blob/Another-One/Images/2.png"><img src="https://github.com/VsIG-official/ConsoleGameCSharp/blob/Another-One/Images/2.png" title="VsIG" alt="VsIG"></a>
+<a href="https://github.com/VsIG-official/ConsoleGameCSharp/blob/Another-One/Images/2.gif"><img src="https://github.com/VsIG-official/ConsoleGameCSharp/blob/Another-One/Images/2.gif" title="VsIG" alt="VsIG"></a>
 
 ---
 
@@ -53,19 +53,11 @@ public void MoveRight(ref char[][] tetrisGrid, char shapes, char freeSpace)
 
 ### Step 1
 
-- **Option 1**
     - 🍴 Fork this repo!
-
-- **Option 2**
-    - 👯 Clone this repo to your local machine using `https://github.com/joanaz/HireDot2.git`
 
 ### Step 2
 
 - **HACK AWAY!** 🔨🔨🔨
-
-### Step 3
-
-- 🔃 Create a new pull request using <a href="https://github.com/joanaz/HireDot2/compare/" target="_blank">`https://github.com/joanaz/HireDot2/compare/`</a>.
 
 ---
 
