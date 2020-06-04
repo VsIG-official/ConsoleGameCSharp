@@ -20,8 +20,8 @@
 I use codacy to check My code quality, but also ignore some issues like "Use spaces instead of tabs". Also sometimes "Console.WriteLine()" is an issue for a Codacy so I ignore it too and etc:
 
 > [![Code Quality](http://img.shields.io/travis/badges/badgerbadgerbadger.svg?style=flat-square)](https://travis-ci.org/badges/badgerbadgerbadger) 
-> [![Language](https://img.shields.io/badge/Language-C%23-blueviolet)] 
-> [![Theme](https://img.shields.io/badge/Game-Tetris-red](https://en.wikipedia.org/wiki/Tetris)
+> ![Language](https://img.shields.io/badge/Language-C%23-blueviolet) 
+> [![Theme](https://img.shields.io/badge/Game-Tetris-red](https://en.wikipedia.org/wiki/Tetris)]
 
 ---
 
