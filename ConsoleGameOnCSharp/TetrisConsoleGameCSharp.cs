@@ -16,8 +16,8 @@ namespace Console_Game_CSharp
 	{
 		#region Variables
 
-		private const int matrixWidth = 15;
-		private const int matrixHeight = 21;
+		private const int matrixWidth = 12;
+		private const int matrixHeight = 16;
 		private const int whereToSpawn = 6;
 		private const int heightOfShapes = 3;//use this if Your blocks don't have same width and height
 		private const int widthOfShapes = 3;
@@ -34,7 +34,7 @@ namespace Console_Game_CSharp
 
 		private const int gameWidth = matrixWidth + bonusWidthOfTheScreen;
 		private const int gameHeight = matrixHeight + bonusHeightOfTheScreen;
-		private static Mover mover = new Mover(matrixWidth, matrixWidth);
+		private static Mover mover = new Mover(matrixWidth, matrixHeight);
 		private static int score;
 		private static char[,] currentShape;
 		private static int countOfBlocks;
@@ -145,7 +145,7 @@ namespace Console_Game_CSharp
 				}
 			}
 
-			bool gameOver = true;
+			bool gameOver = false;
 			for (int i = 0; i < matrixHeight; i++)
 			{
 				if (tetrisGrid[topLimit][i] == placedShapes)
@@ -155,11 +155,11 @@ namespace Console_Game_CSharp
 					Console.WriteLine("And Your score is " + score);
 					aTimer.Stop();
 					thread.Abort();
-					gameOver = false;
+					gameOver = true;
 				}
 			}
 
-			if (gameOver)
+			if (!gameOver)
 			{
 				mover.SetShape(ref tetrisGrid, ref currentShape, countOfBlocks, whereToSpawn, widthOfShapes, shapes, freeSpace);
 				GameTetris.PrintingMatrix(tetrisGrid, score, matrixWidth, topLimit);
@@ -195,7 +195,7 @@ namespace Console_Game_CSharp
 					case ConsoleKey.DownArrow:
 						if (!mover.CheckBorder(tetrisGrid, placedShapes, shapes, Side.down))
 						{
-							mover.MoveDown(ref tetrisGrid, shapes, freeSpace, boundary, placedShapes, countOfBlocks);
+							mover.MoveDown(ref tetrisGrid, shapes, freeSpace, boundary, placedShapes, ref countOfBlocks);
 						}
 						break;
 					case ConsoleKey.UpArrow:
@@ -252,11 +252,14 @@ namespace Console_Game_CSharp
 				Console.Clear();
 				for (int i = 0; i < matrixWidth; i++)
 				{
-					Console.WriteLine(tetrisGrid[i]);
 					if (i == topLimit)
 					{
 						Console.Write(tetrisGrid[i]);
 						Console.WriteLine("<<<TopLimit");
+					}
+					else
+					{
+						Console.WriteLine(tetrisGrid[i]);
 					}
 				}
 				Console.WriteLine("Score: " + score);
@@ -340,7 +343,7 @@ namespace Console_Game_CSharp
 			}
 		}
 
-		public void MoveDown(ref char[][] tetrisGrid, char shapes, char freeSpace, char boundary, char placedShapes, int countOfBlocks)
+		public void MoveDown(ref char[][] tetrisGrid, char shapes, char freeSpace, char boundary, char placedShapes, ref int countOfBlocks)
 		{
 			List<Point> listOfElements = new List<Point>();
 			for (int i = matrixWidth - 1; i > 0; i--)
@@ -358,6 +361,7 @@ namespace Console_Game_CSharp
 						}
 						else if (tetrisGrid[i + 1][j] == boundary)
 						{
+							countOfBlocks = 0;
 							Convert3To4(ref tetrisGrid, shapes, placedShapes);
 							for (int z = 0; z < listOfElements.Count; z++)
 							{
