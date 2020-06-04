@@ -152,12 +152,13 @@ namespace Console_Game_CSharp
 				{
 					Console.Clear();
 					Console.WriteLine("Game over! You lost!");
-					Console.WriteLine("And Your score is "+score);
+					Console.WriteLine("And Your score is " + score);
 					aTimer.Stop();
 					thread.Abort();
 					gameOver = false;
 				}
 			}
+
 			if (gameOver)
 			{
 				mover.SetShape(ref tetrisGrid, ref currentShape, countOfBlocks, whereToSpawn, widthOfShapes, shapes, freeSpace);
@@ -194,12 +195,11 @@ namespace Console_Game_CSharp
 					case ConsoleKey.DownArrow:
 						if (!mover.CheckBorder(tetrisGrid, placedShapes, shapes, Side.down))
 						{
-							mover.MoveDown(ref tetrisGrid, shapes,freeSpace,boundary, placedShapes, countOfBlocks);
+							mover.MoveDown(ref tetrisGrid, shapes, freeSpace, boundary, placedShapes, countOfBlocks);
 						}
 						break;
 					case ConsoleKey.UpArrow:
-						mover.RotateUp(ref tetrisGrid, shapes, freeSpace, boundary, placedShapes,heightOfShapes, widthOfShapes);
-
+						mover.RotateUp(ref tetrisGrid, shapes, boundary, placedShapes, heightOfShapes, widthOfShapes);
 						break;
 					default:
 						break;
@@ -340,7 +340,7 @@ namespace Console_Game_CSharp
 			}
 		}
 
-		public void MoveDown(ref char[][] tetrisGrid, char shapes,char freeSpace,char boundary,char placedShapes,int countOfBlocks)
+		public void MoveDown(ref char[][] tetrisGrid, char shapes, char freeSpace, char boundary, char placedShapes, int countOfBlocks)
 		{
 			List<Point> listOfElements = new List<Point>();
 			for (int i = matrixWidth - 1; i > 0; i--)
@@ -359,7 +359,6 @@ namespace Console_Game_CSharp
 						else if (tetrisGrid[i + 1][j] == boundary)
 						{
 							Convert3To4(ref tetrisGrid, shapes, placedShapes);
-							countOfBlocks = 0;
 							for (int z = 0; z < listOfElements.Count; z++)
 							{
 								char tempMatrix = tetrisGrid[listOfElements[z].X][listOfElements[z].Y];
@@ -373,7 +372,7 @@ namespace Console_Game_CSharp
 			}
 		}
 
-		public void RotateUp(ref char[][] tetrisGrid, char shapes, char freeSpace, char boundary, char placedShapes, int heightOfShapes, int widthOfShapes)
+		public void RotateUp(ref char[][] tetrisGrid, char shapes, char boundary, char placedShapes, int heightOfShapes, int widthOfShapes)
 		{
 			int indexJ = matrixHeight;
 			for (int i = 0; i < matrixWidth; i++)
@@ -386,6 +385,7 @@ namespace Console_Game_CSharp
 					}
 				}
 			}
+
 			char[,] borderOfShape = new char[heightOfShapes, widthOfShapes];
 			for (int i = 0; i < matrixWidth - 3; i++)
 			{
