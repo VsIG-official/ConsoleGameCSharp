@@ -11,11 +11,13 @@
 
 ### Description
 
-> Hi, My dear Friend! In this repo You'll see console tetris game! Why tetris? Well, I decided to make a tetris because I love tetris! In this project I use C# and Visual Studio. Hope You will enjoy!
+> Hi, My dear Friend! In this repo You'll see console tetris game! 
+> Why tetris? Well, I decided to make a tetris because I love tetris! 
+> In this project I use C# and Visual Studio. Hope You will enjoy!
 
 ## Badges
 
-I use codacy to check My code quality:
+I use codacy to check My code quality, but also ignore some issues like "Use spaces instead of tabs". Also sometimes "Console.WriteLine()" is an issue for a Codacy so I ignore it too and etc:
 [![Code Quality](http://img.shields.io/travis/badges/badgerbadgerbadger.svg?style=flat-square)](https://travis-ci.org/badges/badgerbadgerbadger)
 [![Language](https://img.shields.io/badge/Language-C%23-blueviolet)]
 [![Theme](https://img.shields.io/badge/Game-Tetris-red](https://en.wikipedia.org/wiki/Tetris)
@@ -42,6 +44,8 @@ public void MoveRight(ref char[][] tetrisGrid, char shapes, char freeSpace)
 			}
 		}
 ```
+
+> And game:
 
 <a href="https://github.com/VsIG-official/ConsoleGameCSharp/blob/Another-One/Images/2.gif"><img src="https://github.com/VsIG-official/ConsoleGameCSharp/blob/Another-One/Images/2.gif" title="VsIG" alt="VsIG"></a>
 
