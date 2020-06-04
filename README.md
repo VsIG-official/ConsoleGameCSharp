@@ -6,6 +6,7 @@
 
 - [Description](#description)
 - [Badges](#badges)
+- [Example](#example)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -17,11 +18,12 @@
 
 ## Badges
 
-I use codacy to check My code quality, but also ignore some issues like "Use spaces instead of tabs". Also sometimes "Console.WriteLine()" is an issue for a Codacy so I ignore it too and etc:
+I use codacy to check My code quality, but also ignore some issues like "Use spaces instead of tabs". And sometimes "Console.WriteLine()" or/and lines in README are an issues for Codacy so I ignore these problems too and etc:
 
-> [![Code Quality](http://img.shields.io/travis/badges/badgerbadgerbadger.svg?style=flat-square)](https://travis-ci.org/badges/badgerbadgerbadger) 
-> ![Language](https://img.shields.io/badge/Language-C%23-blueviolet) 
-> [![Theme](https://img.shields.io/badge/Game-Tetris-red)](https://en.wikipedia.org/wiki/Tetris) 
+> [![Code Quality](https://img.shields.io/badge/Code%20quality-A-green)](https://app.codacy.com/manual/VsIG-official/ConsoleGameCSharp/dashboard)
+> ![Language](https://img.shields.io/badge/Language-C%23-blueviolet)
+> [![Theme](https://img.shields.io/badge/Game-Tetris-red)](https://en.wikipedia.org/wiki/Tetris)
+> [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
 
 ---
 
@@ -58,7 +60,7 @@ public void MoveRight(ref char[][] tetrisGrid, char shapes, char freeSpace)
 
 ### Step 1
 
-    - 🍴 Fork this repo!
+- 🍴 Fork this repo!
 
 ### Step 2
 
@@ -71,5 +73,5 @@ public void MoveRight(ref char[][] tetrisGrid, char shapes, char freeSpace)
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
 
 - **[MIT license](http://opensource.org/licenses/mit-license.php)**
-- My telegram >https://t.me/VsIG_official<
+- My telegram https://t.me/VsIG_official
 - Copyright 2020 © <a href="https://github.com/VsIG-official" target="_blank">VsIG</a>.
