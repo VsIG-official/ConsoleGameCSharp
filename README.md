@@ -1,4 +1,4 @@
-# Tetris
+# Tetris Game
 
 <a href="https://github.com/VsIG-official/ConsoleGameCSharp/blob/Another-One/Images/1.png"><img src="https://github.com/VsIG-official/ConsoleGameCSharp/blob/Another-One/Images/1.png" title="VsIG" alt="VsIG"></a>
 
@@ -15,21 +15,10 @@
 
 ## Badges
 
-[![Build Status](http://img.shields.io/travis/badges/badgerbadgerbadger.svg?style=flat-square)](https://travis-ci.org/badges/badgerbadgerbadger) 
-
-> GIF Tools
-
-- Use <a href="http://recordit.co/" target="_blank">**Recordit**</a> to create quicks screencasts of your desktop and export them as `GIF`s.
-- For terminal sessions, there's <a href="https://github.com/chjj/ttystudio" target="_blank">**ttystudio**</a> which also supports exporting `GIF`s.
-
-**Recordit**
-
-![Recordit GIF](http://g.recordit.co/iLN6A0vSD8.gif)
-
-**ttystudio**
-
-![ttystudio GIF](https://raw.githubusercontent.com/chjj/ttystudio/master/img/example.gif)
-
+I use codacy to check My code quality:
+[![Code Quality](http://img.shields.io/travis/badges/badgerbadgerbadger.svg?style=flat-square)](https://travis-ci.org/badges/badgerbadgerbadger)
+[![Language](https://img.shields.io/badge/Language-C%23-blueviolet)]
+[![Theme](https://img.shields.io/badge/Game-Tetris-red](https://en.wikipedia.org/wiki/Tetris)
 
 ---
 
@@ -53,6 +42,8 @@ public void MoveRight(ref char[][] tetrisGrid, char shapes, char freeSpace)
 			}
 		}
 ```
+
+<a href="https://github.com/VsIG-official/ConsoleGameCSharp/blob/Another-One/Images/2.png"><img src="https://github.com/VsIG-official/ConsoleGameCSharp/blob/Another-One/Images/2.png" title="VsIG" alt="VsIG"></a>
 
 ---
 
@@ -78,20 +69,10 @@ public void MoveRight(ref char[][] tetrisGrid, char shapes, char freeSpace)
 
 ---
 
-## Team
-
-> Or Contributors/People
-
-| <a href="https://github.com/VsIG-official" target="_blank">**VsIG**</a>
-| :---:
-| [![VsIG](https://avatars0.githubusercontent.com/u/50269023?s=400&u=522283a8fce57866b73427f94a742fb83e0b1b40&v=4)](https://github.com/VsIG-official)    |
-| <a href="https://github.com/VsIG-official" target="_blank">`github.com/VsIG-official`</a>
-
----
-
 ## License
 
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
 
 - **[MIT license](http://opensource.org/licenses/mit-license.php)**
+- My telegram https://t.me/VsIG_official
 - Copyright 2020 © <a href="https://github.com/VsIG-official" target="_blank">VsIG</a>.
