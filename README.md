@@ -6,17 +6,12 @@
 
 - [Description](#description)
 - [Badges](#badges)
-- [Installation](#installation)
-- [Features](#features)
 - [Contributing](#contributing)
-- [Team](#team)
-- [FAQ](#faq)
-- [Support](#support)
 - [License](#license)
 
 ### Description
 
-> Well, I decided to make a tetris because I love tetris! In this project I use C# and Visual Studio. Hope You will enjoy!
+> Hi, My dear Friend! In this repo You'll see console tetris game! Why tetris? Well, I decided to make a tetris because I love tetris! In this project I use C# and Visual Studio. Hope You will enjoy!
 
 ## Badges
 
@@ -38,93 +33,25 @@
 
 ---
 
-## Example (Optional)
+## Example
 
-```javascript
-// code away!
+```C#
 
-let generateProject = project => {
-  let code = [];
-  for (let js = 0; js < project.length; js++) {
-    code.push(js);
-  }
-};
-```
-
----
-
-## Installation
-
-- All the `code` required to get started
-- Images of what it should look like
-
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-
-### Clone
-
-- Clone this repo to your local machine using `https://github.com/VsIG-official/SOME-REPO`
-
-### Setup
-
-- If you want more syntax highlighting, format your code like this:
-
-> update and install this package first
-
-```shell
-$ brew update
-$ brew install VsIG
-```
-
-> now install npm and bower packages
-
-```shell
-$ npm install
-$ bower install
-```
-
-- For all the possible languages that support syntax highlithing on GitHub (which is basically all of them), refer <a href="https://github.com/github/linguist/blob/master/lib/linguist/languages.yml" target="_blank">here</a>.
-
----
-
-## Features
-## Usage (Optional)
-## Documentation (Optional)
-## Tests (Optional)
-
-- Going into more detail on code and technologies used
-- I utilized this nifty <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">Markdown Cheatsheet</a> for this sample `README`.
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
+public void MoveRight(ref char[][] tetrisGrid, char shapes, char freeSpace)
+		{
+			for (int i = 0; i < matrixWidth; i++)
+			{
+				for (int j = matrixHeight - 1; j >= 0; j--)
+				{
+					if (tetrisGrid[i][j] == shapes && tetrisGrid[i][j + 1] == freeSpace)
+					{
+						char tempMatrix = tetrisGrid[i][j];
+						tetrisGrid[i][j] = tetrisGrid[i][j + 1];
+						tetrisGrid[i][j + 1] = tempMatrix;
+					}
+				}
+			}
+		}
 ```
 
 ---
@@ -151,14 +78,6 @@ Give an example
 
 ---
 
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
----
-
 ## Team
 
 > Or Contributors/People
@@ -170,15 +89,6 @@ Give an example
 
 - You can just grab their GitHub profile image URL
 - You should probably resize their picture using `?s=200` at the end of the image URL.
-
-
----
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
 
 ---
 
