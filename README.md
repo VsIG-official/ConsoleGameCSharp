@@ -15,7 +15,7 @@
 > Hi, My dear Friend! In this repo You'll see console tetris game!
 > Why tetris? Well, I decided to make a tetris because I love tetris!
 > And there will be other figures in it.
-> In this project I use C# and Visual Studio. 
+> In this project I use C# and Visual Studio.
 > Hope You will enjoy!
 
 ## Badges
@@ -23,7 +23,7 @@
 I use codacy to check My code quality, but also ignore some issues like "Use spaces instead of tabs". And sometimes "Console.WriteLine()" or/and lines in README are an issues for Codacy so I ignore these problems too and etc:
 
 > [![Code Quality](https://img.shields.io/badge/Code%20quality-A-green)](https://app.codacy.com/manual/VsIG-official/ConsoleGameCSharp/dashboard)
-> ![Language](https://img.shields.io/badge/Language-C%23-blueviolet)
+> [![Language](https://img.shields.io/badge/Language-C%23-blueviolet)](https://en.wikipedia.org/wiki/C_Sharp_(programming_language))
 > [![Theme](https://img.shields.io/badge/Game-Tetris-red)](https://en.wikipedia.org/wiki/Tetris)
 > [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
 
