@@ -1,6 +1,3 @@
-# ConsoleGameCSharp
- My Console Game CSharp
-=======
 # Tetris Game
 
 <a href="https://github.com/VsIG-official/ConsoleGameCSharp/blob/Another-One/Images/1.png"><img src="https://github.com/VsIG-official/ConsoleGameCSharp/blob/Another-One/Images/1.png" title="VsIG" alt="VsIG"></a>

@@ -7,7 +7,7 @@ using System.Timers;
 /// <summary>
 /// My console game, where You can play tetris
 /// </summary>
-namespace Console_Game_CSharp
+namespace ConsoleGameCSharp
 {
 	/// <summary>
 	/// Main class
