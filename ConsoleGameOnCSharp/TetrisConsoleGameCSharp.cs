@@ -289,26 +289,6 @@ namespace ConsoleGameCSharp
 				Console.WriteLine("Score: " + score);
 			}
 		}
-
-		/// <summary>
-		/// Printing the matrix.
-		/// </summary>
-		/// <param name="tetrisGrid">The tetris grid.</param>
-		public static void PrintingMatrix(char[,] tetrisGrid)
-		{
-			lock (locker)
-			{
-				Console.WriteLine();
-				for (int i = 0; i < tetrisGrid.GetLength(0); i++)
-				{
-					for (int j = 0; j < tetrisGrid.GetLength(1); j++)
-					{
-						Console.Write(tetrisGrid[i, j]);
-					}
-					Console.WriteLine();
-				}
-			}
-		}
 	}
 
 	/// <summary>
