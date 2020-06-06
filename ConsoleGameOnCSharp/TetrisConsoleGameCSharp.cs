@@ -34,10 +34,29 @@ namespace ConsoleGameCSharp
 
 		private const int gameWidth = matrixWidth + bonusWidthOfTheScreen;
 		private const int gameHeight = matrixHeight + bonusHeightOfTheScreen;
-		private static Mover mover = new Mover(matrixWidth, matrixHeight);
+		private static Mover mover = new Mover(matrixWidth, matrixHeight,
+			shapes,whereToSpawn,widthOfShapes,freeSpace);
 		private static int score;
 		private static char[,] currentShape;
 		private static int countOfBlocks;
+
+		private static char[][,] shapesArray = new char[][,]
+		{
+			new char[,] { { shapes, freeSpace, freeSpace },
+				{ shapes, freeSpace, freeSpace }, { shapes, freeSpace, freeSpace } },
+			new char[,] { { shapes, shapes, freeSpace },
+				{ shapes, shapes, freeSpace }, { shapes, shapes, freeSpace } },
+			new char[,] { { shapes, shapes, shapes },
+				{ freeSpace, freeSpace, shapes }, { freeSpace, freeSpace, shapes } },
+			new char[,] { { shapes, shapes, shapes },
+				{ freeSpace, freeSpace, shapes }, { freeSpace, freeSpace, shapes } },
+			new char[,] { { freeSpace, freeSpace, shapes },
+				{ shapes, shapes, shapes }, { freeSpace, freeSpace, shapes } },
+			new char[,] { { shapes, freeSpace, shapes },
+				{ shapes, shapes, shapes }, { shapes, freeSpace, shapes } },
+			new char[,] { { shapes, shapes, shapes },
+				{ shapes, freeSpace, shapes }, { shapes, freeSpace, shapes } },
+		};
 
 		#endregion Variables
 
@@ -109,7 +128,7 @@ namespace ConsoleGameCSharp
 
 							case boundary:
 							case placedShapes:
-								mover.Convert3To4(ref tetrisGrid, shapes, placedShapes);
+								mover.Convert3To4(ref tetrisGrid, placedShapes);
 								countOfBlocks = 0;
 								for (int z = 0; z < listOfElements.Count; z++)
 								{
@@ -120,8 +139,7 @@ namespace ConsoleGameCSharp
 								}
 								break;
 
-							default:
-								break;
+							default: break;
 						}
 					}
 				}
@@ -161,7 +179,7 @@ namespace ConsoleGameCSharp
 			if (!gameOver)
 			{
 				mover.SetShape(ref tetrisGrid, ref currentShape, countOfBlocks,
-					whereToSpawn, widthOfShapes, shapes, freeSpace);
+					shapesArray);
 				GameTetris.PrintingMatrix(tetrisGrid, score, matrixWidth, topLimit);
 				countOfBlocks++;
 			}
@@ -178,34 +196,34 @@ namespace ConsoleGameCSharp
 				switch (button)
 				{
 					case ConsoleKey.LeftArrow:
-						if (!mover.CheckBorder(tetrisGrid, placedShapes, shapes, Side.left))
+						if (!mover.CheckBorder(tetrisGrid, placedShapes, Side.left))
 						{
-							mover.MoveLeft(ref tetrisGrid, shapes, freeSpace);
+							mover.MoveLeft(ref tetrisGrid);
 						}
 						break;
 
 					case ConsoleKey.RightArrow:
-						if (!mover.CheckBorder(tetrisGrid, placedShapes, shapes, Side.rigth))
+						if (!mover.CheckBorder(tetrisGrid, placedShapes, Side.rigth))
 						{
-							mover.MoveRight(ref tetrisGrid, shapes, freeSpace);
+							mover.MoveRight(ref tetrisGrid);
 						}
 						break;
 
 					case ConsoleKey.DownArrow:
-						if (!mover.CheckBorder(tetrisGrid, placedShapes, shapes, Side.down))
+						if (!mover.CheckBorder(tetrisGrid, placedShapes, Side.down))
 						{
-							mover.MoveDown(ref tetrisGrid, shapes, freeSpace,
+							mover.MoveDown(ref tetrisGrid,
 								boundary, placedShapes, ref countOfBlocks);
 						}
 						break;
 					case ConsoleKey.UpArrow:
 						{
-							mover.RotateUp(ref tetrisGrid, shapes, boundary,
-								placedShapes, heightOfShapes, widthOfShapes);
+							mover.RotateUp(ref tetrisGrid, boundary,
+								placedShapes, heightOfShapes);
 						}
 						break;
-					default:
-						break;
+
+					default: break;
 				}
 			}
 			GameTetris.PrintingMatrix(tetrisGrid, score, matrixWidth, topLimit);
@@ -227,7 +245,8 @@ namespace ConsoleGameCSharp
 		/// <param name="matrixWidth"></param>
 		/// <param name="freeSpace"></param>
 		/// <param name="boundary"></param>
-		public void SetMatrix(ref char[][] tetrisGrid, int matrixHeight, int matrixWidth, char freeSpace, char boundary)
+		public void SetMatrix(ref char[][] tetrisGrid, int matrixHeight,
+			int matrixWidth, char freeSpace, char boundary)
 		{
 			for (int i = 0; i < matrixWidth; i++)
 			{
@@ -249,7 +268,8 @@ namespace ConsoleGameCSharp
 		/// <param name="score">The score.</param>
 		/// <param name="matrixWidth">Width of the matrix.</param>
 		/// <param name="topLimit">top limit of the matrix.</param>
-		public static void PrintingMatrix(char[][] tetrisGrid, int score, int matrixWidth, int topLimit)
+		public static void PrintingMatrix(char[][] tetrisGrid, int score,
+			int matrixWidth, int topLimit)
 		{
 			lock (locker)
 			{
@@ -290,11 +310,20 @@ namespace ConsoleGameCSharp
 		public Random random = new Random();
 		private int matrixWidth { get; set; }
 		private int matrixHeight { get; set; }
+		private char shapes { get; set; }
+		private char freeSpace { get; set; }
+		private int whereToSpawn { get; set; }
+		private int widthOfShapes { get; set; }
 
-		public Mover(int _matrixWidth, int _matrixHeight)
+		public Mover(int _matrixWidth, int _matrixHeight,char _shapes,int _whereToSpawn,
+			int _widthOfShapes, char _freeSpace)
 		{
 			matrixHeight = _matrixHeight;
 			matrixWidth = _matrixWidth;
+			shapes = _shapes;
+			whereToSpawn= _whereToSpawn;
+			widthOfShapes = _widthOfShapes;
+			freeSpace = _freeSpace;
 		}
 
 		/// <summary>
@@ -303,7 +332,7 @@ namespace ConsoleGameCSharp
 		/// <param name="tetrisGrid"></param>
 		/// <param name="shapes"></param>
 		/// <param name="freeSpace"></param>
-		public void MoveLeft(ref char[][] tetrisGrid, char shapes, char freeSpace)
+		public void MoveLeft(ref char[][] tetrisGrid)
 		{
 			for (int i = 0; i < matrixWidth; i++)
 			{
@@ -325,7 +354,7 @@ namespace ConsoleGameCSharp
 		/// <param name="tetrisGrid"></param>
 		/// <param name="shapes"></param>
 		/// <param name="freeSpace"></param>
-		public void MoveRight(ref char[][] tetrisGrid, char shapes, char freeSpace)
+		public void MoveRight(ref char[][] tetrisGrid)
 		{
 			for (int i = 0; i < matrixWidth; i++)
 			{
@@ -350,7 +379,8 @@ namespace ConsoleGameCSharp
 		/// <param name="boundary"></param>
 		/// <param name="placedShapes"></param>
 		/// <param name="countOfBlocks"></param>
-		public void MoveDown(ref char[][] tetrisGrid, char shapes, char freeSpace, char boundary, char placedShapes, ref int countOfBlocks)
+		public void MoveDown(ref char[][] tetrisGrid,
+			char boundary, char placedShapes, ref int countOfBlocks)
 		{
 			List<Point> listOfElements = new List<Point>();
 			for (int i = matrixWidth - 1; i > 0; i--)
@@ -369,7 +399,7 @@ namespace ConsoleGameCSharp
 						else if (tetrisGrid[i + 1][j] == boundary)
 						{
 							countOfBlocks = 0;
-							Convert3To4(ref tetrisGrid, shapes, placedShapes);
+							Convert3To4(ref tetrisGrid, placedShapes);
 							for (int z = 0; z < listOfElements.Count; z++)
 							{
 								char tempMatrix = tetrisGrid[listOfElements[z].X][listOfElements[z].Y];
@@ -392,7 +422,8 @@ namespace ConsoleGameCSharp
 		/// <param name="placedShapes"></param>
 		/// <param name="heightOfShapes"></param>
 		/// <param name="widthOfShapes"></param>
-		public void RotateUp(ref char[][] tetrisGrid, char shapes, char boundary, char placedShapes, int heightOfShapes, int widthOfShapes)
+		public void RotateUp(ref char[][] tetrisGrid, char boundary,
+			char placedShapes, int heightOfShapes)
 		{
 			int indexJ = matrixHeight;
 			for (int i = 0; i < matrixWidth; i++)
@@ -459,8 +490,7 @@ namespace ConsoleGameCSharp
 		/// <param name="border">The border.</param>
 		/// <param name="shapes">The shapes.</param>
 		/// <param name="side">The side.</param>
-		public bool CheckBorder(char[][] tetrisGrid, char border,
-			char shapes, Side side)
+		public bool CheckBorder(char[][] tetrisGrid, char border, Side side)
 		{
 			for (int i = 0; i < matrixWidth; i++)
 			{
@@ -503,8 +533,7 @@ namespace ConsoleGameCSharp
 								}
 								break;
 
-							default:
-								break;
+							default: break;
 						}
 					}
 				}
@@ -552,7 +581,7 @@ namespace ConsoleGameCSharp
 		/// <param name="tetrisGrid">The tetris grid.</param>
 		/// <param name="shapes">The shapes.</param>
 		/// <param name="placedShapes">The placed shapes.</param>
-		public void Convert3To4(ref char[][] tetrisGrid, char shapes, char placedShapes)
+		public void Convert3To4(ref char[][] tetrisGrid, char placedShapes)
 		{
 			for (int i = 0; i < matrixWidth; i++)
 			{
@@ -577,12 +606,12 @@ namespace ConsoleGameCSharp
 		/// <param name="shapes">The shapes.</param>
 		/// <param name="freeSpace">The free space.</param>
 		public void SetShape(ref char[][] tetrisGrid, ref char[,] currentShape,
-		int countOfBlocks, int whereToSpawn, int widthOfShapes, char shapes, char freeSpace)
+		int countOfBlocks, char[][,] shapesArray)
 		{
 			switch (countOfBlocks)
 			{
 				case 0:
-					currentShape = CreateShape(currentShape, shapes, freeSpace);
+					currentShape = CreateShape(currentShape, shapesArray);
 					for (int i = whereToSpawn; i < whereToSpawn + widthOfShapes; i++)
 					{
 						tetrisGrid[0][i] = currentShape[countOfBlocks, i - whereToSpawn];
@@ -597,8 +626,7 @@ namespace ConsoleGameCSharp
 					}
 					break;
 
-				default:
-					break;
+				default: break;
 			}
 		}
 
@@ -606,44 +634,37 @@ namespace ConsoleGameCSharp
 		/// Creates the shape.
 		/// </summary>
 		/// <param name="currentShape">The current shape.</param>
-		/// <param name="shapes">The shapes.</param>
-		/// <param name="freeSpace">The free space.</param>
-		private char[,] CreateShape(char[,] currentShape, char shapes, char freeSpace)
+		private char[,] CreateShape(char[,] currentShape, char[][,] shapesArray)
 		{
 			switch (random.Next(7))
 			{
 				case 0:
-					currentShape = new char[,] { { shapes, freeSpace, freeSpace }, { shapes, freeSpace, freeSpace }, { shapes, freeSpace, freeSpace } };
-					break;
+					currentShape = shapesArray[0]; break;
 
 				case 1:
-					currentShape = new char[,] { { shapes, shapes, freeSpace }, { shapes, shapes, freeSpace }, { shapes, shapes, freeSpace } };
-					break;
+					currentShape = shapesArray[1]; break;
 
 				case 2:
-					currentShape = new char[,] { { shapes, shapes, shapes }, { shapes, shapes, shapes }, { shapes, shapes, shapes } };
-					break;
+					currentShape = shapesArray[2]; break;
 
 				case 3:
-					currentShape = new char[,] { { shapes, shapes, shapes }, { freeSpace, freeSpace, shapes }, { freeSpace, freeSpace, shapes } };
-					break;
+					currentShape = shapesArray[3]; break;
 
 				case 4:
-					currentShape = new char[,] { { freeSpace, freeSpace, shapes }, { shapes, shapes, shapes }, { freeSpace, freeSpace, shapes } };
-					break;
+					currentShape = shapesArray[4]; break;
 
 				case 5:
-					currentShape = new char[,] { { shapes, freeSpace, shapes }, { shapes, shapes, shapes }, { shapes, freeSpace, shapes } };
-					break;
+					currentShape = shapesArray[5]; break;
 
 				case 6:
-					currentShape = new char[,] { { shapes, shapes, shapes }, { shapes, freeSpace, shapes }, { shapes, freeSpace, shapes } };
-					break;
+					currentShape = shapesArray[6]; break;
 
-				default:
-					break;
+				default: break;
 			}
 			return currentShape;
 		}
 	}
 }
+
+//tetrisGrid
+//
