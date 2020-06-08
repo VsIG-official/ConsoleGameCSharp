@@ -1,0 +1,299 @@
+﻿using ConsoleGameCSharp.Enums;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+namespace ConsoleGameCSharp
+{
+	/// <summary>
+	/// Helps with movement in matrix
+	/// </summary>
+	class Mover
+	{
+		public Random random = new Random();
+		private int matrixWidth { get; set; }
+		private int matrixHeight { get; set; }
+		private char shapes { get; set; }
+		private char freeSpace { get; set; }
+		private int whereToSpawn { get; set; }
+		private int widthOfShapes { get; set; }
+
+		public Mover(int _matrixWidth, int _matrixHeight, char _shapes, int _whereToSpawn,
+			int _widthOfShapes, char _freeSpace)
+		{
+			matrixHeight = _matrixHeight;
+			matrixWidth = _matrixWidth;
+			shapes = _shapes;
+			whereToSpawn = _whereToSpawn;
+			widthOfShapes = _widthOfShapes;
+			freeSpace = _freeSpace;
+		}
+
+		/// <summary>
+		/// Moving left
+		/// </summary>
+		/// <param name="tetrisGrid"></param>
+		/// <param name="shapes"></param>
+		/// <param name="freeSpace"></param>
+		public void MoveLeft(ref char[][] tetrisGrid)
+		{
+			for (int i = 0; i < matrixWidth; i++)
+			{
+				for (int j = 1; j < matrixHeight; j++)
+				{
+					if (tetrisGrid[i][j] == shapes && tetrisGrid[i][j - 1] == freeSpace)
+					{
+						char tempMatrix = tetrisGrid[i][j];
+						tetrisGrid[i][j] = tetrisGrid[i][j - 1];
+						tetrisGrid[i][j - 1] = tempMatrix;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Moving right
+		/// </summary>
+		/// <param name="tetrisGrid"></param>
+		/// <param name="shapes"></param>
+		/// <param name="freeSpace"></param>
+		public void MoveRight(ref char[][] tetrisGrid)
+		{
+			for (int i = 0; i < matrixWidth; i++)
+			{
+				for (int j = matrixHeight - 1; j >= 0; j--)
+				{
+					if (tetrisGrid[i][j] == shapes && tetrisGrid[i][j + 1] == freeSpace)
+					{
+						char tempMatrix = tetrisGrid[i][j];
+						tetrisGrid[i][j] = tetrisGrid[i][j + 1];
+						tetrisGrid[i][j + 1] = tempMatrix;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Moving down
+		/// </summary>
+		/// <param name="tetrisGrid"></param>
+		/// <param name="shapes"></param>
+		/// <param name="freeSpace"></param>
+		/// <param name="boundary"></param>
+		/// <param name="placedShapes"></param>
+		/// <param name="countOfBlocks"></param>
+		public void MoveDown(ref char[][] tetrisGrid,
+			char boundary, char placedShapes, ref int countOfBlocks)
+		{
+			List<Point> listOfElements = new List<Point>();
+			for (int i = matrixWidth - 1; i > 0; i--)
+			{
+				for (int j = 0; j < matrixHeight; j++)
+				{
+					if (tetrisGrid[i][j] == shapes)
+					{
+						if (tetrisGrid[i + 1][j] == freeSpace)
+						{
+							char tempMatrix = tetrisGrid[i][j];
+							tetrisGrid[i][j] = tetrisGrid[i + 1][j];
+							tetrisGrid[i + 1][j] = tempMatrix;
+							listOfElements.Add(new Point(i, j));
+						}
+						else if (tetrisGrid[i + 1][j] == boundary)
+						{
+							countOfBlocks = 0;
+							Convert3To4(ref tetrisGrid, placedShapes);
+							for (int z = 0; z < listOfElements.Count; z++)
+							{
+								char tempMatrix = tetrisGrid[listOfElements[z].X][listOfElements[z].Y];
+								tetrisGrid[listOfElements[z].X][listOfElements[z].Y] =
+									tetrisGrid[listOfElements[z].X + 1][listOfElements[z].Y];
+								tetrisGrid[listOfElements[z].X + 1][listOfElements[z].Y] = tempMatrix;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Rotating
+		/// </summary>
+		/// <param name="tetrisGrid"></param>
+		/// <param name="shapes"></param>
+		/// <param name="boundary"></param>
+		/// <param name="placedShapes"></param>
+		/// <param name="heightOfShapes"></param>
+		/// <param name="widthOfShapes"></param>
+		public void RotateUp(ref char[][] tetrisGrid, char boundary,
+			char placedShapes, int heightOfShapes)
+		{
+			//TODO
+			int indexJ = matrixHeight;
+			int indexI = matrixHeight;
+			for (int i = 0; i < matrixWidth; i++)
+				for (int j = 0; j < matrixHeight; j++)
+					if (tetrisGrid[i][j] == shapes && j < indexJ)
+						indexJ = j;
+
+			for (int i = 0; i < matrixWidth - 3; i++)
+			{
+				for (int j = 0; j < matrixHeight; j++)
+				{
+					if (tetrisGrid[i][j] == shapes)
+					{
+						indexI = i;
+						i = matrixWidth;
+						break;
+					}
+				}
+			}
+
+			char[,] borderOfShape = new char[heightOfShapes, widthOfShapes];
+
+			bool canRotate = true;
+			for (int x = indexI; x < indexI + heightOfShapes; x++)
+				for (int y = indexJ; y < indexJ + widthOfShapes; y++)
+					if (tetrisGrid[x][y] == placedShapes || tetrisGrid[x][y] == boundary)
+						canRotate = false;
+
+			if (canRotate)
+			{
+				for (int x = indexI; x < indexI + heightOfShapes; x++)
+					for (int y = indexJ; y < indexJ + widthOfShapes; y++)
+						borderOfShape[x - indexI, y - indexJ] = tetrisGrid[x][y];
+
+				borderOfShape = Rotate(borderOfShape, widthOfShapes);
+				for (int x = indexI; x < indexI + heightOfShapes; x++)
+					for (int y = indexJ; y < indexJ + widthOfShapes; y++)
+						tetrisGrid[x][y] = borderOfShape[x - indexI, y - indexJ];
+			}
+
+		}
+
+		/// <summary>
+		/// Checks the border.
+		/// </summary>
+		/// <param name="tetrisGrid">The tetris grid.</param>
+		/// <param name="border">The border.</param>
+		/// <param name="shapes">The shapes.</param>
+		/// <param name="side">The side.</param>
+		public bool CheckBorder(char[][] tetrisGrid, char border, Side side)
+		{
+			for (int i = 0; i < matrixWidth; i++)
+			{
+				for (int j = 0; j < matrixHeight; j++)
+				{
+					if (tetrisGrid[i][j] == shapes)
+					{
+						switch (side)
+						{
+							case Side.left:
+								if (j == 0)
+									return true;
+								if (tetrisGrid[i][j - 1] == border)
+									return true;
+								break;
+
+							case Side.rigth:
+								if (j == matrixHeight - 1)
+									return true;
+								if (tetrisGrid[i][j + 1] == border)
+									return true;
+								break;
+
+							case Side.down:
+								if (i == matrixWidth)
+									return true;
+								if (tetrisGrid[i][j] == border)
+									return true;
+								break;
+
+							default: break;
+						}
+					}
+				}
+			}
+			return false;
+		}
+
+		/// <summary>
+		/// Rotates the specified matrix.
+		/// </summary>
+		/// <param name="matrix">The matrix.</param>
+		/// <param name="side">The side.</param>
+		public char[,] Rotate(char[,] matrix, int side)
+		{
+			char[,] forRotation = new char[side, side];
+			for (int i = 0; i < side; i++)
+			{
+				for (int j = 0; j < side; j++)
+				{
+					forRotation[j, i] = matrix[side - i - 1, j];
+				}
+			}
+			return forRotation;
+		}
+
+		/// <summary>
+		/// Deletes the line.
+		/// </summary>
+		/// <param name="tetrisGrid">The tetris grid.</param>
+		/// <param name="line">The line.</param>
+		public void DeleteLine(char[][] tetrisGrid, int line)
+		{
+			for (int i = line; i > 0; i--)
+			{
+				for (int j = 0; j < matrixHeight; j++)
+				{
+					tetrisGrid[i][j] = tetrisGrid[i - 1][j];
+				}
+			}
+		}
+
+		/// <summary>
+		/// Convert 3 to 4.
+		/// </summary>
+		/// <param name="tetrisGrid">The tetris grid.</param>
+		/// <param name="shapes">The shapes.</param>
+		/// <param name="placedShapes">The placed shapes.</param>
+		public void Convert3To4(ref char[][] tetrisGrid, char placedShapes)
+		{
+			for (int i = 0; i < matrixWidth; i++)
+			{
+				for (int j = 0; j < matrixHeight; j++)
+				{
+					if (tetrisGrid[i][j] == shapes)
+					{
+						tetrisGrid[i][j] = placedShapes;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Sets the shape.
+		/// </summary>
+		/// <param name="tetrisGrid">The tetris grid.</param>
+		/// <param name="currentShape">The current shape.</param>
+		/// <param name="countOfBlocks">The count of blocks.</param>
+		/// <param name="whereToSpawn">The where to spawn.</param>
+		/// <param name="widthOfShapes">The width of shapes.</param>
+		/// <param name="shapes">The shapes.</param>
+		/// <param name="freeSpace">The free space.</param>
+		public void SetShape(ref char[][] tetrisGrid, ref char[,] currentShape,
+		int countOfBlocks, char[][,] shapesArray)
+		{
+			if (countOfBlocks == 0)
+			{
+				currentShape = shapesArray[random.Next(7)];
+				for (int i = whereToSpawn; i < whereToSpawn + widthOfShapes; i++)
+					tetrisGrid[0][i] = currentShape[countOfBlocks, i - whereToSpawn];
+			}
+			else if (countOfBlocks == 1 || countOfBlocks == 2)
+			{
+				for (int i = whereToSpawn; i < whereToSpawn + widthOfShapes; i++)
+					tetrisGrid[0][i] = currentShape[countOfBlocks, i - whereToSpawn];
+			}
+		}
+	}
+}
