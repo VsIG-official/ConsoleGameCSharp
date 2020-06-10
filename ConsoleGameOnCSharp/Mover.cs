@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+
 namespace ConsoleGameCSharp
 {
 	/// <summary>
@@ -54,8 +55,6 @@ namespace ConsoleGameCSharp
 		/// Moving right
 		/// </summary>
 		/// <param name="tetrisGrid"></param>
-		/// <param name="shapes"></param>
-		/// <param name="freeSpace"></param>
 		public void MoveRight(ref char[][] tetrisGrid)
 		{
 			for (int i = 0; i < matrixWidth; i++)
@@ -116,24 +115,73 @@ namespace ConsoleGameCSharp
 		}
 
 		/// <summary>
-		/// Rotating
+		/// Actions on Up button
 		/// </summary>
 		/// <param name="tetrisGrid"></param>
-		/// <param name="shapes"></param>
 		/// <param name="boundary"></param>
 		/// <param name="placedShapes"></param>
 		/// <param name="heightOfShapes"></param>
-		/// <param name="widthOfShapes"></param>
-		public void RotateUp(ref char[][] tetrisGrid, char boundary,
+		public void UpButton(ref char[][] tetrisGrid, char boundary,
 			char placedShapes, int heightOfShapes)
 		{
-			//TODO
 			int indexJ = matrixHeight;
-			int indexI = matrixHeight;
+			int indexI = matrixWidth;
+
+			ChangingIndexes(ref indexJ, ref indexI, ref tetrisGrid);
+
+			char[,] borderOfShape = new char[heightOfShapes, widthOfShapes];
+
+			bool canRotate = true;
+			for (int i = indexI; i < indexI + heightOfShapes; i++)
+			{
+				for (int j = indexJ; j < indexJ + widthOfShapes; j++)
+				{
+					if (tetrisGrid[i][j] == placedShapes || tetrisGrid[i][j] == boundary)
+					{
+						canRotate = false;
+					}
+				}
+			}
+
+			if (canRotate)
+			{
+				for (int i = indexI; i < indexI + heightOfShapes; i++)
+				{
+					for (int j = indexJ; j < indexJ + widthOfShapes; j++)
+					{
+						borderOfShape[i - indexI, j - indexJ] = tetrisGrid[i][j];
+					}
+				}
+
+				borderOfShape = Rotation(borderOfShape, widthOfShapes);
+				for (int i = indexI; i < indexI + heightOfShapes; i++)
+				{
+					for (int j = indexJ; j < indexJ + widthOfShapes; j++)
+					{
+						tetrisGrid[i][j] = borderOfShape[i - indexI, j - indexJ];
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Helps "UpButton" with changing indexes
+		/// </summary>
+		/// <param name="indexJ"></param>
+		/// <param name="indexI"></param>
+		/// <param name="tetrisGrid"></param>
+		public void ChangingIndexes(ref int indexJ, ref int indexI, ref char [][] tetrisGrid)
+		{
 			for (int i = 0; i < matrixWidth; i++)
+			{
 				for (int j = 0; j < matrixHeight; j++)
+				{
 					if (tetrisGrid[i][j] == shapes && j < indexJ)
+					{
 						indexJ = j;
+					}
+				}
+			}
 
 			for (int i = 0; i < matrixWidth - 3; i++)
 			{
@@ -147,27 +195,6 @@ namespace ConsoleGameCSharp
 					}
 				}
 			}
-
-			char[,] borderOfShape = new char[heightOfShapes, widthOfShapes];
-
-			bool canRotate = true;
-			for (int x = indexI; x < indexI + heightOfShapes; x++)
-				for (int y = indexJ; y < indexJ + widthOfShapes; y++)
-					if (tetrisGrid[x][y] == placedShapes || tetrisGrid[x][y] == boundary)
-						canRotate = false;
-
-			if (canRotate)
-			{
-				for (int x = indexI; x < indexI + heightOfShapes; x++)
-					for (int y = indexJ; y < indexJ + widthOfShapes; y++)
-						borderOfShape[x - indexI, y - indexJ] = tetrisGrid[x][y];
-
-				borderOfShape = Rotate(borderOfShape, widthOfShapes);
-				for (int x = indexI; x < indexI + heightOfShapes; x++)
-					for (int y = indexJ; y < indexJ + widthOfShapes; y++)
-						tetrisGrid[x][y] = borderOfShape[x - indexI, y - indexJ];
-			}
-
 		}
 
 		/// <summary>
@@ -189,23 +216,36 @@ namespace ConsoleGameCSharp
 						{
 							case Side.left:
 								if (j == 0)
+								{
 									return true;
+								}
+
 								if (tetrisGrid[i][j - 1] == border)
+								{
 									return true;
+								}
 								break;
 
 							case Side.rigth:
 								if (j == matrixHeight - 1)
+								{
 									return true;
+								}
 								if (tetrisGrid[i][j + 1] == border)
+								{
 									return true;
+								}
 								break;
 
 							case Side.down:
 								if (i == matrixWidth)
+								{
 									return true;
+								}
 								if (tetrisGrid[i][j] == border)
+								{
 									return true;
+								}
 								break;
 
 							default: break;
@@ -221,7 +261,7 @@ namespace ConsoleGameCSharp
 		/// </summary>
 		/// <param name="matrix">The matrix.</param>
 		/// <param name="side">The side.</param>
-		public char[,] Rotate(char[,] matrix, int side)
+		public char[,] Rotation(char[,] matrix, int side)
 		{
 			char[,] forRotation = new char[side, side];
 			for (int i = 0; i < side; i++)
@@ -276,10 +316,6 @@ namespace ConsoleGameCSharp
 		/// <param name="tetrisGrid">The tetris grid.</param>
 		/// <param name="currentShape">The current shape.</param>
 		/// <param name="countOfBlocks">The count of blocks.</param>
-		/// <param name="whereToSpawn">The where to spawn.</param>
-		/// <param name="widthOfShapes">The width of shapes.</param>
-		/// <param name="shapes">The shapes.</param>
-		/// <param name="freeSpace">The free space.</param>
 		public void SetShape(ref char[][] tetrisGrid, ref char[,] currentShape,
 		int countOfBlocks, char[][,] shapesArray)
 		{
@@ -287,12 +323,16 @@ namespace ConsoleGameCSharp
 			{
 				currentShape = shapesArray[random.Next(7)];
 				for (int i = whereToSpawn; i < whereToSpawn + widthOfShapes; i++)
+				{
 					tetrisGrid[0][i] = currentShape[countOfBlocks, i - whereToSpawn];
+				}
 			}
 			else if (countOfBlocks == 1 || countOfBlocks == 2)
 			{
 				for (int i = whereToSpawn; i < whereToSpawn + widthOfShapes; i++)
+				{
 					tetrisGrid[0][i] = currentShape[countOfBlocks, i - whereToSpawn];
+				}
 			}
 		}
 	}

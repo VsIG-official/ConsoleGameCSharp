@@ -156,6 +156,7 @@ namespace ConsoleGameCSharp
 						counterForLines++;
 					}
 				}
+
 				if (counterForLines == matrixHeight)
 				{
 					mover.DeleteLine(tetrisGrid, i);
@@ -212,7 +213,7 @@ namespace ConsoleGameCSharp
 								boundary, placedShapes, ref countOfBlocks);
 						break;
 					case ConsoleKey.UpArrow:
-						mover.RotateUp(ref tetrisGrid, boundary,
+						mover.UpButton(ref tetrisGrid, boundary,
 							placedShapes, heightOfShapes);
 						break;
 
@@ -223,4 +224,3 @@ namespace ConsoleGameCSharp
 		}
 	}
 }
-
