@@ -38,6 +38,8 @@ namespace ConsoleGameCSharp
 		private const int gameHeight = matrixHeight + bonusHeightOfTheScreen;
 		private static Mover mover = new Mover(matrixWidth, matrixHeight,
 			shapes, whereToSpawn, widthOfShapes, freeSpace);
+		private static GameTetris tetris = new GameTetris(matrixWidth, matrixHeight,
+			shapes,freeSpace);
 		private static int score;
 		private static char[,] currentShape;
 		private static int countOfBlocks;
@@ -76,7 +78,6 @@ namespace ConsoleGameCSharp
 			Console.WindowWidth = gameWidth;
 			Console.WindowHeight = gameHeight;
 
-			GameTetris tetris = new GameTetris();
 			tetris.SetMatrix(ref tetrisGrid, matrixHeight, matrixWidth, freeSpace, boundary);
 			SetTimer();
 			thread.Start();
@@ -128,7 +129,7 @@ namespace ConsoleGameCSharp
 						}
 						else if (tetrisGrid[i + 1][j] == boundary || tetrisGrid[i + 1][j] == placedShapes)
 						{
-							mover.Convert3To4(ref tetrisGrid, placedShapes);
+							tetris.Convert3To4(ref tetrisGrid, placedShapes);
 							countOfBlocks = 0;
 							for (int z = 0; z < listOfElements.Count; z++)
 							{
@@ -209,7 +210,7 @@ namespace ConsoleGameCSharp
 
 					case ConsoleKey.DownArrow:
 						if (!mover.CheckBorder(tetrisGrid, placedShapes, Side.down))
-							mover.MoveDown(ref tetrisGrid,
+							tetris.OnButtonDown(ref tetrisGrid,
 								boundary, placedShapes, ref countOfBlocks);
 						break;
 					case ConsoleKey.UpArrow:
@@ -224,3 +225,7 @@ namespace ConsoleGameCSharp
 		}
 	}
 }
+//щось (багато всього)
+//свічі
+//піраміди думу
+//кращі назви

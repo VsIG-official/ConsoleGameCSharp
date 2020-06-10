@@ -1,7 +1,6 @@
 ﻿using ConsoleGameCSharp.Enums;
+using ConsoleGameOnCSharp;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 
 namespace ConsoleGameCSharp
 {
@@ -11,12 +10,16 @@ namespace ConsoleGameCSharp
 	class Mover
 	{
 		public Random random = new Random();
-		private int matrixWidth { get; set; }
-		private int matrixHeight { get; set; }
-		private char shapes { get; set; }
-		private char freeSpace { get; set; }
+
+		private static int matrixWidth { get; set; }
+		private static int matrixHeight { get; set; }
+		private static char shapes { get; set; }
+		private static char freeSpace { get; set; }
 		private int whereToSpawn { get; set; }
 		private int widthOfShapes { get; set; }
+
+		private static GameTetris tetris = new GameTetris(matrixWidth, matrixHeight,
+			shapes,freeSpace);
 
 		public Mover(int _matrixWidth, int _matrixHeight, char _shapes, int _whereToSpawn,
 			int _widthOfShapes, char _freeSpace)
@@ -27,7 +30,11 @@ namespace ConsoleGameCSharp
 			whereToSpawn = _whereToSpawn;
 			widthOfShapes = _widthOfShapes;
 			freeSpace = _freeSpace;
+
+
 		}
+
+
 
 		/// <summary>
 		/// Moving left
@@ -71,48 +78,8 @@ namespace ConsoleGameCSharp
 			}
 		}
 
-		/// <summary>
-		/// Moving down
-		/// </summary>
-		/// <param name="tetrisGrid"></param>
-		/// <param name="shapes"></param>
-		/// <param name="freeSpace"></param>
-		/// <param name="boundary"></param>
-		/// <param name="placedShapes"></param>
-		/// <param name="countOfBlocks"></param>
-		public void MoveDown(ref char[][] tetrisGrid,
-			char boundary, char placedShapes, ref int countOfBlocks)
-		{
-			List<Point> listOfElements = new List<Point>();
-			for (int i = matrixWidth - 1; i > 0; i--)
-			{
-				for (int j = 0; j < matrixHeight; j++)
-				{
-					if (tetrisGrid[i][j] == shapes)
-					{
-						if (tetrisGrid[i + 1][j] == freeSpace)
-						{
-							char tempMatrix = tetrisGrid[i][j];
-							tetrisGrid[i][j] = tetrisGrid[i + 1][j];
-							tetrisGrid[i + 1][j] = tempMatrix;
-							listOfElements.Add(new Point(i, j));
-						}
-						else if (tetrisGrid[i + 1][j] == boundary)
-						{
-							countOfBlocks = 0;
-							Convert3To4(ref tetrisGrid, placedShapes);
-							for (int z = 0; z < listOfElements.Count; z++)
-							{
-								char tempMatrix = tetrisGrid[listOfElements[z].X][listOfElements[z].Y];
-								tetrisGrid[listOfElements[z].X][listOfElements[z].Y] =
-									tetrisGrid[listOfElements[z].X + 1][listOfElements[z].Y];
-								tetrisGrid[listOfElements[z].X + 1][listOfElements[z].Y] = tempMatrix;
-							}
-						}
-					}
-				}
-			}
-		}
+
+
 
 		/// <summary>
 		/// Actions on Up button
@@ -170,7 +137,7 @@ namespace ConsoleGameCSharp
 		/// <param name="indexJ"></param>
 		/// <param name="indexI"></param>
 		/// <param name="tetrisGrid"></param>
-		public void ChangingIndexes(ref int indexJ, ref int indexI, ref char [][] tetrisGrid)
+		public void ChangingIndexes(ref int indexJ, ref int indexI, ref char[][] tetrisGrid)
 		{
 			for (int i = 0; i < matrixWidth; i++)
 			{
@@ -290,25 +257,8 @@ namespace ConsoleGameCSharp
 			}
 		}
 
-		/// <summary>
-		/// Convert 3 to 4.
-		/// </summary>
-		/// <param name="tetrisGrid">The tetris grid.</param>
-		/// <param name="shapes">The shapes.</param>
-		/// <param name="placedShapes">The placed shapes.</param>
-		public void Convert3To4(ref char[][] tetrisGrid, char placedShapes)
-		{
-			for (int i = 0; i < matrixWidth; i++)
-			{
-				for (int j = 0; j < matrixHeight; j++)
-				{
-					if (tetrisGrid[i][j] == shapes)
-					{
-						tetrisGrid[i][j] = placedShapes;
-					}
-				}
-			}
-		}
+
+
 
 		/// <summary>
 		/// Sets the shape.
