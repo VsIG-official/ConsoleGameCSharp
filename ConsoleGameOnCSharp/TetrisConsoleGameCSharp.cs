@@ -39,7 +39,7 @@ namespace ConsoleGameCSharp
 		private static Mover mover = new Mover(matrixWidth, matrixHeight,
 			shapes, whereToSpawn, widthOfShapes, freeSpace);
 		private static GameTetris tetris = new GameTetris(matrixWidth, matrixHeight,
-			shapes,freeSpace);
+			shapes, freeSpace);
 		private static int score;
 		private static char[,] currentShape;
 		private static int countOfBlocks;
@@ -200,22 +200,31 @@ namespace ConsoleGameCSharp
 				{
 					case ConsoleKey.LeftArrow:
 						if (!mover.CheckBorder(tetrisGrid, placedShapes, Side.left))
+						{
 							mover.MoveLeft(ref tetrisGrid);
+						}
 						break;
 
 					case ConsoleKey.RightArrow:
 						if (!mover.CheckBorder(tetrisGrid, placedShapes, Side.rigth))
+						{
 							mover.MoveRight(ref tetrisGrid);
+						}
 						break;
 
 					case ConsoleKey.DownArrow:
 						if (!mover.CheckBorder(tetrisGrid, placedShapes, Side.down))
-							tetris.OnButtonDown(ref tetrisGrid,
-								boundary, placedShapes, ref countOfBlocks);
+						{
+							tetris.OnButtonDown(ref tetrisGrid, boundary,
+								placedShapes, ref countOfBlocks);
+						}
 						break;
+
 					case ConsoleKey.UpArrow:
-						mover.UpButton(ref tetrisGrid, boundary,
-							placedShapes, heightOfShapes);
+						{
+							mover.UpButton(ref tetrisGrid, boundary,
+								placedShapes, heightOfShapes);
+						}
 						break;
 
 					default: break;

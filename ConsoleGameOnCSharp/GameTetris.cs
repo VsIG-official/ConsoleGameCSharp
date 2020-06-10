@@ -82,7 +82,6 @@ namespace ConsoleGameOnCSharp
 		/// Convert 3 to 4.
 		/// </summary>
 		/// <param name="tetrisGrid">The tetris grid.</param>
-		/// <param name="shapes">The shapes.</param>
 		/// <param name="placedShapes">The placed shapes.</param>
 		public void Convert3To4(ref char[][] tetrisGrid, char placedShapes)
 		{

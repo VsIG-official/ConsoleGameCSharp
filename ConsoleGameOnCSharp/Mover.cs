@@ -1,5 +1,4 @@
 ﻿using ConsoleGameCSharp.Enums;
-using ConsoleGameOnCSharp;
 using System;
 
 namespace ConsoleGameCSharp
@@ -18,9 +17,6 @@ namespace ConsoleGameCSharp
 		private int whereToSpawn { get; set; }
 		private int widthOfShapes { get; set; }
 
-		private static GameTetris tetris = new GameTetris(matrixWidth, matrixHeight,
-			shapes,freeSpace);
-
 		public Mover(int _matrixWidth, int _matrixHeight, char _shapes, int _whereToSpawn,
 			int _widthOfShapes, char _freeSpace)
 		{
@@ -30,18 +26,12 @@ namespace ConsoleGameCSharp
 			whereToSpawn = _whereToSpawn;
 			widthOfShapes = _widthOfShapes;
 			freeSpace = _freeSpace;
-
-
 		}
-
-
 
 		/// <summary>
 		/// Moving left
 		/// </summary>
 		/// <param name="tetrisGrid"></param>
-		/// <param name="shapes"></param>
-		/// <param name="freeSpace"></param>
 		public void MoveLeft(ref char[][] tetrisGrid)
 		{
 			for (int i = 0; i < matrixWidth; i++)
@@ -77,9 +67,6 @@ namespace ConsoleGameCSharp
 				}
 			}
 		}
-
-
-
 
 		/// <summary>
 		/// Actions on Up button
@@ -169,7 +156,6 @@ namespace ConsoleGameCSharp
 		/// </summary>
 		/// <param name="tetrisGrid">The tetris grid.</param>
 		/// <param name="border">The border.</param>
-		/// <param name="shapes">The shapes.</param>
 		/// <param name="side">The side.</param>
 		public bool CheckBorder(char[][] tetrisGrid, char border, Side side)
 		{
