@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Drawing;
 
+/// <summary>
+/// My console game, where You can play tetris
+/// </summary>
 namespace ConsoleGameOnCSharp
 {
-
 	/// <summary>
 	///for tetris logic
 	/// </summary>
@@ -12,15 +14,15 @@ namespace ConsoleGameOnCSharp
 	{
 		private static Object locker = new object();
 
-		private int matrixWidth { get; set; }
-		private int matrixHeight { get; set; }
-		private char shapes { get; set; }
-		private char freeSpace { get; set; }
-		private char boundary { get; set; }
-		private char placedShapes { get; set; }
+		private int matrixWidth { get; }
+		private int matrixHeight { get; }
+		private char shapes { get; }
+		private char freeSpace { get; }
+		private char boundary { get; }
+		private char placedShapes { get; }
 
-		public GameTetris(int _matrixWidth, int _matrixHeight, char _shapes, char _freeSpace,
-			char _boundary, char _placedShapes)
+		public GameTetris(int _matrixWidth, int _matrixHeight, char _shapes,
+			char _freeSpace, char _boundary, char _placedShapes)
 		{
 			matrixHeight = _matrixHeight;
 			matrixWidth = _matrixWidth;
@@ -31,7 +33,7 @@ namespace ConsoleGameOnCSharp
 		}
 
 		/// <summary>
-		///start function for main matrix to change values in it
+		/// Start function for main matrix to change values in it
 		/// </summary>
 		/// <param name="tetrisGrid"></param>
 		/// <param name="matrixHeight"></param>
@@ -53,7 +55,7 @@ namespace ConsoleGameOnCSharp
 		}
 
 		/// <summary>
-		/// Printings the matrix.
+		/// Prints the matrix.
 		/// </summary>
 		/// <param name="tetrisGrid">The tetris grid.</param>
 		/// <param name="score">The score.</param>
@@ -82,7 +84,7 @@ namespace ConsoleGameOnCSharp
 		}
 
 		/// <summary>
-		/// Convert 3 to 4.
+		/// Converts 3 to 4.
 		/// </summary>
 		/// <param name="tetrisGrid">The tetris grid.</param>
 		public void Convert3To4(ref char[][] tetrisGrid)
@@ -112,14 +114,21 @@ namespace ConsoleGameOnCSharp
 				{
 					if (tetrisGrid[i][j] == shapes)
 					{
-						CheckGround(ref tetrisGrid, ref countOfBlocks,i,j);
+						CheckGround(ref tetrisGrid, ref countOfBlocks, i, j);
 					}
 				}
 			}
 		}
 
+		/// <summary>
+		/// Checks the ground.
+		/// </summary>
+		/// <param name="tetrisGrid">The tetris grid.</param>
+		/// <param name="countOfBlocks">The count of blocks.</param>
+		/// <param name="i">The i.</param>
+		/// <param name="j">The j.</param>
 		public void CheckGround(ref char[][] tetrisGrid,
-			 ref int countOfBlocks,int i,int j)
+			 ref int countOfBlocks, int i, int j)
 		{
 			List<Point> listOfElements = new List<Point>();
 			if (tetrisGrid[i + 1][j] == freeSpace)

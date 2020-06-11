@@ -1,8 +1,6 @@
 ﻿using ConsoleGameCSharp.Enums;
 using ConsoleGameOnCSharp;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Threading;
 using System.Timers;
 
@@ -120,6 +118,9 @@ namespace ConsoleGameCSharp
 			Endgame();
 		}
 
+		/// <summary>
+		/// Check for game end
+		/// </summary>
 		private static void Endgame()
 		{
 			int counterForLines = 0;
@@ -164,7 +165,7 @@ namespace ConsoleGameCSharp
 		}
 
 		/// <summary>
-		/// Movings the shapes away.
+		/// Move the shapes away.
 		/// </summary>
 		/// <param name="button">The button.</param>
 		private static void MoveShapesAway(ConsoleKey button)

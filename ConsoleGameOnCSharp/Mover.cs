@@ -1,6 +1,9 @@
 ﻿using ConsoleGameCSharp.Enums;
 using System;
 
+/// <summary>
+/// My console game, where You can play tetris
+/// </summary>
 namespace ConsoleGameCSharp
 {
 	/// <summary>
@@ -14,8 +17,8 @@ namespace ConsoleGameCSharp
 		private static int matrixHeight { get; set; }
 		private static char shapes { get; set; }
 		private static char freeSpace { get; set; }
-		private int whereToSpawn { get; set; }
-		private int widthOfShapes { get; set; }
+		private int whereToSpawn { get; }
+		private int widthOfShapes { get; }
 
 		public Mover(int _matrixWidth, int _matrixHeight, char _shapes, int _whereToSpawn,
 			int _widthOfShapes, char _freeSpace)
@@ -29,7 +32,7 @@ namespace ConsoleGameCSharp
 		}
 
 		/// <summary>
-		/// Moving left
+		/// Move left
 		/// </summary>
 		/// <param name="tetrisGrid"></param>
 		public void MoveLeft(ref char[][] tetrisGrid)
@@ -49,7 +52,7 @@ namespace ConsoleGameCSharp
 		}
 
 		/// <summary>
-		/// Moving right
+		/// Move right
 		/// </summary>
 		/// <param name="tetrisGrid"></param>
 		public void MoveRight(ref char[][] tetrisGrid)
@@ -69,7 +72,7 @@ namespace ConsoleGameCSharp
 		}
 
 		/// <summary>
-		/// Actions on Up button
+		/// Do something on Up button
 		/// </summary>
 		/// <param name="tetrisGrid"></param>
 		/// <param name="boundary"></param>
@@ -119,7 +122,7 @@ namespace ConsoleGameCSharp
 		}
 
 		/// <summary>
-		/// Helps "OnButtonUp" with changing indexes
+		/// Helps "OnButtonUp" to change indexes
 		/// </summary>
 		/// <param name="indexJ"></param>
 		/// <param name="indexI"></param>
@@ -251,6 +254,7 @@ namespace ConsoleGameCSharp
 		/// <param name="tetrisGrid">The tetris grid.</param>
 		/// <param name="currentShape">The current shape.</param>
 		/// <param name="countOfBlocks">The count of blocks.</param>
+		/// <param name="shapesArray">The array of shapes.</param>
 		public void SetShape(ref char[][] tetrisGrid, ref char[,] currentShape,
 		int countOfBlocks, char[][,] shapesArray)
 		{
