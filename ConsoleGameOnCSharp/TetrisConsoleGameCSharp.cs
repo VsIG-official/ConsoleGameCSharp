@@ -82,7 +82,7 @@ namespace ConsoleGameCSharp
 		}
 
 		/// <summary>
-		/// infinite stream for algorithm (moving blocks)
+		/// For algorithm (moving blocks)
 		/// </summary>
 		private static void NewThread()
 		{
@@ -177,7 +177,6 @@ namespace ConsoleGameCSharp
 					mover.MoveLeft(ref tetrisGrid);
 				}
 			}
-
 			else if (button == ConsoleKey.RightArrow)
 			{
 				if (!mover.CheckBorder(tetrisGrid, placedShapes, Side.rigth))
@@ -185,7 +184,6 @@ namespace ConsoleGameCSharp
 					mover.MoveRight(ref tetrisGrid);
 				}
 			}
-
 			else if (button == ConsoleKey.DownArrow)
 			{
 				if (!mover.CheckBorder(tetrisGrid, placedShapes, Side.down))
@@ -193,7 +191,6 @@ namespace ConsoleGameCSharp
 					tetris.MoveDown(ref tetrisGrid, ref countOfBlocks);
 				}
 			}
-
 			else if (button == ConsoleKey.UpArrow)
 			{
 				mover.OnButtonUp(ref tetrisGrid, boundary,

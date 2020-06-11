@@ -138,7 +138,6 @@ namespace ConsoleGameOnCSharp
 				tetrisGrid[i + 1][j] = tempMatrix;
 				listOfElements.Add(new Point(i, j));
 			}
-
 			else if (tetrisGrid[i + 1][j] == boundary || tetrisGrid[i + 1][j] == placedShapes)
 			{
 				Convert3To4(ref tetrisGrid);
