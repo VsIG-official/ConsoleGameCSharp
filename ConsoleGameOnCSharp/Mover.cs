@@ -75,13 +75,13 @@ namespace ConsoleGameCSharp
 		/// <param name="boundary"></param>
 		/// <param name="placedShapes"></param>
 		/// <param name="heightOfShapes"></param>
-		public void UpButton(ref char[][] tetrisGrid, char boundary,
+		public void OnButtonUp(ref char[][] tetrisGrid, char boundary,
 			char placedShapes, int heightOfShapes)
 		{
 			int indexJ = matrixHeight;
 			int indexI = matrixWidth;
 
-			ChangingIndexes(ref indexJ, ref indexI, ref tetrisGrid);
+			ChangeIndexes(ref indexJ, ref indexI, ref tetrisGrid);
 
 			char[,] borderOfShape = new char[heightOfShapes, widthOfShapes];
 
@@ -107,7 +107,7 @@ namespace ConsoleGameCSharp
 					}
 				}
 
-				borderOfShape = Rotation(borderOfShape, widthOfShapes);
+				borderOfShape = Rotate(borderOfShape, widthOfShapes);
 				for (int i = indexI; i < indexI + heightOfShapes; i++)
 				{
 					for (int j = indexJ; j < indexJ + widthOfShapes; j++)
@@ -119,12 +119,12 @@ namespace ConsoleGameCSharp
 		}
 
 		/// <summary>
-		/// Helps "UpButton" with changing indexes
+		/// Helps "OnButtonUp" with changing indexes
 		/// </summary>
 		/// <param name="indexJ"></param>
 		/// <param name="indexI"></param>
 		/// <param name="tetrisGrid"></param>
-		public void ChangingIndexes(ref int indexJ, ref int indexI, ref char[][] tetrisGrid)
+		public void ChangeIndexes(ref int indexJ, ref int indexI, ref char[][] tetrisGrid)
 		{
 			for (int i = 0; i < matrixWidth; i++)
 			{
@@ -184,6 +184,7 @@ namespace ConsoleGameCSharp
 								{
 									return true;
 								}
+
 								if (tetrisGrid[i][j + 1] == border)
 								{
 									return true;
@@ -195,6 +196,7 @@ namespace ConsoleGameCSharp
 								{
 									return true;
 								}
+
 								if (tetrisGrid[i][j] == border)
 								{
 									return true;
@@ -214,7 +216,7 @@ namespace ConsoleGameCSharp
 		/// </summary>
 		/// <param name="matrix">The matrix.</param>
 		/// <param name="side">The side.</param>
-		public char[,] Rotation(char[,] matrix, int side)
+		public char[,] Rotate(char[,] matrix, int side)
 		{
 			char[,] forRotation = new char[side, side];
 			for (int i = 0; i < side; i++)
@@ -242,9 +244,6 @@ namespace ConsoleGameCSharp
 				}
 			}
 		}
-
-
-
 
 		/// <summary>
 		/// Sets the shape.

@@ -39,7 +39,7 @@ namespace ConsoleGameCSharp
 		private static Mover mover = new Mover(matrixWidth, matrixHeight,
 			shapes, whereToSpawn, widthOfShapes, freeSpace);
 		private static GameTetris tetris = new GameTetris(matrixWidth, matrixHeight,
-			shapes, freeSpace);
+			shapes, freeSpace, boundary, placedShapes);
 		private static int score;
 		private static char[,] currentShape;
 		private static int countOfBlocks;
@@ -78,7 +78,7 @@ namespace ConsoleGameCSharp
 			Console.WindowWidth = gameWidth;
 			Console.WindowHeight = gameHeight;
 
-			tetris.SetMatrix(ref tetrisGrid, matrixHeight, matrixWidth, freeSpace, boundary);
+			tetris.SetMatrix(ref tetrisGrid, matrixHeight, matrixWidth);
 			SetTimer();
 			thread.Start();
 		}
@@ -91,7 +91,10 @@ namespace ConsoleGameCSharp
 			while (true)
 			{
 				ConsoleKeyInfo button = Console.ReadKey();
-				MovingShapesAway(button.Key);
+				if (countOfBlocks > heightOfShapes)
+				{
+					MoveShapesAway(button.Key);
+				}
 			}
 		}
 
@@ -101,7 +104,7 @@ namespace ConsoleGameCSharp
 		public static void SetTimer()
 		{
 			aTimer = new System.Timers.Timer(1000);
-			aTimer.Elapsed += MovingShapesDown;
+			aTimer.Elapsed += MoveShapesDown;
 			aTimer.AutoReset = true;
 			aTimer.Enabled = true;
 		}
@@ -111,45 +114,17 @@ namespace ConsoleGameCSharp
 		/// </summary>
 		/// <param name="sourse">The sourse.</param>
 		/// <param name="e">The <see cref="ElapsedEventArgs"/> instance containing the event data.</param>
-		private static void MovingShapesDown(Object sourse, ElapsedEventArgs e)
+		private static void MoveShapesDown(Object sourse, ElapsedEventArgs e)
 		{
-			List<Point> listOfElements = new List<Point>();
-			for (int i = matrixWidth - 1; i >= 0; i--)
-			{
-				for (int j = 0; j < matrixHeight; j++)
-				{
-					if (tetrisGrid[i][j] == shapes)
-					{
-						if (tetrisGrid[i + 1][j] == freeSpace)
-						{
-							char tempMatrix = tetrisGrid[i][j];
-							tetrisGrid[i][j] = tetrisGrid[i + 1][j];
-							tetrisGrid[i + 1][j] = tempMatrix;
-							listOfElements.Add(new Point(i, j));
-						}
-						else if (tetrisGrid[i + 1][j] == boundary || tetrisGrid[i + 1][j] == placedShapes)
-						{
-							tetris.Convert3To4(ref tetrisGrid, placedShapes);
-							countOfBlocks = 0;
-							for (int z = 0; z < listOfElements.Count; z++)
-							{
-								char tempMatrix = tetrisGrid[listOfElements[z].X][listOfElements[z].Y];
-								tetrisGrid[listOfElements[z].X][listOfElements[z].Y] =
-									tetrisGrid[listOfElements[z].X + 1][listOfElements[z].Y];
-								tetrisGrid[listOfElements[z].X + 1][listOfElements[z].Y] = tempMatrix;
-							}
-						}
-					}
-				}
-			}
+			tetris.MoveDown(ref tetrisGrid, ref countOfBlocks);
 			Endgame();
 		}
 
 		private static void Endgame()
 		{
+			int counterForLines = 0;
 			for (int i = 0; i < matrixWidth; i++)
 			{
-				int counterForLines = 0;
 				for (int j = 0; j < matrixHeight; j++)
 				{
 					if (tetrisGrid[i][j] == placedShapes)
@@ -158,7 +133,7 @@ namespace ConsoleGameCSharp
 					}
 				}
 
-				if (counterForLines == matrixHeight)
+				if (counterForLines == matrixWidth)
 				{
 					mover.DeleteLine(tetrisGrid, i);
 					score++;
@@ -183,58 +158,47 @@ namespace ConsoleGameCSharp
 			{
 				mover.SetShape(ref tetrisGrid, ref currentShape, countOfBlocks,
 					shapesArray);
-				GameTetris.PrintingMatrix(tetrisGrid, score, matrixWidth, topLimit);
+				GameTetris.PrintMatrix(tetrisGrid, score, matrixWidth, topLimit);
 				countOfBlocks++;
 			}
 		}
+
 		/// <summary>
 		/// Movings the shapes away.
 		/// </summary>
 		/// <param name="button">The button.</param>
-		private static void MovingShapesAway(ConsoleKey button)
+		private static void MoveShapesAway(ConsoleKey button)
 		{
-			//TODO на іфи
-			if (countOfBlocks > heightOfShapes)
+			if (button == ConsoleKey.LeftArrow)
 			{
-				switch (button)
+				if (!mover.CheckBorder(tetrisGrid, placedShapes, Side.left))
 				{
-					case ConsoleKey.LeftArrow:
-						if (!mover.CheckBorder(tetrisGrid, placedShapes, Side.left))
-						{
-							mover.MoveLeft(ref tetrisGrid);
-						}
-						break;
-
-					case ConsoleKey.RightArrow:
-						if (!mover.CheckBorder(tetrisGrid, placedShapes, Side.rigth))
-						{
-							mover.MoveRight(ref tetrisGrid);
-						}
-						break;
-
-					case ConsoleKey.DownArrow:
-						if (!mover.CheckBorder(tetrisGrid, placedShapes, Side.down))
-						{
-							tetris.OnButtonDown(ref tetrisGrid, boundary,
-								placedShapes, ref countOfBlocks);
-						}
-						break;
-
-					case ConsoleKey.UpArrow:
-						{
-							mover.UpButton(ref tetrisGrid, boundary,
-								placedShapes, heightOfShapes);
-						}
-						break;
-
-					default: break;
+					mover.MoveLeft(ref tetrisGrid);
 				}
 			}
-			GameTetris.PrintingMatrix(tetrisGrid, score, matrixWidth, topLimit);
+
+			else if (button == ConsoleKey.RightArrow)
+			{
+				if (!mover.CheckBorder(tetrisGrid, placedShapes, Side.rigth))
+				{
+					mover.MoveRight(ref tetrisGrid);
+				}
+			}
+
+			else if (button == ConsoleKey.DownArrow)
+			{
+				if (!mover.CheckBorder(tetrisGrid, placedShapes, Side.down))
+				{
+					tetris.MoveDown(ref tetrisGrid, ref countOfBlocks);
+				}
+			}
+
+			else if (button == ConsoleKey.UpArrow)
+			{
+				mover.OnButtonUp(ref tetrisGrid, boundary,
+					placedShapes, heightOfShapes);
+			}
+			GameTetris.PrintMatrix(tetrisGrid, score, matrixWidth, topLimit);
 		}
 	}
 }
-//щось (багато всього)
-//свічі
-//піраміди думу
-//кращі назви
