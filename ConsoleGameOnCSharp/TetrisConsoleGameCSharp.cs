@@ -1,5 +1,4 @@
 ﻿using ConsoleGameCSharp.Enums;
-using ConsoleGameOnCSharp;
 using System;
 using System.Threading;
 using System.Timers;

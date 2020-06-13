@@ -168,6 +168,7 @@ namespace ConsoleGameCSharp
 				{
 					if (tetrisGrid[i][j] == shapes)
 					{
+						//колекції функції
 						switch (side)
 						{
 							case Side.left:

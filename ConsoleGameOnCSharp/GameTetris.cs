@@ -5,7 +5,7 @@ using System.Drawing;
 /// <summary>
 /// My console game, where You can play tetris
 /// </summary>
-namespace ConsoleGameOnCSharp
+namespace ConsoleGameCSharp
 {
 	/// <summary>
 	///for tetris logic
